@@ -1,0 +1,104 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+\IEEEoverridecommandlockouts                              % This command is only needed if 
+                                                          % you want to use the \thanks command
+\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+\usepackage{ieee_packages}
+
+\title{\LARGE \bf
+Constrained Attitude Control
+}
+
+
+\author{Shankar Kulumani,Frederick Leve, Taeyoung Lee$^*$
+ \thanks{Shankar Kulumani and Taeyoung Lee are with Department of Aerospace Engineering, George Washington University, Washington, DC. Email: {\tt\footnotesize \{skulumani, tylee\}@gwu.edu }}
+ }
+
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+
+200-300 summary of the paper
+
+general topic area
+
+new developments/contributions of the paper
+
+relation/benefits over previous work
+
+summary of the results and contributions
+
+Awesome abstract
+
+\end{abstract}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{INTRODUCTION}
+introduction to attitude dynamics problem
+
+difficulties of attitude control (topological restriction, nonlinear manifold)
+
+difficulties with attitude representatiion.
+Euler angles/MRP have singularities not suitable for large angular rotations
+Quaterions have no singularities but double coverage. can exhibit unwinding
+
+
+\section{PROBLEM FORMULATION}
+
+\section{ATTITUDE STABILIZATION}
+
+\section{EQUILIBRIUM STRUCTURE}
+
+\section{NUMERICAL EXAMPLE}
+
+\section{EXPERIMENT}
+
+\section{CONCLUSIONS}
+\addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
+                                  % on the last page of the document manually. It shortens
+                                  % the textheight of the last page by a suitable amount.
+                                  % This command does not take effect until the next page
+                                  % so it should come on the page before the last. Make
+                                  % sure that you do not shorten the textheight too much.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{APPENDIX}
+
+Appendixes should appear before the acknowledgment.
+
+\section*{ACKNOWLEDGMENT}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\bibliography{library}
+\bibliographystyle{IEEEtran}
+
+\end{document}
