@@ -18,7 +18,7 @@ Constrained Attitude Control
 }
 
 
-\author{Shankar Kulumani,Frederick Leve, Taeyoung Lee$^*$
+\author{Shankar Kulumani and Taeyoung Lee$^*$
  \thanks{Shankar Kulumani and Taeyoung Lee are with Department of Aerospace Engineering, George Washington University, Washington, DC. Email: {\tt\footnotesize \{skulumani, tylee\}@gwu.edu }}
  }
 
@@ -53,24 +53,84 @@ Awesome abstract
 \section{INTRODUCTION}
 introduction to attitude dynamics problem
 
+Attitude dynamics evolve on a nonlinear manifold, unique properties not experienced in linear systems
+
 difficulties of attitude control (topological restriction, nonlinear manifold)
 
-difficulties with attitude representatiion.
-Euler angles/MRP have singularities not suitable for large angular rotations
-Quaterions have no singularities but double coverage. can exhibit unwinding
+difficulties with attitude representations.
 
+Linear vector space used to represent motion on nonlinear manifold. 
+
+Euler angles/MRP have singularities not suitable for large angular rotations
+
+Quaterions have no singularities but double coverage as the three sphere double covers the special orthogonal group.
+There are two equivalent quaternions that represent the same attitude.
+
+Discuss attitude control in the presence of constraints. 
+Key technology/capability to allow for autonomous operation of spacecraft and UAVs
+Sensitive optical instruments that require reorientation while avoiding exposure to the sun or bright sources
+
+Removal of constrained regions from the configuration space results in a nonconvex space/region.
+
+Benefits of this approach over previous work ( cite papers).
+Use of artifical potential functions
+Mcinnes looked at reorientation using euler angles. 
+Singularities would become evident for arbitrarily large angular slews
+
+Determine manuever a priori using geometric/kinematic relationships
+
+Computational based approaches.
+Randomized algorithms or direct optimal control
 
 \section{PROBLEM FORMULATION}
 
+Describe attitude dynamics EOMS.
+Explain attitude representation using \SO.
+Hat and vee map properties used in developments
+
+Configuration error function with attractive and repulsive terms
+Define the various attitude error functions and where they are derived from
+summarize some of the properties of the attractive error function from previous papers
+Show the development of the configuration error terms and equilibrium structure
 \section{ATTITUDE STABILIZATION}
 
-\section{EQUILIBRIUM STRUCTURE}
+Derive error dynamics
+Introduce control input function and show that it is stable without any disturbance
+
+Add the disturbance term and introduce adaptive update law
+Mention how for a fixed disturbance this is integral control 
+Go through the various developments of proving the disturbance case is stable for correct choice of gains
 
 \section{NUMERICAL EXAMPLE}
+Parameters used in the simulation
 
+Show stabilization with and without repulsive term
+Show stabilization with and without adaptive update law
+
+Plot of responses
+
+Get the configuration error function mapped onto the attitude sphere
+
+Show rotation animation of spacecraft avoiding constrained regions
 \section{EXPERIMENT}
 
+Discuss experimental setup of the hexrotor on spherical joint
+
+Describe aim of experiment. 
+Demonstrate that hexrotor fixed sensor can stabilize to desired attitude while avoiding an obstacle.
+Mount a sphere at an appropriate distance such that the subtended angle is equal to the cone constraint
+
+Show plots of response with and without avoidance term
+Response should be similar to numerical simulation
+
 \section{CONCLUSIONS}
+
+Discuss how this method allows for on board implementation of attitude avoidance during reorientations
+
+Improves upon previous work by extending to the full nonlinear manifold representation and avoids quaternion ambiguities
+
+Proven stable and validated via hardware experiments
+
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
                                   % the textheight of the last page by a suitable amount.
@@ -89,7 +149,11 @@ Quaterions have no singularities but double coverage. can exhibit unwinding
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{APPENDIX}
 
-Appendixes should appear before the acknowledgment.
+Detail on finding bounds of \( \norm{\dot{e_R}} \)
+
+Stability proofs
+
+Further discussion on equilibrium positions and structure of configuration error function
 
 \section*{ACKNOWLEDGMENT}
 
