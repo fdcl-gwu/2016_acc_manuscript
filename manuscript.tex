@@ -62,56 +62,64 @@ Awesome abstract
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
+Many researchers have focused on the study of the attitude dynamics of a rigid body~\cite{hughes2004,wertz1978}.
+Rigid body attitude control arises for aerospace vehicles, ground and underwater vehicles, and robotic systems.
+One distinctive feature of the attitude dynamics is that it evolves on a nonlinear manifold.
+The three-dimensional special orthogonal group is the set of \( 3 \times 3 \) orthogonal matrices whose determinant is one.
+This configuration space is not Euclidean and yields unique stability properties which are not observable on a linear space.
+For example, it is impossible to achieve global attitude stabilization using continuous time-invariant feedback~\cite{bhat2000}.
+Attitude control is typically studied using a variety of attitude parameterizations, such as Euler angles or quaternions~\cite{shuster1993}.
 
-Spacecraft are complicated electro mechanical devices and have become critical to national security.
-Spacecraft operations require extensive planning periods and human interaction to perform.
-The ability to robustly and autonomously plan and execute complicated spacecraft maneuvers can drastically improve the performance and duty cycle of assets.
-One key technology to enable spacecraft autonomy is the execution of large angular slews in the presence of constraints.
-For example, many spacecraft missions are equipped with sensitive optical instruments that require targeting while simultaneously avoiding direct exposure to sunlight.
-One of the distinct features of the attitude dynamics of a rigid body is that it evolves on a nonlinear manifold.
-The special orthogonal group, \( \SO \), yields unique properties that are not present in dynamic systems on a linear space. 
-In addition, the removal of constrained zones from the rotational configuration space results in a non-convex and more complicated system.
-The attitude dynamics and control of spacecraft without constraint has been extensively studied in the literature.
-This work builds upon previous results to include attitude constraints on \( \SO \).
+% topological obstruction - smooth control system can only achieve almost global asymptotic stability
 
-In this work an attitude control system is presented to track a desired trajectory while avoiding constrained regions. 
-The control system is formulated directly on the nonlinear manifold \( \SO \) and avoids the issues associated with minimal representations.
-The approach is based on a logarithmic barrier potential function developed directly on \( \SO \). 
-This avoids the singularities associated with Euler angles~\cite{mcinnes1994}.
-Euler angles are not suitable for large angle slew maneuvers as the type of Euler angle sequence should be switched to avoid the singular regions.
-Quaternions do not suffer from singularities but as the three-sphere double covers the special orthogonal group, there exists two antipodal points on the three-sphere which represents an equivalent attitude.
-As a result, control schemes based on quaternions should carefully resolve this ambiguity to avoid unwinding, where a rigid body unnecessarily rotates through a large angle in spite of a small initial error.~\cite{lee2011b}.
+% discuss issues with parameterizations
+All attitude parameterizations fail to represent the nonlinear configuration space both globally and uniquely~\cite{chaturvedi2011a}.
+For example, minimal attitude representations, such as Euler angle sequences or modified Rodriguez parameters, suffer from singularities.
+These attitude representations are not suitable for large angular slews.
+In order to avoid singularities the designer must carefully switch the chosen Euler angle sequence based on the operating region.
+Another option is to artificially limit the operating region of the rigid body.
+This ensures the system operates in a region free from singularities but limits the performance capabilities and ability to perform arbitrarily large angular maneuvers.
+Quaternions do not have singularities but they double cover the special orthogonal group.
+As a result, any physical attitude is represented by a pair of antipodal quaternions on the three-sphere.
+An immediate implication of this ambiguity is that closed-loop stability properties derived using quaternion may not hold for the physical rigid body evolving on the special orthogonal group.
+During implementation, the design must carefully resolve this non-unique representation in quaternion based attitude control system to avoid undesirable unwinding behavior~\cite{bhat2000}.
+For certain initial conditions, where the rigid body starts closed to the desired attitude, the system unnecessarily rotates through a large angle even while the initial error is small.
 
-introduction to attitude dynamics problem
+% introduce concept of state inequality constraints and how it creates a nonconvex region 
+% mention applicability of this for spacecraft maneuvers, spherical air bearing testing, hardware limitations
+Many physical rigid body systems must perform large angular slews in the presence of state constraints.
+For example, autonomous spacecraft or aerial systems are typically equipped with sensitive optical payloads, such as infrared or interferometric sensors.
+These systems require retargeting while avoiding direct exposure to sunlight or other bright objects.
+Determining a satisfactory attitude control maneuver in the presence of state constraints is a challenging task.
+The removal of constrained regions from the rotational configuration space results in a \textit{nonconvex} region.
+The attitude control problem in the absence of constraints has been extensively studied~\cite{sanyal2008,lee2010,lee2011a}.
+However, the attitude control problem in the presence of constraints has received much less attention.
 
-Attitude dynamics evolve on a nonlinear manifold, unique properties not experienced in linear systems
+% discuss how previous papers (mcinnes and lee/meshabi) have short comings
+Several approaches have been developed to treat the attitude control problem in the presence of constraints.
+A geometric approach is used in~\cite{hablani1999} to determine feasible attitude trajectories prior to implementation.
+Typically, an optimal or easily implementable on-board control scheme for attitude maneuvers is considered without state constraints.
+The algorithm then seeks an intermediate point such that the control scheme can be applied for each segment without violation of the constraints.
+While the geometric method is conceptually simple it is difficult to generalize for an arbitrary amount of constraints.
+In addition, this geometric type of approach is only applicable to problems where the selection of intermediate points are computationally feasible
 
-difficulties of attitude control (topological restriction, nonlinear manifold)
+The approach in~\cite{frazzoli2001} involves the use of randomized motion planning algorithms to solve the constrained attitude control problem.
+A graph is generated consisting of vertices from an initial attitude to a desired attitude. 
+A random iterative search is conducted to determine a path through the graph such that a given cost functional is minimized.
+Once an appropriate path is determined an appropriate control is implemented to perform the attitude maneuver.
+The random search approach can only stochastically guarantee attitude convergence as it can be shown that as the number of vertices in the graph grow, the probability of non convergence goes to zero.
+However, the computational demand grows as the size of the graph is increased. 
+As a result, random search approaches are ill-suited to on-board implementation or in scenarios that require agile maneuvers.
 
-difficulties with attitude representations.
-
-Linear vector space used to represent motion on nonlinear manifold. 
-
-Euler angles/MRP have singularities not suitable for large angular rotations
-
-Quaterions have no singularities but double coverage as the three sphere double covers the special orthogonal group.
-There are two equivalent quaternions that represent the same attitude.
-
-Discuss attitude control in the presence of constraints. 
-Key technology/capability to allow for autonomous operation of spacecraft and UAVs
-Sensitive optical instruments that require reorientation while avoiding exposure to the sun or bright sources
-
-Removal of constrained regions from the configuration space results in a nonconvex space/region.
-
-Benefits of this approach over previous work ( cite papers).
-Use of artifical potential functions
-Mcinnes looked at reorientation using euler angles. 
-Singularities would become evident for arbitrarily large angular slews
-
-Determine manuever a priori using geometric/kinematic relationships
-
-Computational based approaches.
-Randomized algorithms or direct optimal control
+In this work, we develop a geometric adaptive controller on \SO to reorient a rigid body in the presence of state inequality constraints.
+We apply a potential function based approach developed directly on the nonlinear manifold \SO.
+Geometric control is concerned with the development of control systems for dynamic systems that evolve on nonlinear manifolds.
+Artificial potential functions have previously been applied to the attitude control problem~\cite{lee2011b,mcinnes1994}.
+These approaches have used attitude parameterizations that give rise to singularities and ambiguities.
+By characterizing the intrinsic geometric properties of \SO, we completely avoid issues associated with local parameterizations of the configuration manifold.
+In this paper, a Lyapunov analysis is presented to guarantee stability in the presence of state constraints
+In addition, we formulate an adaptive update law to enable attitude convergence in the presence of disturbances.
+These results are demonstrated via numerical examples and experimental results on a robotic aerial vehicle.
 
 \section{Problem Formulation}
 
@@ -226,13 +234,6 @@ Proven stable and validated via hardware experiments
                                   % so it should come on the page before the last. Make
                                   % sure that you do not shorten the textheight too much.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
@@ -248,7 +249,7 @@ Further discussion on equilibrium positions and structure of configuration error
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\bibliography{library}
+\bibliography{BibMaster,library}
 \bibliographystyle{IEEEtran}
 
 \end{document}
