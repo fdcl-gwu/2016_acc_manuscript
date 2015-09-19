@@ -12,11 +12,11 @@
 \usepackage[binary-units=true]{siunitx} % SI units
 
 \usepackage{amssymb}  
-%\usepackage{amsthm}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{mathtools}
-
+\usepackage[]{algorithm2e}
+\usepackage{theorem}
 \usepackage{bm} % bold face letters in math environment
 \usepackage{setspace} % line spacing  
 \usepackage{booktabs} % for much better looking tables without vertical seperators
@@ -28,21 +28,18 @@
 %\usepackage{microtype} % better fonts/apperance
 %----------------------------- GRAPHICS PACKAGES--------------------------
 %\usepackage{geometry} % allows for adjustment of margins/layout of the page
-\usepackage[top=1in, bottom=1.25in, left=1.25in, right=1.25in]{geometry}
 \usepackage{graphicx} % for pdf, bitmapped graphics files
 \usepackage{float}
-\usepackage{color}
+\usepackage{color,comment}
 \usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
 \usepackage{subcaption} % make it possible to include more than one captioned figure/table in a single float
+\usepackage{epic,eepic}
+%\usepackage{subfigure}
 \graphicspath{{./figures/}}% path to images
-
+\usepackage{times}
 %------------- CITATION PACKAGES------------------------------
 
-%\usepackage{listings}
-%\usepackage{accents}
-%\usepackage{overcite} % reference numbers appear as superscript exponents. Used by AAS
-\usepackage{footnpag}	
-%\usepackage{natbib} % allows for other citation styles (Harvard, APA, MLA, etc)
+\usepackage{csquotes}
 \usepackage[]{hyperref} % links to stuff
 \hypersetup{
     bookmarks=true,         % show bookmarks bar?
@@ -114,6 +111,7 @@
 \newcommand{\Hess}{\ensuremath{\mathrm{Hess}}}
 \newcommand{\refprop}[1]{Proposition \ref{prop:#1}}
 \newcommand{\mypaper}{}
+
 %\theoremstyle{definition} 
 %\newtheorem{prop}{Proposition}
 

@@ -13,16 +13,27 @@
 
 \usepackage{ieee_packages}
 
+\newcommand{\EditTL}[1]{{\color{red}\protect #1}}
+%\renewcommand{\EditTL}[1]{{\protect #1}}
+
+\newtheorem{definition}{Definition}
+\newtheorem{lem}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{cor}{Corollary}
+\newtheorem{remark}{Remark}
+
 \title{\LARGE \bf
 Constrained Attitude Control
 }
 
 
-\author{Shankar Kulumani and Taeyoung Lee$^*$
- \thanks{Shankar Kulumani and Taeyoung Lee are with Department of Aerospace Engineering, George Washington University, Washington, DC. Email: {\tt\footnotesize \{skulumani, tylee\}@gwu.edu }}
- }
+\title{\LARGE \bf
+Geometric Adaptive Control of Attitude Dynamics on $\SO$\\ with State Inequality Constraints}
 
-
+\author{Shankar Kulumani, Chris Poole, and Taeyoung Lee
+\thanks{Shankar Kulumani, Chris Poole, Taeyoung Lee, Mechanical and Aerospace Engineering, George Washington University, Washington DC 20052 {\tt \{skulumani,poolec,tylee\}@gwu.edu}}
+\thanks{This research has been supported in part by NSF under the grants CMMI-1243000, CMMI-1335008, and CNS-1337722.}
+}
 
 \begin{document}
 
@@ -50,7 +61,7 @@ Awesome abstract
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{INTRODUCTION}
+\section{Introduction}
 
 Spacecraft are complicated electro mechanical devices and have become critical to national security.
 Spacecraft operations require extensive planning periods and human interaction to perform.
@@ -102,26 +113,82 @@ Determine manuever a priori using geometric/kinematic relationships
 Computational based approaches.
 Randomized algorithms or direct optimal control
 
-\section{PROBLEM FORMULATION}
+\section{Problem Formulation}
 
 Describe attitude dynamics EOMS.
 Explain attitude representation using \SO.
 Hat and vee map properties used in developments
 
+\subsection{Attitude Dynamics}
+Consider the attitude dynamics of a rigid body. Define an inertial reference frame and a body-fixed frame. The configuration manifold of the attitude dynamics is the special orthogonal group:
+\begin{align*}
+\SO = \{R\in\Re^{3\times 3}\,|\, R^TR=I,\;\mathrm{det}[R]=1\},
+\end{align*}
+where a rotation matrix $R\in\SO$ represents the transformation of the representation of a vector from the body-fixed frame to the inertial reference frame. The equations of motion are given by
+\begin{gather}
+J\dot\Omega + \Omega\times J\Omega = u+W(R,\Omega)\Delta,\label{eqn:Wdot}\\
+\dot R = R\hat\Omega,\label{eqn:Rdot}
+\end{gather}
+where $J\in\Re^{3\times 3}$ is the inertia matrix, and $\Omega\in\Re^3$ is the angular velocity represented with respect to the body-fixed frame. The control moment is denoted by $u\in\Re^3$, and it is expressed with respect to the body-fixed frame. It is assumed that the external disturbance is expressed by $W(R,\Omega)\Delta$, where $W(R,\Omega):\SO\times\Re^3\rightarrow \Re^{3\times p}$ is a known function of the attitude and the angular velocity, and $\Delta\in\Re^p$ is an unknown, but fixed uncertain parameter.
+
+At \refeqn{Rdot}, the \textit{hat} map $\wedge :\Re^{3}\rightarrow\so$ represents the transformation of a vector in $\Re^3$ to a $3\times 3$ skew-symmetric matrix such that $\hat x y = x\times y$ for any $x,y\in\Re^3$~\cite{BulLew05}. More explicitly, 
+\begin{align*}
+\hat x = \begin{bmatrix} 0 & -x_3 & x_2 \\ x_3 & 0 & -x_1 \\ -x_2 & x_1 & 0\end{bmatrix},
+\end{align*}
+for $x=[x_1,x_2,x_3]^T\in\Re^3$. 
+The inverse of the hat map is denoted by the \textit{vee} map $\vee:\so\rightarrow\Re^3$. Several properties of the hat map are summarized as
+\begin{gather}
+%    \hat x y = x\times y = - y\times x = - \hat y x,\\
+    x\cdot \hat y z = y\cdot \hat z x,\quad \hat x\hat y z = (x\cdot z) y - (x\cdot y ) z\label{eqn:STP},\\
+%    \hat x\hat y z = (x\cdot z) y - (x\cdot y ) z,\label{eqn:VTP}\\
+%    C^TC=-C^T\hat e_3^2 C = I_2
+%    \hat x^T \hat x = (x^T x) I - x x^T,\\
+%    \hat x \hat y \hat x=-(y^Tx)\hat x,\\
+%    -\frac{1}{2}\tr{\hat x \hat y} = x^T y,\\
+    \widehat{x\times y} = \hat x \hat y -\hat y \hat x = yx^T-xy^T,\label{eqn:hatxy}\\
+    %\tr{\hat x A}=
+    \tr{A\hat x }=\frac{1}{2}\tr{\hat x (A-A^T)}=-x^T (A-A^T)^\vee,\label{eqn:hat1}\\
+%    \widehat{Ax} = \hat x \parenth{\frac{1}{2}\tr{A}I-A} + \parenth{\frac{1}{2}\tr{A}I-A}^T \hat x,\\
+    \hat x  A+A^T\hat x=(\braces{\tr{A}I_{3\times 3}-A}x)^{\wedge},\label{eqn:xAAx}\\
+R\hat x R^T = (Rx)^\wedge,\quad 
+R(x\times y) = Rx\times Ry\label{eqn:RxR}
+%,\label{eqn:Rxy}
+\end{gather}
+for any $x,y,z\in\Re^3$, $A\in\Re^{3\times 3}$ and $R\in\SO$. Throughout this paper, the dot product of two vectors is denoted by $x\cdot y = x^T y$ for any $x,y\in\Re^n$.
+
+%and the maximum eigenvalue and the minimum eigenvalue of $J$ are denoted by $\lambda_M$ and $\lambda_m$, respectively. 
+
+\subsection{Inequality Constraint}
+
+Describe inequality constraints. 
+
+Define the desired attitude, and assume that it is sufficiently far from the boundary of the constraint. 
+
+Describe the control objective. 
+
+
+\section{Attitude Control on $\SO$ with Inequality Constraints}
+
+
+\subsection{Attitude Control}
+
 Configuration error function with attractive and repulsive terms
 Define the various attitude error functions and where they are derived from
 summarize some of the properties of the attractive error function from previous papers
 Show the development of the configuration error terms and equilibrium structure
-\section{ATTITUDE STABILIZATION}
+
 
 Derive error dynamics
 Introduce control input function and show that it is stable without any disturbance
+
+
+\subsection{Adaptive Control}
 
 Add the disturbance term and introduce adaptive update law
 Mention how for a fixed disturbance this is integral control 
 Go through the various developments of proving the disturbance case is stable for correct choice of gains
 
-\section{NUMERICAL EXAMPLE}
+\section{Numerical Examples}
 Parameters used in the simulation
 
 Show stabilization with and without repulsive term
@@ -132,7 +199,8 @@ Plot of responses
 Get the configuration error function mapped onto the attitude sphere
 
 Show rotation animation of spacecraft avoiding constrained regions
-\section{EXPERIMENT}
+
+\section{Experiments}
 
 Discuss experimental setup of the hexrotor on spherical joint
 
@@ -143,7 +211,7 @@ Mount a sphere at an appropriate distance such that the subtended angle is equal
 Show plots of response with and without avoidance term
 Response should be similar to numerical simulation
 
-\section{CONCLUSIONS}
+\section{Conclusions}
 
 Discuss how this method allows for on board implementation of attitude avoidance during reorientations
 
@@ -167,16 +235,14 @@ Proven stable and validated via hardware experiments
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{APPENDIX}
+\appendix
+\subsection{Proof of}
 
-Detail on finding bounds of \( \norm{\dot{e_R}} \)
+Detail on finding bounds of \( \norm{\dot{e}_R} \)
 
 Stability proofs
 
 Further discussion on equilibrium positions and structure of configuration error function
-
-\section*{ACKNOWLEDGMENT}
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
