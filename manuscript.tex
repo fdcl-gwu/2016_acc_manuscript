@@ -123,21 +123,22 @@ These results are demonstrated via numerical examples and experimental results o
 
 \section{Problem Formulation}
 
-Describe attitude dynamics EOMS.
-Explain attitude representation using \SO.
-Hat and vee map properties used in developments
-
 \subsection{Attitude Dynamics}
-Consider the attitude dynamics of a rigid body. Define an inertial reference frame and a body-fixed frame. The configuration manifold of the attitude dynamics is the special orthogonal group:
+Consider the attitude dynamics of a rigid body. 
+Define an inertial reference frame and a body-fixed frame. 
+The configuration manifold of the attitude dynamics is the special orthogonal group:
 \begin{align*}
-\SO = \{R\in\Re^{3\times 3}\,|\, R^TR=I,\;\mathrm{det}[R]=1\},
+	\SO = \{R\in\Re^{3\times 3}\,|\, R^TR=I,\;\mathrm{det}[R]=1\} \, ,
 \end{align*}
-where a rotation matrix $R\in\SO$ represents the transformation of the representation of a vector from the body-fixed frame to the inertial reference frame. The equations of motion are given by
+where a rotation matrix $R\in\SO$ represents the transformation of the representation of a vector from the body-fixed frame to the inertial reference frame. 
+The equations of motion are given by
 \begin{gather}
-J\dot\Omega + \Omega\times J\Omega = u+W(R,\Omega)\Delta,\label{eqn:Wdot}\\
-\dot R = R\hat\Omega,\label{eqn:Rdot}
+	J\dot\Omega + \Omega\times J\Omega = u+W(R,\Omega)\Delta \, ,\label{eqn:Wdot}\\
+	\dot R = R\hat\Omega \, ,\label{eqn:Rdot}
 \end{gather}
-where $J\in\Re^{3\times 3}$ is the inertia matrix, and $\Omega\in\Re^3$ is the angular velocity represented with respect to the body-fixed frame. The control moment is denoted by $u\in\Re^3$, and it is expressed with respect to the body-fixed frame. It is assumed that the external disturbance is expressed by $W(R,\Omega)\Delta$, where $W(R,\Omega):\SO\times\Re^3\rightarrow \Re^{3\times p}$ is a known function of the attitude and the angular velocity, and $\Delta\in\Re^p$ is an unknown, but fixed uncertain parameter.
+where $J\in\Re^{3\times 3}$ is the inertia matrix, and $\Omega\in\Re^3$ is the angular velocity represented with respect to the body-fixed frame. 
+The control moment is denoted by $u\in\Re^3$, and it is expressed with respect to the body-fixed frame. 
+It is assumed that the external disturbance is expressed by $W(R,\Omega)\Delta$, where $W(R,\Omega):\SO\times\Re^3\rightarrow \Re^{3\times p}$ is a known function of the attitude and the angular velocity, and $\Delta\in\Re^p$ is an unknown, but fixed uncertain parameter.
 
 At \refeqn{Rdot}, the \textit{hat} map $\wedge :\Re^{3}\rightarrow\so$ represents the transformation of a vector in $\Re^3$ to a $3\times 3$ skew-symmetric matrix such that $\hat x y = x\times y$ for any $x,y\in\Re^3$~\cite{BulLew05}. More explicitly, 
 \begin{align*}
@@ -162,20 +163,28 @@ R\hat x R^T = (Rx)^\wedge,\quad
 R(x\times y) = Rx\times Ry\label{eqn:RxR}
 %,\label{eqn:Rxy}
 \end{gather}
-for any $x,y,z\in\Re^3$, $A\in\Re^{3\times 3}$ and $R\in\SO$. Throughout this paper, the dot product of two vectors is denoted by $x\cdot y = x^T y$ for any $x,y\in\Re^n$.
+for any $x,y,z\in\Re^3$, $A\in\Re^{3\times 3}$ and $R\in\SO$. 
+Throughout this paper, the dot product of two vectors is denoted by $x\cdot y = x^T y$ for any $x,y\in\Re^n$ and the maximum eigenvalue and the minimum eigenvalue of $J$ are denoted by $\lambda_M$ and $\lambda_m$, respectively. 
+The 2-norm of a matrix \( A \) is denoted by \( \norm{A} \), and its Frobenius norm is denoted by \( \norm{A}_F = \tr{A^T A} \).
+This results in \( \norm{A} \leq \norm{A}_F \leq \sqrt{r}\norm{A} \), where \( r \) is the rank of A.
 
-%and the maximum eigenvalue and the minimum eigenvalue of $J$ are denoted by $\lambda_M$ and $\lambda_m$, respectively. 
+\subsection{State Inequality Constraint}
 
-\subsection{Inequality Constraint}
-
-Describe inequality constraints. 
-
-Define the desired attitude, and assume that it is sufficiently far from the boundary of the constraint. 
-
-Describe the control objective. 
-
+The two-sphere is the manifold of unit-vectors in \( \R^3 \) such that\( \Sph^2 = \brace{ q \in \R^3 | \norm{q} = 1}\).
+We define \( r \in \Sph^2 \) to be a unit vector from the mass center of the rigid body and represented with respect to the body-fixed frame.
+For example, \( r \) may represent the pointing direction of an on board optical sensor.
+We define \( v \in \Sph^2 \) to be a unit vector from the mass center of the rigid body towards an undesired pointing direction and represented in the inertial reference frame.
+For example, \( v \) may represent the inertial direction of a bright celestial object or the incoming direction of particles or other debris
+It is further assumed that optical sensor has a strict non-exposure constraint with respect to the celestial object.
+We formulate this hard constraint as
+\begin{align}
+	r^T R^T v \leq \cos \theta \, , \label{eqn:constraint}
+\end{align}
+where \( \theta \) is the required minimum angular separation between \( r \) and \( R^T v \). 
+The objective is to a determine a control input \( u \) that stabilizes the system from an initial attitude \( R_0 \) to a desired attitude \( R_d \) while ensuring that~\cref{eqn:constraint} is satisfied.
 
 \section{Attitude Control on $\SO$ with Inequality Constraints}
+Constructing configuration error function
 
 
 \subsection{Attitude Control}
