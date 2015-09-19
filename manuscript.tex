@@ -51,6 +51,26 @@ Awesome abstract
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{INTRODUCTION}
+
+Spacecraft are complicated electro mechanical devices and have become critical to national security.
+Spacecraft operations require extensive planning periods and human interaction to perform.
+The ability to robustly and autonomously plan and execute complicated spacecraft maneuvers can drastically improve the performance and duty cycle of assets.
+One key technology to enable spacecraft autonomy is the execution of large angular slews in the presence of constraints.
+For example, many spacecraft missions are equipped with sensitive optical instruments that require targeting while simultaneously avoiding direct exposure to sunlight.
+One of the distinct features of the attitude dynamics of a rigid body is that it evolves on a nonlinear manifold.
+The special orthogonal group, \( \SO \), yields unique properties that are not present in dynamic systems on a linear space. 
+In addition, the removal of constrained zones from the rotational configuration space results in a non-convex and more complicated system.
+The attitude dynamics and control of spacecraft without constraint has been extensively studied in the literature.
+This work builds upon previous results to include attitude constraints on \( \SO \).
+
+In this work an attitude control system is presented to track a desired trajectory while avoiding constrained regions. 
+The control system is formulated directly on the nonlinear manifold \( \SO \) and avoids the issues associated with minimal representations.
+The approach is based on a logarithmic barrier potential function developed directly on \( \SO \). 
+This avoids the singularities associated with Euler angles~\cite{mcinnes1994}.
+Euler angles are not suitable for large angle slew maneuvers as the type of Euler angle sequence should be switched to avoid the singular regions.
+Quaternions do not suffer from singularities but as the three-sphere double covers the special orthogonal group, there exists two antipodal points on the three-sphere which represents an equivalent attitude.
+As a result, control schemes based on quaternions should carefully resolve this ambiguity to avoid unwinding, where a rigid body unnecessarily rotates through a large angle in spite of a small initial error.~\cite{lee2011b}.
+
 introduction to attitude dynamics problem
 
 Attitude dynamics evolve on a nonlinear manifold, unique properties not experienced in linear systems
