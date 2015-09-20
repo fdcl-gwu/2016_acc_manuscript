@@ -23,11 +23,6 @@
 \newtheorem{remark}{Remark}
 
 \title{\LARGE \bf
-Constrained Attitude Control
-}
-
-
-\title{\LARGE \bf
 Geometric Adaptive Control of Attitude Dynamics on $\SO$\\ with State Inequality Constraints}
 
 \author{Shankar Kulumani, Chris Poole, and Taeyoung Lee
@@ -184,7 +179,16 @@ where \( \theta \) is the required minimum angular separation between \( r \) an
 The objective is to a determine a control input \( u \) that stabilizes the system from an initial attitude \( R_0 \) to a desired attitude \( R_d \) while ensuring that~\cref{eqn:constraint} is satisfied.
 
 \section{Attitude Control on $\SO$ with Inequality Constraints}
+Discuss importance of choosing a configuration error function
+
+
 Constructing configuration error function
+
+Log barrier for repulsive term
+
+Standard attractive error function
+
+cite bullo and Dr. Lee papers
 
 
 \subsection{Attitude Control}
@@ -208,12 +212,21 @@ Go through the various developments of proving the disturbance case is stable fo
 \section{Numerical Examples}
 Parameters used in the simulation
 
-Show stabilization with and without repulsive term
-Show stabilization with and without adaptive update law
+Inertia matrix of hexrotor
+
+control gains
+
+define sensor and constraint axis
+
+Define initial and desired condition
+
+Present three cases
+
+Show stabilization without repulsive term (passes through constraint)
+Show stabilization with avoidance term without disturbance
+Show stabilization with disturbance and adaptive update law
 
 Plot of responses
-
-Get the configuration error function mapped onto the attitude sphere
 
 Show rotation animation of spacecraft avoiding constrained regions
 
