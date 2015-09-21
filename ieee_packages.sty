@@ -36,7 +36,7 @@
 \graphicspath{{./figures/}}% path to images
 \usepackage{times}
 %------------- CITATION PACKAGES------------------------------
-
+\usepackage[draft]{showlabels} % show labels for referencing
 \usepackage{csquotes}
 \usepackage[]{hyperref} % links to stuff
 \hypersetup{
@@ -63,8 +63,19 @@
 % MUST BE AFTER HYPERREF!!!!!!!!!
 %------------------------------------------
 \usepackage[]{cleveref} % get fancy referencing
+% edit cref citations for IEEE format
+\crefformat{equation}{(#2#1#3)} % no abbreviation for equation numbers
+\Crefformat{equation}{(#2#1#3)} % no abbreviation for equation numbers
+\crefrangeformat{equation}{(#3#1#4--#5#2#6)}
+\Crefrangeformat{equation}{(#3#1#4--#5#2#6)}
 
-\usepackage[draft]{showlabels} % show labels for referencing
+% for items in a list
+\crefformat{enumi}{item~(#2#1#3)}
+\Crefformat{enumi}{Item~(#2#1#3)} 
+\crefrangeformat{enumi}{items~(#3#1#4--#5#2#6)}
+\Crefrangeformat{enumi}{Items~(#3#1#4--#5#2#6)}
+\crefmultiformat{enumi}{items~(#2#1#3)}{ and~(#2#1#3)}{, (#2#1#3)}{ and~(#2#1#3)}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % CUSTOM MACROS
 %%%%%%%%%%%%%%%%%%%%%%%%%

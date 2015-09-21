@@ -180,7 +180,7 @@ We formulate this hard constraint as
 	r^T R^T v \leq \cos \theta \, , \label{eqn:constraint}
 \end{align}
 where \( \ang{0} \leq \theta \leq \ang{90}  \) is the required minimum angular separation between \( r \) and \( R^T v \). 
-The objective is to a determine a control input \( u \) that stabilizes the system from an initial attitude \( R_0 \) to a desired attitude \( R_d \) while ensuring that~\refeqn{eqn:constraint} is always satisfied.
+The objective is to a determine a control input \( u \) that stabilizes the system from an initial attitude \( R_0 \) to a desired attitude \( R_d \) while ensuring that~\cref{eqn:constraint} is always satisfied.
 
 \section{Attitude Control on $\SO$ with Inequality Constraints}
 The first step in designing a control system on a nonlinear manifold \( \Q \) is the selection of a proper configuration error function.
@@ -203,21 +203,27 @@ with
 \begin{gather}
 	A(R) = \frac{1}{2} \tr{G \left( I - R_d^T R\right)} \, , \label{eqn:A} \\
 	B(R) = 1 - \frac{1}{\alpha} \ln \left( \frac{\cos \theta -  r^T R^T v}{1 + \cos \theta}\right) \, . \label{eqn:B} \\
-	e_{R_A} = \frac{1}{2} \parenth{G R_d^T R - R^T R_d G} ^ \vee \, , \label{eq:eRA} \\
-	e_{R_B} = \frac{ \left( R^T v\right)^\vee r}{\alpha \left(r^T R^T v - \cos \theta \right)} \, . \label{eq:eRB} 
+	e_{R_A} = \frac{1}{2} \parenth{G R_d^T R - R^T R_d G} ^ \vee \, , \label{eqn:eRA} \\
+	e_{R_B} = \frac{ \left( R^T v\right)^\vee r}{\alpha \left(r^T R^T v - \cos \theta \right)} \, . \label{eqn:eRB} 
 \end{gather}	
 where the matrix \( G \in \R^{3 \times 3} \) is defined as a diagonal matrix matrix for distinct, positive constants \( g_1, g_2, g_3 \in \R \).
 Then, the following properties hold
 \begin{enumerate}[(i)]
-	\item \(\Psi\) is locally positive definite about \( R = R_d\)
-	\item The variation of \( \Psi \) with respect to a variation of \( \delta R = R \hat{\eta} \) for \( \eta \in \R^3 \) is given by
+	\item \label{item:prop_psi_psd} \(\Psi\) is locally positive definite about \( R = R_d\)
+	\item \label{item:prop_er} The variation of \( \Psi \) with respect to a variation of \( \delta R = R \hat{\eta} \) for \( \eta \in \R^3 \) is given by
 	\begin{align}
-		\dirDiff{\Psi}{R} &= \dirDiff{A}{R} \,  B(R) + A \,  \dirDiff{B}{R} \, , \\
-		\dirDiff{A}{R} &= \eta \cdot e_{R_A} \, , \\
+		\dirDiff{\Psi}{R} &= \dirDiff{A}{R} \,  B(R) + A \,  \dirDiff{B}{R} \, . \\
+	\end{align}
+	\item \label{item:prop_era}The variation of \( A(R) \) with respect to a variation of \( \delta R = R \hat{\eta} \) for \( \eta \in \R^3 \) is given by
+	\begin{align}
+		\dirDiff{A}{R} &= \eta \cdot e_{R_A} \, .
+	\end{align}
+	\item \label{item:prop_erb} The variation of \( B(R) \) with respect to a variation of \( \delta R = R \hat{\eta} \) for \( \eta \in \R^3 \) is given by
+	\begin{align}
 		\dirDiff{B_i}{R} &= \eta \cdot e_{R_{B_i}} \, .
 	\end{align}
-	\item The critical points of \( \Psi \),where \( e_R = 0\), are \( \braces{R_d} \bigcup \braces{R_d \exp(\pi \hat{s}} \) for \( s \in \braces{e_1, e_2, e_3} \) and \( R^T v = \pm r \).
-	\item An upper bound of \( \norm{e_{R_A}} \) is given as:
+	\item \label{item:prop_crit}The critical points of \( \Psi \),where \( e_R = 0\), are \( \braces{R_d} \cup \braces{R_d \exp(\pi \hat{s}} \) for \( s \in \braces{e_1, e_2, e_3} \) and \( R^T v = \pm r \).
+	\item \label{item:prop_era_upbound}An upper bound of \( \norm{e_{R_A}} \) is given as:
 	\begin{align}
 		\norm{e_{R_A}}^2 \leq \frac{\Psi}{b_1} \, ,
 	\end{align}
@@ -227,10 +233,6 @@ Then, the following properties hold
 		h_2 &= \min{\parenth{g_1 -g_2}^2,\parenth{g_2 -g_3}^2 , \parenth{g_3 -g_1}^2} \, ,\\
 		h_3 &= \min{\parenth{g_1 + g_2}^2, \parenth{g_2 + g_3}^2 , \parenth{g_3 + g_1}^2} \, ,\\				
 	\end{align*}
-	\item An upper bound of \( \norm{e_{R_B}} \) is given as:
-	\begin{align}
-		\norm{e_{R_B}} \leq \frac{\sin{\frac{\pi}{2} - \theta}}{\alpha \parenth{\beta - \cos \theta}}
-	\end{align}
 \end{enumerate}
 \end{prop}
 
@@ -280,6 +282,12 @@ Error dynamics (time derivatives of everything)
 
 \subsection{Adaptive Control}
 
+\begin{enumerate}[(i)]
+	\item An upper bound of \( \norm{e_{R_B}} \) is given as:
+	\begin{align}
+		\norm{e_{R_B}} \leq \frac{\sin{\frac{\pi}{2} - \theta}}{\alpha \parenth{\beta - \cos \theta}}
+	\end{align}
+\end{enumerate}
 Add the disturbance term and introduce adaptive update law
 
 Mention how for a fixed disturbance this is integral control 
@@ -345,14 +353,69 @@ Proven stable and validated via hardware experiments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
 \subsection{Proof of~\Cref{prop:config_error}} \label{proof:config_error}
+The proof of~\cref{item:prop_era_upbound} is available in~\cite{lee2011a}.
+To prove~\cref{item:prop_psi_psd} we note that~\cref{eqn:A} is a locally positive definite function about \( R = R_d \)~\cite{bullo2004}.
+The constraint angle is assumed \( \ang{0} \leq \theta \leq \ang{90} \) such that \( 0 \leq \cos \theta \).
+The term \( r^T R^T v \) represents the cosine of the angle between the body fixed vector \( r \) and the inertial vector \( v \). 
+It follows that
+\begin{align*}
+	0 \leq  \frac{\cos \theta -  r^T R^T v}{1 + \cos \theta} \leq 1 \, ,
+\end{align*}
+for all \( R \in SO \). 
+As a result, the negative logarithm is always positive and
+\begin{align*}
+	1 < B \, .
+\end{align*}
+The product~\cref{eqn:psi} is composed of two positive terms and is therefore also positive definite, and has a single critical point at \( R = R_d \).
 
-Positive definite \( \Psi \)
+Next, we consider~\cref{item:prop_era}.
+The variation of~\cref{eqn:A} is taken with respect to \( \delta R = R \hat \eta \) as
+\begin{align*}
+	\dirDiff{A}{R} &= -\frac{1}{2} \tr{G R_d^T \left( R \hat{\eta}\right)} \\
+	&= \eta \cdot \frac{1}{2} \left( G R_d^T R - R^T R_d G\right)^\vee \, ,
+\end{align*}
+where we used~\cref{eqn:hat1}.
 
-Structure of \( B \)
+A straightforward application of the chain and product rules of differentiation allows us to show~\cref{item:prop_erb} as
+\begin{align*}
+	\dirDiff{B_i}{R} &= -\frac{1}{\alpha_i} \left[\left(\frac{1+\cos \theta_i}{\cos \theta_i - r^T R^T v_i} \right) \left(\frac{-1}{1+\cos \theta_i} \right) \left(-\eta \cdot \left( R^T v_i\right)^\vee r \right)\right] && x \cdot \hat{y} z = y \cdot \hat{z}x  \\
+	&= \eta \cdot \frac{ - \left( R^T v_i\right)^\vee r}{\alpha_i \left(\cos \theta_i - r^T R^T v_i \right)} \, ,
+\end{align*}
+where the scalar triple product~\cref{eqn:STP} was used.
 
-Critical Points of \( \Psi \)
+To show~\cref{item:prop_crit}, we determine the critical points of~\cref{eqn:eRA}.
+The attitude error between \( R \) and \( R_d \) is defined as \( Q \in SO \) as
+\begin{align*}
+	Q = R_d^T R = 
+	\begin{bmatrix}
+		q_{11} & q_{12} & q_{13} \\
+		q_{21} & q_{22} & q_{23} \\
+		q_{31} & q_{32} & q_{33}
+	\end{bmatrix} \, .
+\end{align*}
+Equating \( e_{R_{A}} = 0 \) yields the following equivalent relations
+\begin{subequations}
+\begin{align}
+	g_3 q_{32} &= g_2 q_{23} \, , \\
+	g_1 q_{13} &= g_3 q_{31} \, , \\
+	g_2 q_{21} &= g_1 q_{12} \, .
+\end{align}
+\end{subequations}
+These relations allow one to redefine the attitude error \( Q \) in terms of the independent upper diagonal elements.
+Noting that \( Q \in \SO \) is an orthonormal matrix, with unit length row and columns gives
+\begin{subequations}
+\begin{align}
+	\parenth{1 - \frac{g_1^2}{g_2^2}} q_{12}^2 + \parenth{1 - \frac{g_1^2}{g_3^2}}q_{13}^2 &= 0 \, , \\
+	\parenth{1 - \frac{g_1^2}{g_2^2}} q_{12}^2 - \parenth{1 - \frac{g_2^2}{g_3^2}} q_{23}^2 &= 0 \, , \\
+	\parenth{1-\frac{g_1^2}{g_3^2}} q_{13}^2 + \parenth{1 - \frac{g_2^2}{g_3^2}} q_{23}^2 &= 0 \, .
+\end{align}
+\end{subequations}
+As a result, all the off diagonal terms of \( Q = R_d^T R \), namely \( q_{12}= q_{13} = q_{23} = 0 \).
+Since \( Q \in \SO \), the diagonal elements \( q_{11}, q_{22}, \text{ and } q_{33} \) are either \( +1 \) or \(-1\).
+There are four critical points of \( e_{R_A} \), the desired attitude \( R_d \) as well as rotations about each body fixed axis by \ang{180},
+The repulsive error vector \( e_{R_{B}} \) is zero only when the numerator \( \parenth{R^T v}^\wedge r = 0 \). 
+This condition only occurs if the representation of the inertial constraint vector, \( v \), in the body frame is parallel or anti-parallel to the body vector, \( r \).
 
-Bound of \( \norm{e_{R_A}} \)
 
 \subsection{Proof of }
 Detail on finding bounds of \( \norm{\dot{e}_R} \)
