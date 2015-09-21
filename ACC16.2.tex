@@ -240,31 +240,38 @@ Then, the following properties hold
 	See~\Cref{proof:config_error}
 \end{proof}
 
-Discussion of error function
-
-Give some bounds on B?
-
+\Cref{eqn:psi} is composed of an attractive term \( A (R) \) and a repulsive term \( B(R) \).
 The attractive error function has been used for attitude control on \SO.
-In order to incorporate the state inequality constraints we apply the logarithmic barrier function.
+In order to incorporate the state inequality constraints we apply a logarithmic barrier function term.
+Barrier functions are typically used in optimal control and motion planning applications.
+As the boundary of the constraint is neared, or \( r^T R^T v \to \cos \theta \), the barrier term increases, \( B \to \infty\).
+The logarithmic function is popular as it quickly decays away from the constraint boundary.
 The positive constant \( \alpha \) serves to shape the barrier function.
-As \( \alpha \) is increased the impact of \( B(R) \) is reduced. 
-
-\Cref{eqn:psi} is composed of an attractive term \( A (R) \) and a repulsive term \( B(R) \) which are given by
-Here we summarize 
-
-Log barrier for repulsive term
-Some properties of the log barrier term
-
-Standard attractive error function
-Configuration error function with attractive and repulsive terms
-Define the various attitude error functions and where they are derived from
-summarize some of the properties of the attractive error function from previous papers
-
-Show the development of the configuration error terms and equilibrium structure
+As \( \alpha \) is increased the impact of \( B(R) \) is reduced away from the constraint boundary. 
 
 
-Derive error dynamics
+\begin{prop}[Error Dynamics]\label{prop:error_dyn}
+	The attitude error dynamics for \( \Psi, e_R, e_\Omega \) satisfy 
+	
+	Psi dot
+	
+	er dot
+	
+	er B dot
+	
+	erA dot
+	
+	A dot
+	
+	B dot
+	
+	e omega dot
+	
+\end{prop}
 
+\begin{proof}
+	See~\Cref{proof:error_dyn}
+\end{proof}
 
 
 \subsection{Attitude Control}
@@ -273,12 +280,7 @@ Introduce control input function and show that it is stable without any disturba
 
 Lyapunov function
 
-\begin{prop}[Error Dynamics]\label{prop:error_dyn}
-Error dynamics (time derivatives of everything)
-\end{prop}
-\begin{proof}
-	Either here or in the appendix
-\end{proof}
+
 
 \subsection{Adaptive Control}
 
@@ -417,16 +419,17 @@ The repulsive error vector \( e_{R_{B}} \) is zero only when the numerator \( \p
 This condition only occurs if the representation of the inertial constraint vector, \( v \), in the body frame is parallel or anti-parallel to the body vector, \( r \).
 
 
-\subsection{Proof of }
-Detail on finding bounds of \( \norm{\dot{e}_R} \)
-
-Lots of intermediate terms
+\subsection{Proof of~\Cref{prop:error_dyn}}\label{proof:error_dyn}
 
 
 \subsection{Proof of }
 Stability proofs for case with and without disturbance
 
 
+
+Detail on finding bounds of \( \norm{\dot{e}_R} \)
+
+Lots of intermediate terms
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
