@@ -56,7 +56,7 @@ Awesome abstract
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introduction}
+\section{Introduction}\label{sec:intro}
 Many researchers have focused on the study of the attitude dynamics of a rigid body~\cite{hughes2004,wertz1978}.
 Rigid body attitude control arises for aerospace vehicles, ground and underwater vehicles, and robotic systems.
 One distinctive feature of the attitude dynamics is that it evolves on a nonlinear manifold.
@@ -115,10 +115,8 @@ By characterizing the intrinsic geometric properties of \SO, we completely avoid
 In this paper, we present a Lyapunov analysis to guarantee stability in the presence of state constraints.
 In addition, we formulate an adaptive update law to enable attitude convergence in the presence of disturbances.
 These results are demonstrated via numerical examples and experimental results on a robotic aerial vehicle.
-
-\section{Problem Formulation}
-
-\subsection{Attitude Dynamics}
+\section{Problem Formulation}\label{sec:prob_form}
+\subsection{Attitude Dynamics}\label{sec:att_dyn}
 Consider the attitude dynamics of a rigid body. 
 Define an inertial reference frame and a body-fixed frame. 
 The configuration manifold of the attitude dynamics is the special orthogonal group:
@@ -248,24 +246,27 @@ As the boundary of the constraint is neared, or \( r^T R^T v \to \cos \theta \),
 The logarithmic function is popular as it quickly decays away from the constraint boundary.
 The positive constant \( \alpha \) serves to shape the barrier function.
 As \( \alpha \) is increased the impact of \( B(R) \) is reduced away from the constraint boundary. 
-
+In addition, it is possible to incorporate an arbitrary number of state inequality constraints of the form given in~\cref{eqn:constraint}.
+The configuration error function may be reformulated as \( \Psi = A \bracket{1 + \sum B_i} \) where \( B_i = B - 1 \).
+In this manner, one may enforce multiple state inequality constraints on the control system.
 
 \begin{prop}[Error Dynamics]\label{prop:error_dyn}
 	The attitude error dynamics for \( \Psi, e_R, e_\Omega \) satisfy 
-	
-	Psi dot
-	
-	er dot
-	
-	er B dot
-	
-	erA dot
-	
-	A dot
-	
-	B dot
-	
-	e omega dot
+	\begin{gather}
+		\diff{}{t} \parenth{\Psi} = e_R \cdot e_\Omega \, , \label{eqn:psi_dot}\\
+		\diff{}{t} \parenth{e_R} = \dot{e}_{R_A} B + e_{R_A} \dot{B} + \dot{A}e_{R_B} + A \dot{e}_{R_B} \, , \label{eqn:eR_dot}\\
+		\diff{}{t} \parenth{e_{R_A}} = E(R, R_d) e_\Omega \, , \label{eqn:eRA_dot} \\
+		\diff{}{t} \parenth{e_{R_B}} = F(R) e_\Omega \, , \label{eqn:eRB_dot} \\
+		\diff{}{t} \parenth{A} = e_{R_A} \cdot e_\Omega \, , \label{eqn:A_dot} \\
+		\diff{}{t} \parenth{B} = e_{R_B} \cdot e_\Omega \, , \label{eqn:B_dot} \\
+		\diff{}{t} \parenth{e_\Omega} = J^{-1} \parenth{-\Omega \times J \Omega + u + W(R, \Omega) \Delta} \, , \label{eqn:eW_dot}
+	\end{gather}
+	where the matrices \(E(R,R_d), F(R) \in \R^{3\times3} \) are given by
+	\begin{gather}
+		E(R,R_d) = \frac{1}{2} \parenth{\tr{R^T R_d G}I - R^T R_d G} \, , \label{eqn:E} \\
+		F(R) = \frac{1}{\alpha \parenth{r^T R^T v - \cos \theta}} \left[\parenth{v^T R r} I - R^T v r^T + \right. \nonumber \\
+		\left. \frac{R^T \hat{v} R r v^T R \hat{r}}{\parenth{r^T R^T v - \cos \theta}}\right] \, . \label{eqn:F}
+	\end{gather}
 	
 \end{prop}
 
@@ -274,13 +275,11 @@ As \( \alpha \) is increased the impact of \( B(R) \) is reduced away from the c
 \end{proof}
 
 
-\subsection{Attitude Control}
+\subsection{Attitude Control without disturbance}
 
 Introduce control input function and show that it is stable without any disturbance
 
 Lyapunov function
-
-
 
 \subsection{Adaptive Control}
 
@@ -420,8 +419,49 @@ This condition only occurs if the representation of the inertial constraint vect
 
 
 \subsection{Proof of~\Cref{prop:error_dyn}}\label{proof:error_dyn}
+From the kinematics~\cref{eqn:Rdot} and noting that \( \dot{R}_d = 0 \) the time derivative of \( R_d^T R \) is given as
+\begin{gather*}
+	\diff{}{t} \parenth{R_d^T R} = R_d^T R \hat{e}_\Omega \, .
+\end{gather*}
+Applying this to the time derivative of~\cref{eqn:A} gives
+\begin{gather*}
+	\diff{}{t} A = -\frac{1}{2} \tr{G R_d^T R \hat{e}_\Omega} \, .
+\end{gather*}
+Applying~\cref{eqn:hat1} into this shows~\cref{eqn:A_dot}.
+Next, the time derivative of the repulsive error function is given by
+\begin{gather*}
+	\diff{}{t} B = \frac{r_i^T \parenth{\hat{\Omega} R^T} v_i}{\alpha \parenth{r_i^T R^T v_i - \cos \theta}} \, .
+\end{gather*}
+Using the scalar triple product, given by~\cref{eqn:STP}, one can reduce this to~\cref{eqn:B_dot}.
+The time derivative of the attractive attitude error vector, \( e_{R_A} \), is given by
+\begin{gather*}
+	\diff{}{t} e_{R_A} = \frac{1}{2} \parenth{\hat{e}_\Omega R^T R_d G + (R^T R_d G)^T \hat{e}_\Omega}^\vee \, .
+\end{gather*}
+Using the hat map property given in~\cref{eqn:xAAx} this is further reduced to~\cref{eqn:eRA_dot,eqn:E}.
 
+We take the time derivative of the repulsive attitude error vector, \( e_{R_B} \), as
+\begin{gather*}
+	\diff{}{t} e_{R_B} = a \Omega v^T R r - a R^T v \Omega^T r + b R^T \hat{v} R r \, ,
+\end{gather*}
+with \( a \in \R \) and \( b \in \R\) given by 
+\begin{gather*}
+	a = \bracket{\alpha \parenth{r^T R^T v - \cos \theta}}^{-1} \, ,
+	b = \frac{r^T \hat{\Omega} R^T v}{\alpha \parenth{r^T R^T v - \cos \theta}^2} \, .
+\end{gather*}
+Using the scalar triple product from~\cref{eqn:STP} as \( r \cdot \Omega \times \parenth{R^T v} = \parenth{R^T v} \cdot r \times \Omega \) gives~\cref{eqn:eRB_dot,eqn:F}.
 
+We show the time derivative of the configuration error function as
+\begin{gather*}
+	\diff{}{t} \Psi = \dot{A} B + A \dot{B} \, .
+\end{gather*}
+A straightforward substitution of~\cref{eqn:A_dot,eqn:B_dot,eqn:A,eqn:B} into this and appplying~\cref{eqn:eR} shows~\cref{eqn:psi_dot}.
+
+The time-derivative of the angular velocity error, \( e_\Omega \), is given by
+\begin{align*}
+	\diff{}{t} e_\Omega &= \dot{\Omega} \\
+	&= J^{-1} \parenth{u - \Omega \times J \Omega + W(R,\Omega) \Delta } \, ,
+\end{align*}
+where we have used the dynamic equations of motion from~\cref{eqn:Wdot}. 
 \subsection{Proof of }
 Stability proofs for case with and without disturbance
 
