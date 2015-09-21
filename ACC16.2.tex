@@ -189,6 +189,9 @@ One chooses control inputs as functions of the state through a Lyapunov analysis
 
 A new configuration error function is proposed for attitude control in the presence of state inequality constraints.
 We extend the form used in~~\cite{bullo2004,lee2011a} for attitude control on \SO with the addition of a logarithmic barrier function.
+We use the configuration error function to develop a nonlinear geometric attitude controller for the stabilization of a general rigid body. 
+A smooth control system is first developed for the no disturbance case and then extended to include an adaptive update law for stabilization in the presence of unknown disturbances.
+
 \begin{prop}[Attitude Error Function] \label{prop:config_error}
 We assume a desired attitude command \( ( R_d, \Omega_d = 0 ) \), the current attitude and angular velocity \( ( R, \Omega) \), and a state constraint~\refeq{eqn:constraint} are given.
 We define an attitude error function \( \Psi : \SO \times \SO \to \R \), and attitude error vector \( e_R : \SO \times \SO \to \R \), and an angular velocity error vector \( e_\Omega : \R^3 \to \R^3 \) as follows:
@@ -274,9 +277,12 @@ In this manner, one may enforce multiple state inequality constraints on the con
 	See~\Cref{proof:error_dyn}
 \end{proof}
 
-
 \subsection{Attitude Control without disturbance}
-
+We introduce a nonlinear geometric controller for the attitude stabilization of a rigid body.
+We assume that there is no disturbance, i.e., \( \Delta = 0 \).
+\begin{prop}[Attitude Control]\label{prop:att_control}
+	
+\end{prop}
 Introduce control input function and show that it is stable without any disturbance
 
 Lyapunov function
@@ -343,12 +349,6 @@ Improves upon previous work by extending to the full nonlinear manifold represen
 
 Proven stable and validated via hardware experiments
 
-\addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
-                                  % on the last page of the document manually. It shortens
-                                  % the textheight of the last page by a suitable amount.
-                                  % This command does not take effect until the next page
-                                  % so it should come on the page before the last. Make
-                                  % sure that you do not shorten the textheight too much.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -379,8 +379,8 @@ where we used~\cref{eqn:hat1}.
 
 A straightforward application of the chain and product rules of differentiation allows us to show~\cref{item:prop_erb} as
 \begin{align*}
-	\dirDiff{B_i}{R} &= -\frac{1}{\alpha_i} \left[\left(\frac{1+\cos \theta_i}{\cos \theta_i - r^T R^T v_i} \right) \left(\frac{-1}{1+\cos \theta_i} \right) \left(-\eta \cdot \left( R^T v_i\right)^\vee r \right)\right] && x \cdot \hat{y} z = y \cdot \hat{z}x  \\
-	&= \eta \cdot \frac{ - \left( R^T v_i\right)^\vee r}{\alpha_i \left(\cos \theta_i - r^T R^T v_i \right)} \, ,
+	\dirDiff{B}{R} &= -\frac{1}{\alpha} \left[\left(\frac{1+\cos \theta}{\cos \theta - r^T R^T v} \right) \left(\eta \cdot \frac{\left( R^T v\right)^\vee r}{1+\cos \theta_i} \right) \right]  \\
+	&= \eta \cdot \frac{ - \left( R^T v\right)^\vee r}{\alpha \left(\cos \theta - r^T R^T v \right)} \, ,
 \end{align*}
 where the scalar triple product~\cref{eqn:STP} was used.
 
@@ -415,8 +415,7 @@ As a result, all the off diagonal terms of \( Q = R_d^T R \), namely \( q_{12}= 
 Since \( Q \in \SO \), the diagonal elements \( q_{11}, q_{22}, \text{ and } q_{33} \) are either \( +1 \) or \(-1\).
 There are four critical points of \( e_{R_A} \), the desired attitude \( R_d \) as well as rotations about each body fixed axis by \ang{180},
 The repulsive error vector \( e_{R_{B}} \) is zero only when the numerator \( \parenth{R^T v}^\wedge r = 0 \). 
-This condition only occurs if the representation of the inertial constraint vector, \( v \), in the body frame is parallel or anti-parallel to the body vector, \( r \).
-
+This condition only occurs if the desired attitude results in the body fixed vector \( r \) becoming aligned with \(R^T v \).
 
 \subsection{Proof of~\Cref{prop:error_dyn}}\label{proof:error_dyn}
 From the kinematics~\cref{eqn:Rdot} and noting that \( \dot{R}_d = 0 \) the time derivative of \( R_d^T R \) is given as
@@ -474,7 +473,13 @@ Lots of intermediate terms
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+\addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
+                                  % on the last page of the document manually. It shortens
+                                  % the textheight of the last page by a suitable amount.
+                                  % This command does not take effect until the next page
+                                  % so it should come on the page before the last. Make
+                                  % sure that you do not shorten the textheight too much.
+                                  
 \bibliography{BibMaster,library}
 \bibliographystyle{IEEEtran}
 
