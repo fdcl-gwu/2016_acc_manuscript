@@ -321,6 +321,28 @@ According to Chateav's theorem the undesired equilibria are unstable~\cite{khali
 As a result, we can claim that the desired equilibrium \( R = R_d \text{ and } e_\Omega = 0 \) is almost globally asymptotically stable.
 
 \subsection{Adaptive Control}
+We extend the results of the previous section with the addition of a fixed but unknown disturbance \( \Delta \).
+This scenario is typical of many mechanical systems and represents unmodeled dynamics or external moments acting on the system.
+For example, Earth orbiting spacecraft typically experience both a torque due to a gravitational gradient as well as external torques to due solar radiation pressure.
+Aerial vehicles will similarly experience external torques due to air currents or turbulence.
+A smooth control system is introduced to asymptotically stabilize the system to a desired attitude while ensuring that state constraints are satisfied.
+
+\begin{prop}[Bound on \( \dot{e}_R \)]\label{prop:eR_dot_bound}
+Consider a domain \( D \) about the desired attitude defined as
+\begin{align}
+	D = \braces{R \in \SO \vert \Psi < \psi < h1, r^T R^T v < \beta < \cos \theta} \, . \label{eqn:domain}
+\end{align}
+An upper bound of \( \dot{e_R} \) is given by
+
+equation for H
+
+list the bounds on each of the terms
+
+Proof of the derivation of them
+
+Lyapunov analysis which shows that it's stable
+
+Adaptive update law and control input
 
 \begin{enumerate}[(i)]
 	\item An upper bound of \( \norm{e_{R_B}} \) is given as:
@@ -328,17 +350,15 @@ As a result, we can claim that the desired equilibrium \( R = R_d \text{ and } e
 		\norm{e_{R_B}} \leq \frac{\sin{\frac{\pi}{2} - \theta}}{\alpha \parenth{\beta - \cos \theta}}
 	\end{align}
 \end{enumerate}
+\end{prop}
 Add the disturbance term and introduce adaptive update law
+
 
 Mention how for a fixed disturbance this is integral control 
 
 Go through the various developments of proving the disturbance case is stable for correct choice of gains
 
 Positive semi definite matrix
-
-Get three polynomials (can use cubic or quartic functions to get analytical result)
-
-Define domain of consideration \( \Psi \leq \psi \) and \( r^T R^T v \leq \beta \)
 
 Give example for a simple case
 
@@ -378,7 +398,7 @@ Response should be similar to numerical simulation
 
 Discuss how this method allows for on board implementation of attitude avoidance during reorientations
 
-Improves upon previous work by extending to the full nonlinear manifold representation and avoids quaternion ambiguities
+Improves upon previous work by extending to the full nonlinear manifold representation and avoids quaternion ambiguities/singularities
 
 Proven stable and validated via hardware experiments
 
