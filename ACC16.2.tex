@@ -332,25 +332,55 @@ Consider a domain \( D \) about the desired attitude defined as
 \begin{align}
 	D = \braces{R \in \SO \vert \Psi < \psi < h1, r^T R^T v < \beta < \cos \theta} \, . \label{eqn:domain}
 \end{align}
-An upper bound of \( \dot{e_R} \) is given by
+Then the following statements hold:
+\begin{enumerate}[(i)]
+	\item \label{item:prop_eR_dot_bound_AB} Upper bounds of \( A(R) \) and \( B(R) \) are given by
+	\begin{gather}
+		\norm{A} < \psi \, , \label{eqn:A_bound}\\
+		\norm{B} < \psi \, . \label{eqn:B_bound}
+	\end{gather}
+	\item \label{item:prop_eR_dot_bound_EF} Upper bounds of \( E(R,R_d) \) and \( F(R) \) are given by
+	\begin{gather}
+		\norm{E} \leq \frac{1}{\sqrt{2}} \tr{G} \, , \label{eqn:E_bound} \\
+		\norm{F} \leq \frac{\beta\parenth{\beta - \cos \theta} + \beta \cos \theta}{\alpha \parenth{\beta - \cos \theta}^2} \, . \label{eqn:F_bound}
+	\end{gather}
+	\item Upper bounds of the attitude error vectors \( e_{R_A} \) and \( e_{R_B} \) are given by
+	\begin{gather}
+		\norm{e_{R_A}} \leq \sqrt{\frac{\psi}{b_1}} \, , \label{eqn:eRA_bound} \\
+		\norm{e_{R_B}} \leq \frac{\sin{\frac{\pi}{2} - \theta}}{\alpha \parenth{\beta - \cos \theta}} \, . \label{eqn:eRB_bound}
+	\end{gather}
+\end{enumerate}
+These results are combined to yield a maximum upper bound of the time derivative of the attitude error vector \( \dot{e}_R \) as
+\begin{gather}
+	\norm{\dot{e}_R} \leq H \norm{e_\Omega} \, ,\label{eqn:eR_bound}
+\end{gather}
+where  \( H \in \R \) is defined as
+\begin{gather}
+	H = \frac{\psi}{\sqrt{2}} \tr{G} + 2 \sqrt{\frac{\psi}{b_1}}\frac{\sin{\frac{\pi}{2} - \theta}}{\alpha \parenth{\beta - \cos \theta}} + \psi \frac{\beta\parenth{\beta - \cos \theta} + \beta \cos \theta}{\alpha \parenth{\beta - \cos \theta}^2} \, . \label{eqn:H}
+\end{gather}
+\end{prop}
 
-equation for H
-
-list the bounds on each of the terms
-
+\begin{proof}[Proof of~\Cref{prop:eR_dot_bound}]\label{proof:eR_dot_bound}
+	We first show~\cref{item:prop_eR_dot_bound_AB} through a proof by contradiction by noting that given the selected domain \( D \) we know the configuration error function is bounded by \( \Psi = A(R) B(R) < \psi\).
+	If we assume that \( A > \psi \) this means that \( B < 1 \) in order to satisfy the domain \( \Psi < \psi \).
+	However, this would be in contradiction with~\cref{proof:config_error} as \( B > 1 \), therefore \( A \) must always be less than \( \psi \).
+	Next, we show that since the domain \( D \) does not contain the constraint region there is an upper bound of \(B\).
+	We know that \( B \to \infty \) as the constraint is neared. 
+	We assume that \( B > \psi \) which implies that \( A < 1 \).
+	As \( \psi \) is increased this means that the system is approaching the constraint and that \( A \to 0 \) in order to remain in the domain \( D \).
+	However, since the chosen domain is assumed to exclude the constraint this situation is not possible and \( B < \psi \).
+	This shows~\cref{item:prop_eR_dot_bound_AB}.
+	
+	Next, we show~\cref{item:prop_eR_dot_bound_EF} using the Frobenius norm.
+	
+	
+\end{proof}
 Proof of the derivation of them
 
 Lyapunov analysis which shows that it's stable
 
 Adaptive update law and control input
 
-\begin{enumerate}[(i)]
-	\item An upper bound of \( \norm{e_{R_B}} \) is given as:
-	\begin{align}
-		\norm{e_{R_B}} \leq \frac{\sin{\frac{\pi}{2} - \theta}}{\alpha \parenth{\beta - \cos \theta}}
-	\end{align}
-\end{enumerate}
-\end{prop}
 Add the disturbance term and introduce adaptive update law
 
 
