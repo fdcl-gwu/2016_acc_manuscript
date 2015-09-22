@@ -270,7 +270,6 @@ In this manner, one may enforce multiple state inequality constraints on the con
 		F(R) = \frac{1}{\alpha \parenth{r^T R^T v - \cos \theta}} \left[\parenth{v^T R r} I - R^T v r^T + \right. \nonumber \\
 		\left. \frac{R^T \hat{v} R r v^T R \hat{r}}{\parenth{r^T R^T v - \cos \theta}}\right] \, . \label{eqn:F}
 	\end{gather}
-	
 \end{prop}
 
 \begin{proof}
@@ -281,11 +280,45 @@ In this manner, one may enforce multiple state inequality constraints on the con
 We introduce a nonlinear geometric controller for the attitude stabilization of a rigid body.
 We assume that there is no disturbance, i.e., \( \Delta = 0 \).
 \begin{prop}[Attitude Control]\label{prop:att_control}
-	
+	Given a desired attitude command \( \parenth{R_d, \Omega_d = 0} \) and positive constants \( k_R, k_\Omega \in \R \) we define a control input \( u \in \R^3 \) as follows
+	\begin{gather}
+		u = -k_R e_R - k_\Omega e_\Omega + \Omega \times J \Omega \, . \label{eqn:nodist_control}
+	\end{gather}
+	Then the zero equilibrium of the attitude errors \( \parenth{e_R, e_\Omega} \) is asymptotically stable, i.e., \(e_R, e_\Omega \to 0 \) as \( t \to \infty \).
 \end{prop}
-Introduce control input function and show that it is stable without any disturbance
 
-Lyapunov function
+\begin{proof}\label{proof:att_control}
+	Consider the following Lyapunov function:
+	\begin{gather}
+		V = \frac{1}{2} e_\Omega \cdot J e_\Omega + k_R \Psi(R,R_d) \, . \label{eqn:v_nodist}
+	\end{gather}
+	From~\cref{item:prop_psi_psd}, we obtain
+	\begin{gather*}
+		V \geq 0 \, .
+	\end{gather*}
+	Using~\cref{eqn:eW_dot,eqn:psi_dot} with \( \Delta = 0 \), the time derivative of \( V \) is given by
+	\begin{align}
+		\dot{V} &= e_\Omega^T \parenth{ u - \Omega \times J \Omega } + k_R e_R \cdot e_\Omega \nonumber \\
+		&= -k_\Omega \norm{e_\Omega}^2 \, . \label{eqn:vdot_nodist}
+	\end{align}
+	Since \( V \) is positive definite and \( \dot{V} \) is negative definite this implies that the zero equilibrium point \( e_R, e_\Omega \) is asymptotically stable.
+\end{proof}
+
+This proposition only guarantees that the attitude error vector \( e_R \) asymptotically converges to zero.
+However, this does not necessarily show that \( R \to R_d \) as \( t \to \infty \). 
+There are three additional critical points of \( \Psi \) where \( e_R = 0 \).
+At an undesired equilibrium \( R = \exp{\pi \hat{e}_i} R_d \) and \( e_\Omega =0 \). 
+This results in \( A \) having a value of \( g_1 + g_2, g_2 + g_3 \) or \( g_3 + g_1 \).
+At any of these undesired equilibria we have \( V = k \). 
+We define an augmented Lyapunov function as
+\begin{align*}
+	W = k - V = \frac{1}{2} e_\Omega \cdot J e_\Omega + k_R (\frac{k}{k_R}+ \Psi(R,R_d)) \, .
+\end{align*}
+We can choose an attitude \( R \) arbitrarily close to the equilibrium point \( \exp{ \pi \hat{e}_i} R_d \) such that the \( k_r \parenth{\frac{k}{k_R}+\Psi }> 0 \).
+This is due to the fact that \( \Psi \) is positive definite about \( R = R_d \) as shown in~\cref{item:prop_psi_psd}.
+If \( e_\Omega \) is sufficiently small this results in \( W > 0 \) and \( \dot{W} = -\dot{V} > 0\) from~\cref{eqn:vdot_nodist}.
+According to Chateav's theorem the undesired equilibria are unstable~\cite{khalil1996}.
+As a result, we can claim that the desired equilibrium \( R = R_d \text{ and } e_\Omega = 0 \) is almost globally asymptotically stable.
 
 \subsection{Adaptive Control}
 
@@ -413,10 +446,10 @@ Noting that \( Q \in \SO \) is an orthonormal matrix, with unit length row and c
 \end{subequations}
 As a result, all the off diagonal terms of \( Q = R_d^T R \), namely \( q_{12}= q_{13} = q_{23} = 0 \).
 Since \( Q \in \SO \), the diagonal elements \( q_{11}, q_{22}, \text{ and } q_{33} \) are either \( +1 \) or \(-1\).
-There are four critical points of \( e_{R_A} \), the desired attitude \( R_d \) as well as rotations about each body fixed axis by \ang{180},
+There are four critical points of \( e_{R_A} \), the desired attitude \( R_d \) as well as rotations about each body fixed axis by \ang{180}.
 The repulsive error vector \( e_{R_{B}} \) is zero only when the numerator \( \parenth{R^T v}^\wedge r = 0 \). 
-This condition only occurs if the desired attitude results in the body fixed vector \( r \) becoming aligned with \(R^T v \).
-
+This condition only occurs if the desired attitude results in the body fixed vector \( r \) becoming aligned with \(R^T v \) while simultaneously satisfying \(\braces{R_d} \cup \braces{R_d \exp(\pi \hat{s}} \) for \( s \in \braces{e_1, e_2, e_3} \) .
+The desired equilibrium is \( e_R = 0 \) and \( A = 0\).
 \subsection{Proof of~\Cref{prop:error_dyn}}\label{proof:error_dyn}
 From the kinematics~\cref{eqn:Rdot} and noting that \( \dot{R}_d = 0 \) the time derivative of \( R_d^T R \) is given as
 \begin{gather*}
