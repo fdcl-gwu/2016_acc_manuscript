@@ -430,7 +430,27 @@ where  \( H \in \R \) is defined as
 	The bound on \( e_{R_A} \) is given in~\cref{eqn:psi_lower_bound} while \( e_{R_B} \) arises from the definition of the cross product \( \norm{a \times b} = \norm{a} \norm{b} \sin \theta \).
 \end{proof}
 
-
+\begin{prop}[Adaptive Attitude Control]\label{prop:adaptive_control]
+Given  a desired attitude command \( R_d, \Omega_d = 0 \) and positive constants \( k_R, k_\Omega, k_\Delta, c \in \R \), we define a control input \( u \in \R^3\) and an adaptive update law for \( \bar{\Delta} \) as follows:
+\begin{align}
+	u &= - k_R e_R - k_\Omega e_\Omega + \Omega \times J \Omega - W \bar{\Delta} \, , \label{eqn:adaptive_control} \\
+	\dot{\bar{\Delta}} &= k_\Delta W^T \parenth{e_\Omega + c e_R} \, . \label{eqn:delta_dot}
+\end{align}
+If \( c \) is sufficiently small the zero equilibrium of the error vectors \( e_R, e_\Omega\) are asymptotically stable.
+\end{prop}
+\begin{proof}[Proof of~\cref{prop:adaptive_control}]\label{proof:adaptive_control}
+	Use same domain
+	
+	Lyapunov equation
+	
+	Algebra
+	
+	Take norm bounds
+	
+	Get quadratic product
+	
+	Show bound on c for negative semi-definite
+\end{proof}
 Lyapunov analysis which shows that it's stable
 
 Adaptive update law and control input
