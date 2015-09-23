@@ -312,7 +312,7 @@ This results in \( A \) having a value of \( g_1 + g_2, g_2 + g_3 \) or \( g_3 +
 At any of these undesired equilibria we have \( V = k \). 
 We define an augmented Lyapunov function as
 \begin{align*}
-	W = k - V = \frac{1}{2} e_\Omega \cdot J e_\Omega + k_R (\frac{k}{k_R}+ \Psi(R,R_d)) \, .
+	W = k - V = \frac{1}{2} e_\Omega \cdot J e_\Omega + k_R \parenth{\frac{k}{k_R}+ \Psi(R,R_d)} \, .
 \end{align*}
 We can choose an attitude \( R \) arbitrarily close to the equilibrium point \( \exp{ \pi \hat{e}_i} R_d \) such that the \( k_r \parenth{\frac{k}{k_R}+\Psi }> 0 \).
 This is due to the fact that \( \Psi \) is positive definite about \( R = R_d \) as shown in~\cref{item:prop_psi_psd}.
@@ -430,33 +430,64 @@ where  \( H \in \R \) is defined as
 	The bound on \( e_{R_A} \) is given in~\cref{eqn:psi_lower_bound} while \( e_{R_B} \) arises from the definition of the cross product \( \norm{a \times b} = \norm{a} \norm{b} \sin \theta \).
 \end{proof}
 
-\begin{prop}[Adaptive Attitude Control]\label{prop:adaptive_control]
+\begin{prop}[Adaptive Attitude Control]\label{prop:adaptive_control}
 Given  a desired attitude command \( R_d, \Omega_d = 0 \) and positive constants \( k_R, k_\Omega, k_\Delta, c \in \R \), we define a control input \( u \in \R^3\) and an adaptive update law for \( \bar{\Delta} \) as follows:
 \begin{align}
 	u &= - k_R e_R - k_\Omega e_\Omega + \Omega \times J \Omega - W \bar{\Delta} \, , \label{eqn:adaptive_control} \\
 	\dot{\bar{\Delta}} &= k_\Delta W^T \parenth{e_\Omega + c e_R} \, . \label{eqn:delta_dot}
 \end{align}
-If \( c \) is sufficiently small the zero equilibrium of the error vectors \( e_R, e_\Omega\) are asymptotically stable.
+If \( c \) is chosen such that
+\begin{gather}
+	0 < c < \frac{4 k_R k_\Omega}{k_\Omega^2 + 4 k-R \lambda_M H} \, , \label{eqn:c_bound}
+\end{gather}
+  the zero equilibrium of the error vectors \( e_R, e_\Omega\) are asymptotically stable.
 \end{prop}
 \begin{proof}[Proof of~\cref{prop:adaptive_control}]\label{proof:adaptive_control}
-	Use same domain
-	
-	Lyapunov equation
-	
-	Algebra
-	
-	Take norm bounds
-	
-	Get quadratic product
-	
-	Show bound on c for negative semi-definite
+	Consider the Lyapunov function \( V \) given by
+	\begin{gather}
+		V = \frac{1}{2} e_\Omega J e_\Omega + k_R \Psi + c J e_\Omega^T e_R + \frac{1}{2 k_\Delta} e_\Delta^T e_\Delta \, , \label{eqn:v_adapt}
+	\end{gather}
+	over the domain \( D \) in~\cref{eqn:domain}.
+	From~\cref{prop:eR_dot_bound}, the Lyapunov function is bounded in \( D \) by
+	\begin{gather}
+		V \leq z^T W z \, , \label{eqn:v_upper_bound}
+	\end{gather}
+	where \( e_\Delta = \Delta - \bar{\Delta} \), \( z = \begin{bmatrix}{ccc}e_R & e_\Omega & e_\Delta\end{bmatrix} \) and the matrix \(W \in \R^{3 \times 3}\) is given by
+	\begin{gather*}
+		W = \begin{bmatrix}{ccc}
+			k_R \psi & \frac{1}{2} c \lambda_M & 0 \\
+			\frac{1}{2} c \lambda_M & \frac{1}{2} \lambda_M & 0 \\
+			0 & 0 & \frac{1}{2 k_\Delta}
+		\end{bmatrix} \, .
+	\end{gather*}
+	The time derivative of with the control inputs~\cref{eqn:adaptive_control} is defined as
+	\begin{align}
+		\dot{V} =& - k_\Omega e_\Omega^T e_\Omega + \parenth{e_\Omega + c e_R}^T W e_\Delta - k_R c e_R^T e_R \nonumber\\
+		&- k_\Omega c e_R^T e_\Omega + c J e_\Omega^T \dot{e}_R - \frac{1}{k_\Delta} e_\Delta^T \dot{\bar{\Delta}} \, , \label{eqn:vdot}
+	\end{align}
+	where we used \( \dot{e}_\Delta = - \dot{\bar{\Delta}} \).
+	The terms linearly dependent on \( e_\Delta\) are combined with~\cref{eqn:delta_dot} to yield
+	\begin{align*}
+		 e_\Delta^T \parenth{W^T \parenth{e_\Omega + c e_R} - \frac{1}{k_\Delta} \dot{\bar{\Delta}}} = 0 \, . 
+	\end{align*}
+	Using~\Cref{prop:eR_dot_bound} an upper bound on \( \dot{V} \) is written as
+	\begin{gather*}
+		\dot{V} \leq -z^T M z \, ,
+	\end{gather*}
+	where the matrix \( M \in \R^{2 \times 2} \) is 
+	\begin{gather}
+		M = \begin{bmatrix}{cc}
+			k_R c & \frac{k_\Omega c}{2} \\
+			\frac{k_\Omega c}{2} & k_\Omega - c \lambda_M H
+		\end{bmatrix} \, .
+	\end{gather}
+	If \( c \) is chosen such that~\cref{eqn:c_bound} is satisfied the matrix \( M \) is positive definite.
+	This implies that the zero equilibrium \( e_R, e_\Omega\) is asymptotically stable. 
 \end{proof}
-Lyapunov analysis which shows that it's stable
 
-Adaptive update law and control input
+Local asymptotic stability
 
-Add the disturbance term and introduce adaptive update law
-
+Domain avoids undesired equilibria
 
 Mention how for a fixed disturbance this is integral control 
 
