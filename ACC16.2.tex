@@ -606,22 +606,38 @@ The inertia tensor of a rigid body is given as
 The control system parameters are chosen as
 \begin{gather*}
 	G = \text{diag} \parenth{0.9,1.1,1.0}\, , \quad k_R = 0.4 \, , \quad	k_\Omega = 0.296 \, ,\\
-	c = 1.0 \, , \quad k_\Delta = 0.5 \, , \quad \alpha = 10 \, .
+	c = 1.0 \, , \quad k_\Delta = 0.5 \, , \quad \alpha = 15 \, .
 \end{gather*}
 A body fixed sensor is defined as
 \begin{gather*}
 	r = \begin{bmatrix} 1 & 0 & 0 \end{bmatrix} \, ,
 \end{gather*}
 while multiple inequality constraints are defined in~\cref{tab:constraints}.
-
-
+The simulation parameters are chosen to emulate those found in~\cite{lee2011b}.
+\begin{table}[htbp]
+\begin{center}\begin{tabular}{lc}
+Constraint Vector & Angle \\ \hline \hline 
+\(\begin{bmatrix} 0.174 &-0.934 & -0.034 \end{bmatrix}\) & \ang{40} \\ \hline 
+\(\begin{bmatrix} 0 & 0.7071 & 0.7071 \end{bmatrix}\) & \ang{40} \\ \hline 
+\(\begin{bmatrix} -0.853 & 0.436 & -0.286 \end{bmatrix}\) & \ang{40} \\ \hline 
+\(\begin{bmatrix} -0.122 -0.140 -0.983 \end{bmatrix}\) & \ang{20}\end{tabular} 
+\caption{Simulation Parameters}
+\end{center}
+\label{tab:constraints}
+\end{table}
 The initial and desired states are defined using Euler angles as~\cite{shuster1993},
 \begin{gather*}
 	R(0) = I \, , \quad \Omega(0) = 0 \, ,\\
-	R_d = ROT3(\ang{90}) \, , \quad \Omega_d = 0 \, .
+	R_d = ROT3(\ang{225}) \, , \quad \Omega_d = 0 \, .
 \end{gather*}
 
-
+We show simulation results for the system stabilizing about the desired attitude with and without the adaptive update law from~\Cref{prop:adaptive_control}
+We assume a fixed disturbance of 
+\begin{gather*}
+	\Delta = \begin{bmatrix} 0.06 & 0.06 & 0.09 \end{bmatrix}^T \, ,
+\end{gather*}
+with the function \( W(R,\Omega) = I \).
+This form is equivalent to an integral control term which penalizes deviations from the desired configuration.
 Present three cases
 
 Show stabilization without repulsive term (passes through constraint)
