@@ -226,7 +226,7 @@ Then, the following properties hold
 	\item \label{item:prop_crit}The critical points of \( \Psi \),where \( e_R = 0\), are \( \braces{R_d} \cup \braces{R_d \exp(\pi \hat{s}} \) for \( s \in \braces{e_1, e_2, e_3} \) and \( R^T v = \pm r \).
 	\item \label{item:prop_era_upbound}An upper bound of \( \norm{e_{R_A}} \) is given as:
 	\begin{align}
-		\norm{e_{R_A}}^2 \leq \frac{\Psi}{b_1} \, ,
+		\norm{e_{R_A}}^2 \leq \frac{\Psi}{b_1} \, , \label{eqn:psi_lower_bound}
 	\end{align}
 	where the constant \( b_1 \) is given by \( b_1 = \frac{h_1}{h_2 + h_3} \) for 
 	\begin{align*}
@@ -342,12 +342,12 @@ Then the following statements hold:
 	\item \label{item:prop_eR_dot_bound_EF} Upper bounds of \( E(R,R_d) \) and \( F(R) \) are given by
 	\begin{gather}
 		\norm{E} \leq \frac{1}{\sqrt{2}} \tr{G} \, , \label{eqn:E_bound} \\
-		\norm{F} \leq \frac{\beta\parenth{\beta - \cos \theta} + \beta \cos \theta}{\alpha \parenth{\beta - \cos \theta}^2} \, . \label{eqn:F_bound}
+		\norm{F} \leq \frac{\parenth{\beta^2 + 1}\parenth{\beta - \cos \theta}^2 + 1 + \beta^2 \parenth{\beta^2-2}}{\alpha^2 \parenth{\beta-\cos \theta}^4} \, . \label{eqn:F_bound}
 	\end{gather}
 	\item Upper bounds of the attitude error vectors \( e_{R_A} \) and \( e_{R_B} \) are given by
 	\begin{gather}
 		\norm{e_{R_A}} \leq \sqrt{\frac{\psi}{b_1}} \, , \label{eqn:eRA_bound} \\
-		\norm{e_{R_B}} \leq \frac{\sin{\frac{\pi}{2} - \theta}}{\alpha \parenth{\beta - \cos \theta}} \, . \label{eqn:eRB_bound}
+		\norm{e_{R_B}} \leq \frac{\sin\theta}{\alpha \parenth{\beta - \cos \theta}} \, . \label{eqn:eRB_bound}
 	\end{gather}
 \end{enumerate}
 These results are combined to yield a maximum upper bound of the time derivative of the attitude error vector \( \dot{e}_R \) as
@@ -356,7 +356,7 @@ These results are combined to yield a maximum upper bound of the time derivative
 \end{gather}
 where  \( H \in \R \) is defined as
 \begin{gather}
-	H = \frac{\psi}{\sqrt{2}} \tr{G} + 2 \sqrt{\frac{\psi}{b_1}}\frac{\sin{\frac{\pi}{2} - \theta}}{\alpha \parenth{\beta - \cos \theta}} + \psi \frac{\beta\parenth{\beta - \cos \theta} + \beta \cos \theta}{\alpha \parenth{\beta - \cos \theta}^2} \, . \label{eqn:H}
+	H = \norm{B} \norm{E} + 2 \norm{e_{R_A}} \norm{e_{R_B}} + \norm{A}\norm{F}\, . \label{eqn:H}
 \end{gather}
 \end{prop}
 
@@ -372,10 +372,64 @@ where  \( H \in \R \) is defined as
 	This shows~\cref{item:prop_eR_dot_bound_AB}.
 	
 	Next, we show~\cref{item:prop_eR_dot_bound_EF} using the Frobenius norm.
+	The Frobenius norm \( \norm{E}_F \) is given in~\cite{lee2011a} as
+	\begin{gather*}
+		\norm{E}_F = \sqrt{\tr{E^T E}} = \frac{1}{2} \sqrt{\tr{G^2} + \tr{R^T R_d G}^2} \, .
+	\end{gather*}
+	Applying Rodrigues' formula and the Matlab symbolic toolbox this is simplified to
+	\begin{gather*}
+		\norm{E}^2_F \leq \frac{1}{4} \parenth{\tr{G^2} + \tr{G}^2} \leq \frac{1}{2} \tr{G}^2 \, ,
+	\end{gather*}
+	which shows~\cref{eqn:E_bound}, since \( \norm{E} \leq \norm{E}_F \).
 	
+	To show~\cref{eqn:F_bound}, we apply the Frobenius norm \( \norm{F}_F \):
+	\begin{align*}
+		\norm{F}_F =& \sqrt{\tr{F^T F}} \\
+		=& \frac{1}{\alpha ^2 \parenth{r^T R^T v - \cos \theta}^2} \left[\tr{a^T a} \right.\\
+		& \left.- 2 \tr{a^T b} + 2 \tr{a^T c } + \tr{b^T b} \right. \\
+		&\left. - 2 \tr{b^T c} + \tr{c^T c}\right] \, .
+	\end{align*}
+	where the terms \( a, b, \text{ and } c \) are given by
+	\begin{gather*}
+		a = r^T R r I \, ,\\
+		b = R^T v r^T \, ,\\
+		c = \frac{R^T \hat{v} R r v^T R \hat{r}}{r^T R^T v - \cos \theta}\, .
+	\end{gather*}
+	A straight forward computation of \( a^T a \) shows that
+	\begin{gather*}
+		\tr{a^T a} = \parenth{v^T R r}^2 \tr{I} \leq 3 \beta^2 \, ,
+	\end{gather*}
+	where we used the fact that \( v^T R r = r^T R^T v < \beta \) from our given domain.
+	Similarly, one can show that \( \tr{a^T b} \) is equivalent to
+	\begin{gather*}
+		\tr{a^T b} = v^T R r \tr{R^T v r^T} = \parenth{v^T R r}^2 \leq \beta^2 \, ,
+	\end{gather*} 
+	where we used the fact that \( \tr{x y^T} = x^T y \).
+	The product \( \tr{a^T c} \) is given by
+	\begin{gather*}
+		\tr{a^T c} = \frac{v^T R r}{r^T R^T v - \cos \theta} \tr{\parenth{R^T v}^\vee \parenth{r v^T R} \hat{r} } \, ,
+	\end{gather*}
+	where we used the hat map property~\cref{eqn:RxR}.
+	One can show that \(\tr{a^T c} \leq 0 \) over the range \( -1 \leq v^T R r \leq \cos \theta \). 
+	Next, \( \tr{b^T b}\) is equivalent to
+	\begin{gather*}
+		\tr{b^T b} = \tr{r v^T R R^T v r^T} = 1 \, ,
+	\end{gather*}
+	since \( r,v \in \Sph\).
+	Finally, \( \tr{c^T c} \) is reduced to
+	\begin{gather*}
+		\tr{c^T c} = \tr{\hat{r} R^T v r^T \bracket{-I + R^T v v^T R} r v^T R \hat{r}} \, ,
+	\end{gather*}
+	where we used the fact that \( \hat{x}^2 = - \norm{x}^2 I + x x^T\).
+	Expanding and collecting like terms gives
+	\begin{gather*}
+		\tr{c^T c } = \frac{1 - 2\parenth{v^T R r}^2 + \parenth{v^T R r}^4}{\parenth{r^T R^T v - \cos \theta}^2} \, . 
+	\end{gather*}
+	Using the the given domain \( r^T R^T v \leq \beta \) gives the upper bound~\cref{eqn:F_bound}.
 	
+	The bound on \( e_{R_A} \) is given in~\cref{eqn:psi_lower_bound} while \( e_{R_B} \) arises from the definition of the cross product \( \norm{a \times b} = \norm{a} \norm{b} \sin \theta \).
 \end{proof}
-Proof of the derivation of them
+
 
 Lyapunov analysis which shows that it's stable
 
