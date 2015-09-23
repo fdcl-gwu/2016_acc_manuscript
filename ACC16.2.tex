@@ -237,8 +237,70 @@ Then, the following properties hold
 \end{enumerate}
 \end{prop}
 
-\begin{proof}
-	See~\Cref{proof:config_error}
+\begin{proof}[Proof of~\Cref{prop:config_error}]\label{proof:config_error}
+The proof of~\cref{item:prop_era_upbound} is available in~\cite{lee2011a}.
+To prove~\cref{item:prop_psi_psd} we note that~\cref{eqn:A} is a locally positive definite function about \( R = R_d \)~\cite{bullo2004}.
+The constraint angle is assumed \( \ang{0} \leq \theta \leq \ang{90} \) such that \( 0 \leq \cos \theta \).
+The term \( r^T R^T v \) represents the cosine of the angle between the body fixed vector \( r \) and the inertial vector \( v \). 
+It follows that
+\begin{align*}
+	0 \leq  \frac{\cos \theta -  r^T R^T v}{1 + \cos \theta} \leq 1 \, ,
+\end{align*}
+for all \( R \in SO \). 
+As a result, the negative logarithm is always positive and
+\begin{align*}
+	1 < B \, .
+\end{align*}
+The product~\cref{eqn:psi} is composed of two positive terms and is therefore also positive definite, and has a single critical point at \( R = R_d \).
+
+Next, we consider~\cref{item:prop_era}.
+The variation of~\cref{eqn:A} is taken with respect to \( \delta R = R \hat \eta \) as
+\begin{align*}
+	\dirDiff{A}{R} &= -\frac{1}{2} \tr{G R_d^T \left( R \hat{\eta}\right)} \\
+	&= \eta \cdot \frac{1}{2} \left( G R_d^T R - R^T R_d G\right)^\vee \, ,
+\end{align*}
+where we used~\cref{eqn:hat1}.
+
+A straightforward application of the chain and product rules of differentiation allows us to show~\cref{item:prop_erb} as
+\begin{align*}
+	\dirDiff{B}{R} &= -\frac{1}{\alpha} \left[\left(\frac{1+\cos \theta}{\cos \theta - r^T R^T v} \right) \left(\eta \cdot \frac{\left( R^T v\right)^\vee r}{1+\cos \theta_i} \right) \right]  \\
+	&= \eta \cdot \frac{ - \left( R^T v\right)^\vee r}{\alpha \left(\cos \theta - r^T R^T v \right)} \, ,
+\end{align*}
+where the scalar triple product~\cref{eqn:STP} was used.
+
+To show~\cref{item:prop_crit}, we determine the critical points of~\cref{eqn:eRA}.
+The attitude error between \( R \) and \( R_d \) is defined as \( Q \in SO \) as
+\begin{align*}
+	Q = R_d^T R = 
+	\begin{bmatrix}
+		q_{11} & q_{12} & q_{13} \\
+		q_{21} & q_{22} & q_{23} \\
+		q_{31} & q_{32} & q_{33}
+	\end{bmatrix} \, .
+\end{align*}
+Equating \( e_{R_{A}} = 0 \) yields the following equivalent relations
+\begin{subequations}
+\begin{align}
+	g_3 q_{32} &= g_2 q_{23} \, , \\
+	g_1 q_{13} &= g_3 q_{31} \, , \\
+	g_2 q_{21} &= g_1 q_{12} \, .
+\end{align}
+\end{subequations}
+These relations allow one to redefine the attitude error \( Q \) in terms of the independent upper diagonal elements.
+Noting that \( Q \in \SO \) is an orthonormal matrix, with unit length row and columns gives
+\begin{subequations}
+\begin{align}
+	\parenth{1 - \frac{g_1^2}{g_2^2}} q_{12}^2 + \parenth{1 - \frac{g_1^2}{g_3^2}}q_{13}^2 &= 0 \, , \\
+	\parenth{1 - \frac{g_1^2}{g_2^2}} q_{12}^2 - \parenth{1 - \frac{g_2^2}{g_3^2}} q_{23}^2 &= 0 \, , \\
+	\parenth{1-\frac{g_1^2}{g_3^2}} q_{13}^2 + \parenth{1 - \frac{g_2^2}{g_3^2}} q_{23}^2 &= 0 \, .
+\end{align}
+\end{subequations}
+As a result, all the off diagonal terms of \( Q = R_d^T R \), namely \( q_{12}= q_{13} = q_{23} = 0 \).
+Since \( Q \in \SO \), the diagonal elements \( q_{11}, q_{22}, \text{ and } q_{33} \) are either \( +1 \) or \(-1\).
+There are four critical points of \( e_{R_A} \), the desired attitude \( R_d \) as well as rotations about each body fixed axis by \ang{180}.
+The repulsive error vector \( e_{R_{B}} \) is zero only when the numerator \( \parenth{R^T v}^\wedge r = 0 \). 
+This condition only occurs if the desired attitude results in the body fixed vector \( r \) becoming aligned with \(R^T v \) while simultaneously satisfying \(\braces{R_d} \cup \braces{R_d \exp(\pi \hat{s}} \) for \( s \in \braces{e_1, e_2, e_3} \) .
+The desired equilibrium is \( e_R = 0 \) and \( A = 0\).
 \end{proof}
 
 \Cref{eqn:psi} is composed of an attractive term \( A (R) \) and a repulsive term \( B(R) \).
@@ -272,8 +334,50 @@ In this manner, one may enforce multiple state inequality constraints on the con
 	\end{gather}
 \end{prop}
 
-\begin{proof}
-	See~\Cref{proof:error_dyn}
+\begin{proof}[Proof of~\Cref{prop:error_dyn}]\label{proof:error_dyn}
+From the kinematics~\cref{eqn:Rdot} and noting that \( \dot{R}_d = 0 \) the time derivative of \( R_d^T R \) is given as
+\begin{gather*}
+	\diff{}{t} \parenth{R_d^T R} = R_d^T R \hat{e}_\Omega \, .
+\end{gather*}
+Applying this to the time derivative of~\cref{eqn:A} gives
+\begin{gather*}
+	\diff{}{t} A = -\frac{1}{2} \tr{G R_d^T R \hat{e}_\Omega} \, .
+\end{gather*}
+Applying~\cref{eqn:hat1} into this shows~\cref{eqn:A_dot}.
+Next, the time derivative of the repulsive error function is given by
+\begin{gather*}
+	\diff{}{t} B = \frac{r_i^T \parenth{\hat{\Omega} R^T} v_i}{\alpha \parenth{r_i^T R^T v_i - \cos \theta}} \, .
+\end{gather*}
+Using the scalar triple product, given by~\cref{eqn:STP}, one can reduce this to~\cref{eqn:B_dot}.
+The time derivative of the attractive attitude error vector, \( e_{R_A} \), is given by
+\begin{gather*}
+	\diff{}{t} e_{R_A} = \frac{1}{2} \parenth{\hat{e}_\Omega R^T R_d G + (R^T R_d G)^T \hat{e}_\Omega}^\vee \, .
+\end{gather*}
+Using the hat map property given in~\cref{eqn:xAAx} this is further reduced to~\cref{eqn:eRA_dot,eqn:E}.
+
+We take the time derivative of the repulsive attitude error vector, \( e_{R_B} \), as
+\begin{gather*}
+	\diff{}{t} e_{R_B} = a \Omega v^T R r - a R^T v \Omega^T r + b R^T \hat{v} R r \, ,
+\end{gather*}
+with \( a \in \R \) and \( b \in \R\) given by 
+\begin{gather*}
+	a = \bracket{\alpha \parenth{r^T R^T v - \cos \theta}}^{-1} \, ,
+	b = \frac{r^T \hat{\Omega} R^T v}{\alpha \parenth{r^T R^T v - \cos \theta}^2} \, .
+\end{gather*}
+Using the scalar triple product from~\cref{eqn:STP} as \( r \cdot \Omega \times \parenth{R^T v} = \parenth{R^T v} \cdot r \times \Omega \) gives~\cref{eqn:eRB_dot,eqn:F}.
+
+We show the time derivative of the configuration error function as
+\begin{gather*}
+	\diff{}{t} \Psi = \dot{A} B + A \dot{B} \, .
+\end{gather*}
+A straightforward substitution of~\cref{eqn:A_dot,eqn:B_dot,eqn:A,eqn:B} into this and appplying~\cref{eqn:eR} shows~\cref{eqn:psi_dot}.
+
+The time-derivative of the angular velocity error, \( e_\Omega \), is given by
+\begin{align*}
+	\diff{}{t} e_\Omega &= \dot{\Omega} \\
+	&= J^{-1} \parenth{u - \Omega \times J \Omega + W(R,\Omega) \Delta } \, ,
+\end{align*}
+where we have used the dynamic equations of motion from~\cref{eqn:Wdot}. 
 \end{proof}
 
 \subsection{Attitude Control without disturbance}
@@ -287,7 +391,7 @@ We assume that there is no disturbance, i.e., \( \Delta = 0 \).
 	Then the zero equilibrium of the attitude errors \( \parenth{e_R, e_\Omega} \) is asymptotically stable, i.e., \(e_R, e_\Omega \to 0 \) as \( t \to \infty \).
 \end{prop}
 
-\begin{proof}\label{proof:att_control}
+\begin{proof}[Proof of~\Cref{prop:att_control}]\label{proof:att_control}
 	Consider the following Lyapunov function:
 	\begin{gather}
 		V = \frac{1}{2} e_\Omega \cdot J e_\Omega + k_R \Psi(R,R_d) \, . \label{eqn:v_nodist}
@@ -452,9 +556,9 @@ If \( c \) is chosen such that
 	\begin{gather}
 		V \leq z^T W z \, , \label{eqn:v_upper_bound}
 	\end{gather}
-	where \( e_\Delta = \Delta - \bar{\Delta} \), \( z = \begin{bmatrix}{ccc}e_R & e_\Omega & e_\Delta\end{bmatrix} \) and the matrix \(W \in \R^{3 \times 3}\) is given by
+	where \( e_\Delta = \Delta - \bar{\Delta} \), \( z = \begin{bmatrix}e_R & e_\Omega & e_\Delta\end{bmatrix} \) and the matrix \(W \in \R^{3 \times 3}\) is given by
 	\begin{gather*}
-		W = \begin{bmatrix}{ccc}
+		W = \begin{bmatrix}
 			k_R \psi & \frac{1}{2} c \lambda_M & 0 \\
 			\frac{1}{2} c \lambda_M & \frac{1}{2} \lambda_M & 0 \\
 			0 & 0 & \frac{1}{2 k_\Delta}
@@ -476,37 +580,47 @@ If \( c \) is chosen such that
 	\end{gather*}
 	where the matrix \( M \in \R^{2 \times 2} \) is 
 	\begin{gather}
-		M = \begin{bmatrix}{cc}
+		M = \begin{bmatrix}
 			k_R c & \frac{k_\Omega c}{2} \\
 			\frac{k_\Omega c}{2} & k_\Omega - c \lambda_M H
 		\end{bmatrix} \, .
 	\end{gather}
 	If \( c \) is chosen such that~\cref{eqn:c_bound} is satisfied the matrix \( M \) is positive definite.
 	This implies that the zero equilibrium \( e_R, e_\Omega\) is asymptotically stable. 
+	The domain \( D \) does that include the undesired equilibria and ensures that as \( e_R \to 0 \) the attitude also converges \( R \to R_d \).
 \end{proof}
-
-Local asymptotic stability
-
-Domain avoids undesired equilibria
-
-Mention how for a fixed disturbance this is integral control 
-
-Go through the various developments of proving the disturbance case is stable for correct choice of gains
-
-Positive semi definite matrix
-
-Give example for a simple case
+Nonlinear adaptive controllers have been developed for attitude stabilization in terms of modified Rodriguez parameters and quaternions, as well as attitude tracking in terms of Euler angles. 
+The proposed control system is developed on \(\SO\) and avoids the singularities of Euler angles and Rodriguez parameters while incorporating state inequality constraints. 
+In addition, the unwinding and double coverage ambiguity of quaternions are also completely avoided. 
 
 \section{Numerical Examples}
-Parameters used in the simulation
+We demonstrate the performance of the proposed control system via numerical simulation.
+The inertia tensor of a rigid body is given as
+\begin{gather*}
+	J = \begin{bmatrix}
+	\num{5.571e-3} & \num{6.177e-5} & \num{-2.503e-5} \\
+	\num{6.177e-5} & \num{5.571e-3} & \num{1.001e-5} \\
+	\num{-2.503e-5} & \num{1.007e-5} & \num{1.051e-2}
+	\end{bmatrix} \, .
+\end{gather*} 
+The control system parameters are chosen as
+\begin{gather*}
+	G = \text{diag} \parenth{0.9,1.1,1.0}\, , \quad k_R = 0.4 \, , \quad	k_\Omega = 0.296 \, ,\\
+	c = 1.0 \, , \quad k_\Delta = 0.5 \, , \quad \alpha = 10 \, .
+\end{gather*}
+A body fixed sensor is defined as
+\begin{gather*}
+	r = \begin{bmatrix} 1 & 0 & 0 \end{bmatrix} \, ,
+\end{gather*}
+while multiple inequality constraints are defined in~\cref{tab:constraints}.
 
-Inertia matrix of hexrotor
 
-control gains
+The initial and desired states are defined using Euler angles as~\cite{shuster1993},
+\begin{gather*}
+	R(0) = I \, , \quad \Omega(0) = 0 \, ,\\
+	R_d = ROT3(\ang{90}) \, , \quad \Omega_d = 0 \, .
+\end{gather*}
 
-define sensor and constraint axis
-
-Define initial and desired condition
 
 Present three cases
 
@@ -541,114 +655,8 @@ Proven stable and validated via hardware experiments
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
-\subsection{Proof of~\Cref{prop:config_error}} \label{proof:config_error}
-The proof of~\cref{item:prop_era_upbound} is available in~\cite{lee2011a}.
-To prove~\cref{item:prop_psi_psd} we note that~\cref{eqn:A} is a locally positive definite function about \( R = R_d \)~\cite{bullo2004}.
-The constraint angle is assumed \( \ang{0} \leq \theta \leq \ang{90} \) such that \( 0 \leq \cos \theta \).
-The term \( r^T R^T v \) represents the cosine of the angle between the body fixed vector \( r \) and the inertial vector \( v \). 
-It follows that
-\begin{align*}
-	0 \leq  \frac{\cos \theta -  r^T R^T v}{1 + \cos \theta} \leq 1 \, ,
-\end{align*}
-for all \( R \in SO \). 
-As a result, the negative logarithm is always positive and
-\begin{align*}
-	1 < B \, .
-\end{align*}
-The product~\cref{eqn:psi} is composed of two positive terms and is therefore also positive definite, and has a single critical point at \( R = R_d \).
 
-Next, we consider~\cref{item:prop_era}.
-The variation of~\cref{eqn:A} is taken with respect to \( \delta R = R \hat \eta \) as
-\begin{align*}
-	\dirDiff{A}{R} &= -\frac{1}{2} \tr{G R_d^T \left( R \hat{\eta}\right)} \\
-	&= \eta \cdot \frac{1}{2} \left( G R_d^T R - R^T R_d G\right)^\vee \, ,
-\end{align*}
-where we used~\cref{eqn:hat1}.
 
-A straightforward application of the chain and product rules of differentiation allows us to show~\cref{item:prop_erb} as
-\begin{align*}
-	\dirDiff{B}{R} &= -\frac{1}{\alpha} \left[\left(\frac{1+\cos \theta}{\cos \theta - r^T R^T v} \right) \left(\eta \cdot \frac{\left( R^T v\right)^\vee r}{1+\cos \theta_i} \right) \right]  \\
-	&= \eta \cdot \frac{ - \left( R^T v\right)^\vee r}{\alpha \left(\cos \theta - r^T R^T v \right)} \, ,
-\end{align*}
-where the scalar triple product~\cref{eqn:STP} was used.
-
-To show~\cref{item:prop_crit}, we determine the critical points of~\cref{eqn:eRA}.
-The attitude error between \( R \) and \( R_d \) is defined as \( Q \in SO \) as
-\begin{align*}
-	Q = R_d^T R = 
-	\begin{bmatrix}
-		q_{11} & q_{12} & q_{13} \\
-		q_{21} & q_{22} & q_{23} \\
-		q_{31} & q_{32} & q_{33}
-	\end{bmatrix} \, .
-\end{align*}
-Equating \( e_{R_{A}} = 0 \) yields the following equivalent relations
-\begin{subequations}
-\begin{align}
-	g_3 q_{32} &= g_2 q_{23} \, , \\
-	g_1 q_{13} &= g_3 q_{31} \, , \\
-	g_2 q_{21} &= g_1 q_{12} \, .
-\end{align}
-\end{subequations}
-These relations allow one to redefine the attitude error \( Q \) in terms of the independent upper diagonal elements.
-Noting that \( Q \in \SO \) is an orthonormal matrix, with unit length row and columns gives
-\begin{subequations}
-\begin{align}
-	\parenth{1 - \frac{g_1^2}{g_2^2}} q_{12}^2 + \parenth{1 - \frac{g_1^2}{g_3^2}}q_{13}^2 &= 0 \, , \\
-	\parenth{1 - \frac{g_1^2}{g_2^2}} q_{12}^2 - \parenth{1 - \frac{g_2^2}{g_3^2}} q_{23}^2 &= 0 \, , \\
-	\parenth{1-\frac{g_1^2}{g_3^2}} q_{13}^2 + \parenth{1 - \frac{g_2^2}{g_3^2}} q_{23}^2 &= 0 \, .
-\end{align}
-\end{subequations}
-As a result, all the off diagonal terms of \( Q = R_d^T R \), namely \( q_{12}= q_{13} = q_{23} = 0 \).
-Since \( Q \in \SO \), the diagonal elements \( q_{11}, q_{22}, \text{ and } q_{33} \) are either \( +1 \) or \(-1\).
-There are four critical points of \( e_{R_A} \), the desired attitude \( R_d \) as well as rotations about each body fixed axis by \ang{180}.
-The repulsive error vector \( e_{R_{B}} \) is zero only when the numerator \( \parenth{R^T v}^\wedge r = 0 \). 
-This condition only occurs if the desired attitude results in the body fixed vector \( r \) becoming aligned with \(R^T v \) while simultaneously satisfying \(\braces{R_d} \cup \braces{R_d \exp(\pi \hat{s}} \) for \( s \in \braces{e_1, e_2, e_3} \) .
-The desired equilibrium is \( e_R = 0 \) and \( A = 0\).
-\subsection{Proof of~\Cref{prop:error_dyn}}\label{proof:error_dyn}
-From the kinematics~\cref{eqn:Rdot} and noting that \( \dot{R}_d = 0 \) the time derivative of \( R_d^T R \) is given as
-\begin{gather*}
-	\diff{}{t} \parenth{R_d^T R} = R_d^T R \hat{e}_\Omega \, .
-\end{gather*}
-Applying this to the time derivative of~\cref{eqn:A} gives
-\begin{gather*}
-	\diff{}{t} A = -\frac{1}{2} \tr{G R_d^T R \hat{e}_\Omega} \, .
-\end{gather*}
-Applying~\cref{eqn:hat1} into this shows~\cref{eqn:A_dot}.
-Next, the time derivative of the repulsive error function is given by
-\begin{gather*}
-	\diff{}{t} B = \frac{r_i^T \parenth{\hat{\Omega} R^T} v_i}{\alpha \parenth{r_i^T R^T v_i - \cos \theta}} \, .
-\end{gather*}
-Using the scalar triple product, given by~\cref{eqn:STP}, one can reduce this to~\cref{eqn:B_dot}.
-The time derivative of the attractive attitude error vector, \( e_{R_A} \), is given by
-\begin{gather*}
-	\diff{}{t} e_{R_A} = \frac{1}{2} \parenth{\hat{e}_\Omega R^T R_d G + (R^T R_d G)^T \hat{e}_\Omega}^\vee \, .
-\end{gather*}
-Using the hat map property given in~\cref{eqn:xAAx} this is further reduced to~\cref{eqn:eRA_dot,eqn:E}.
-
-We take the time derivative of the repulsive attitude error vector, \( e_{R_B} \), as
-\begin{gather*}
-	\diff{}{t} e_{R_B} = a \Omega v^T R r - a R^T v \Omega^T r + b R^T \hat{v} R r \, ,
-\end{gather*}
-with \( a \in \R \) and \( b \in \R\) given by 
-\begin{gather*}
-	a = \bracket{\alpha \parenth{r^T R^T v - \cos \theta}}^{-1} \, ,
-	b = \frac{r^T \hat{\Omega} R^T v}{\alpha \parenth{r^T R^T v - \cos \theta}^2} \, .
-\end{gather*}
-Using the scalar triple product from~\cref{eqn:STP} as \( r \cdot \Omega \times \parenth{R^T v} = \parenth{R^T v} \cdot r \times \Omega \) gives~\cref{eqn:eRB_dot,eqn:F}.
-
-We show the time derivative of the configuration error function as
-\begin{gather*}
-	\diff{}{t} \Psi = \dot{A} B + A \dot{B} \, .
-\end{gather*}
-A straightforward substitution of~\cref{eqn:A_dot,eqn:B_dot,eqn:A,eqn:B} into this and appplying~\cref{eqn:eR} shows~\cref{eqn:psi_dot}.
-
-The time-derivative of the angular velocity error, \( e_\Omega \), is given by
-\begin{align*}
-	\diff{}{t} e_\Omega &= \dot{\Omega} \\
-	&= J^{-1} \parenth{u - \Omega \times J \Omega + W(R,\Omega) \Delta } \, ,
-\end{align*}
-where we have used the dynamic equations of motion from~\cref{eqn:Wdot}. 
 \subsection{Proof of }
 Stability proofs for case with and without disturbance
 
