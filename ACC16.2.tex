@@ -39,18 +39,12 @@ Geometric Adaptive Control of Attitude Dynamics on $\SO$\\ with State Inequality
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-
-200-300 summary of the paper
-
-general topic area
-
-new developments/contributions of the paper
-
-relation/benefits over previous work
-
-summary of the results and contributions
-
-Awesome abstract
+We present a new geometric adaptive control system with state inequality constraints for the attitude dynamics of a rigid body.
+We globally express the attitude dynamics and control system using the special orthogonal group. 
+This representation is geometrically exact and avoids singularities and ambiguities of other attitude parameterizations, such as Euler angles and quaternions.
+Attitude constraints are incorporated and automatically considered by the control system.
+In addition, we develop an adaptive update law that enables attitude stabilization in the presence of unknown disturbances. 
+We demonstrate the effectiveness of the control system through numerical simulation and experimental results on a hexrotor UAV.
 
 \end{abstract}
 
@@ -232,11 +226,10 @@ Then, the following properties hold
 	\begin{align*}
 		h_1 &= \min{g_1 + g_2, g_2 + g_3 , g_3 + g_1} \, ,\\
 		h_2 &= \min{\parenth{g_1 -g_2}^2,\parenth{g_2 -g_3}^2 , \parenth{g_3 -g_1}^2} \, ,\\
-		h_3 &= \min{\parenth{g_1 + g_2}^2, \parenth{g_2 + g_3}^2 , \parenth{g_3 + g_1}^2} \, ,\\				
+		h_3 &= \min{\parenth{g_1 + g_2}^2, \parenth{g_2 + g_3}^2 , \parenth{g_3 + g_1}^2} \, .				
 	\end{align*}
 \end{enumerate}
 \end{prop}
-
 \begin{proof}[Proof of~\Cref{prop:config_error}]\label{proof:config_error}
 The proof of~\cref{item:prop_era_upbound} is available in~\cite{lee2011a}.
 To prove~\cref{item:prop_psi_psd} we note that~\cref{eqn:A} is a locally positive definite function about \( R = R_d \)~\cite{bullo2004}.
@@ -314,7 +307,6 @@ As \( \alpha \) is increased the impact of \( B(R) \) is reduced away from the c
 In addition, it is possible to incorporate an arbitrary number of state inequality constraints of the form given in~\cref{eqn:constraint}.
 The configuration error function may be reformulated as \( \Psi = A \bracket{1 + \sum B_i} \) where \( B_i = B - 1 \).
 In this manner, one may enforce multiple state inequality constraints on the control system.
-
 \begin{prop}[Error Dynamics]\label{prop:error_dyn}
 	The attitude error dynamics for \( \Psi, e_R, e_\Omega \) satisfy 
 	\begin{gather}
@@ -333,7 +325,6 @@ In this manner, one may enforce multiple state inequality constraints on the con
 		\left. \frac{R^T \hat{v} R r v^T R \hat{r}}{\parenth{r^T R^T v - \cos \theta}}\right] \, . \label{eqn:F}
 	\end{gather}
 \end{prop}
-
 \begin{proof}[Proof of~\Cref{prop:error_dyn}]\label{proof:error_dyn}
 From the kinematics~\cref{eqn:Rdot} and noting that \( \dot{R}_d = 0 \) the time derivative of \( R_d^T R \) is given as
 \begin{gather*}
@@ -533,7 +524,6 @@ where  \( H \in \R \) is defined as
 	
 	The bound on \( e_{R_A} \) is given in~\cref{eqn:psi_lower_bound} while \( e_{R_B} \) arises from the definition of the cross product \( \norm{a \times b} = \norm{a} \norm{b} \sin \theta \).
 \end{proof}
-
 \begin{prop}[Adaptive Attitude Control]\label{prop:adaptive_control}
 Given  a desired attitude command \( R_d, \Omega_d = 0 \) and positive constants \( k_R, k_\Omega, k_\Delta, c \in \R \), we define a control input \( u \in \R^3\) and an adaptive update law for \( \bar{\Delta} \) as follows:
 \begin{align}
@@ -638,10 +628,6 @@ We assume a fixed disturbance of
 \end{gather*}
 with the function \( W(R,\Omega) = I \).
 This form is equivalent to an integral control term which penalizes deviations from the desired configuration.
-\begin{figure}
-	\includegraphics[width=\columnwidth]{cad}
-	\caption{Trajectory in inertial frame\label{fig:cad}}
-\end{figure}
 \begin{figure} 
 	\centering 
 	\begin{subfigure}[htbp]{0.5\columnwidth} 
@@ -649,18 +635,18 @@ This form is equivalent to an integral control term which penalizes deviations f
 		\caption{Attitude error vector \(e_R\) } \label{fig:eR_con} 
 	\end{subfigure}~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. %(or a blank line to force the subfigure onto a new line) 
 	\begin{subfigure}[htbp]{0.5\columnwidth} 
-		\includegraphics[width=\columnwidth]{eW_con} 
-		\caption{Angular velocity error} \label{fig:eW_con} 
-	\end{subfigure} 
-	
-	\begin{subfigure}[htbp]{0.5\columnwidth} 
 		\includegraphics[width=\columnwidth]{Psi_con} 
 		\caption{Configuration error \( \Psi \)} \label{fig:Psi_con} 
-	\end{subfigure}~
+	\end{subfigure}
+	
 	\begin{subfigure}[htbp]{0.5\columnwidth} 
 		\includegraphics[width=\columnwidth]{u_con} 
 		\caption{Control input \( u\)} \label{fig:u_con} 
-	\end{subfigure} 
+	\end{subfigure}~
+	\begin{subfigure}[htbp]{0.5\columnwidth}
+		\includegraphics[width=\columnwidth]{cad}
+		\caption{Trajectory in inertial frame\label{fig:cad}}
+	\end{subfigure}
 	\caption{Attitude stabilization without adaptive update law}
 	\label{fig:con} 
 \end{figure}
@@ -672,19 +658,14 @@ This form is equivalent to an integral control term which penalizes deviations f
 		\caption{Attitude error vector \(e_R\) } \label{fig:eR_adapt} 
 	\end{subfigure}~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. %(or a blank line to force the subfigure onto a new line) 
 	\begin{subfigure}[htbp]{0.5\columnwidth} 
-		\includegraphics[width=\columnwidth]{eW_adapt} 
-		\caption{Angular velocity error} \label{fig:eW_adapt} 
-	\end{subfigure} 
-	
-	\begin{subfigure}[htbp]{0.5\columnwidth} 
 		\includegraphics[width=\columnwidth]{Psi_adapt} 
 		\caption{Configuration error \( \Psi \)} \label{fig:Psi_adapt} 
-	\end{subfigure}~
+	\end{subfigure}
+	
 	\begin{subfigure}[htbp]{0.5\columnwidth} 
 		\includegraphics[width=\columnwidth]{u_adapt} 
 		\caption{Control input \( u\)} \label{fig:u_adapt} 
-	\end{subfigure} 
-	
+	\end{subfigure}~	
 	\begin{subfigure}[htbp]{0.5\columnwidth} 
 		\includegraphics[width=\columnwidth]{Delta_adapt} 
 		\caption{Disturbance estimate \( \bar{\Delta}\)} \label{fig:Delta_adapt} 
@@ -720,42 +701,69 @@ This allows the hexrotor to impart a force in any direction and a moment about a
 
 The hexrotor UAV is composed of the following hardware:
 \begin{itemize}
-	\item ODROID processor 
-	\item Wifi connectivity blurb
-	\item VectorNav IMU 
-	\item Brushless DC Motors 
-	\item Vicon motion capture sent from command computer
+	\item Onboard ODROID XU3 Linux processor.
+	\item VectorNav VN100 IMU operating at over \SI{100}{\hertz} via TTL serial 
+	\item Brushless DC Motors powered by BL-Ctrl-2.0 speed controllers via I2C.
+	\item Position and attitude over WiFi (TCP) communication from Vicon motion capture system via host computer.
+	\item Commands sent over WiFi through the terminal (SSH) to the code running onboard the hexrotor. 
 \end{itemize}
 In order to constrain the motion and test only the attitude dynamics we attach the hexrotor to a spherical joint.
 The center of rotation is below the center of gravity of the hexrotor.
 As a result, there is a destabilizing gravitational moment and the resulting attitude dynamics is similar to an inverted pendulum model.
 We augment the control input in~\cref{eqn:adaptive_control} with an additional term to negate the effect of the gravitational moment.
 
-A sensor is defined in the body frame of the hexrotor as \( r = \begin{bmatrix} 1 & 0 & 0 \end{bmatrix}^T \).
-We define an obstacle in the inertial frame as \( v = \begin{bmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0\end{bmatrix}^T \) with \( \theta = \ang{10} \).
-An inertial and desired attitude are defined in terms of Euler angles as
+\begin{figure}
+	\includegraphics[width = \columnwidth]{hexrotor}
+	\caption{Attitude control testbed~\label{fig:hexrotor}}
+\end{figure}
+A sensor pointing direction is defined in the body frame of the hexrotor as \( r = \begin{bmatrix} 1 & 0 & 0 \end{bmatrix}^T \).
+We define an obstacle in the inertial frame as \( v = \begin{bmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0\end{bmatrix}^T \) with \( \theta = \ang{12} \).
+An initial and desired attitude are defined in terms of Euler angles as
 \begin{gather}
-	R(0) = \text{ROT3}(\ang{90}) \, , \quad R_d = \text{ROT3}(\ang{0}) \, ,
+	R(0) = \text{ROT3}(\ang{90}) \, , \quad R_d = \text{ROT3}(\ang{0})=I \, .
 \end{gather}                                
-this results in the sensor performing a \ang{90} yaw rotation about the vertical axis of the spherical joint.
-
-Picture of test set up
-Plots of response and trajectory
-Link to video
-
-The experimental results are shown in FIGURE.
-It shows acceptable attitude stabilization performance.
+This results in the sensor performing a \ang{90} yaw rotation about the vertical axis of the spherical joint.
+The attitude control system is identical to the one presented in~\cref{prop:adaptive_control} except the addition of a gravity moment term and the following parameters
+\begin{gather*}
+	k_R = 0.4 \, , \quad k_\Omega = 0.7 \, , c = 0.1 \\
+	\alpha = 8 \, , k_\Delta = 0.05 \, .
+\end{gather*}
+\begin{figure} 
+	\centering 
+	\begin{subfigure}[htbp]{0.5\columnwidth} 
+		\includegraphics[width=\columnwidth]{eR_exp} 
+		\caption{Attitude error vector \(e_R\) } \label{fig:eR_exp} 
+	\end{subfigure}~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. %(or a blank line to force the subfigure onto a new line) 
+	\begin{subfigure}[htbp]{0.5\columnwidth} 
+		\includegraphics[width=\columnwidth]{Psi_exp} 
+		\caption{Configuration error \( \Psi \)} \label{fig:Psi_exp} 
+	\end{subfigure}
+	
+	\begin{subfigure}[htbp]{0.5\columnwidth} 
+		\includegraphics[width=\columnwidth]{u_exp} 
+		\caption{Control input \( u\)} \label{fig:u_exp} 
+	\end{subfigure}~
+	\begin{subfigure}[htbp]{0.5\columnwidth} 
+		\includegraphics[width=\columnwidth]{traj_exp} 
+		\caption{Attitude Trajectory} \label{fig:traj_exp} 
+	\end{subfigure}
+	\caption{Constrained Attitude stabilization experiment}
+	\label{fig:exp} 
+\end{figure}
+The experimental results are shown in~\Cref{fig:exp}.
+Overall it behaves as the numerical simulations predicted.
 The attitude errors asymptotically converge to zero. 
 In addition, as the constraint is neared an out-of-plane moment is used to avoid the constrained region.
-The control system is computed autonomously on-board the UAV.
+An increased gain of the adaptive update law would improve the final steady state error performance.
+A video clip showing the attitude manuever is available LINK.
+\section{Conclusion}\label{sec:conclusion}
+We have developed a geometric adaptive control system which incorporates state inequality constraints on \SO.
+The presented control system is developed directly on \SO and avoids singularities and ambiguities that are inherent to attitude parameterizations.
+An adaptive control system is developed to asymptotically converge to a desired attitude while avoiding constraints in the presence of disturbances.
+In addition we have demonstrated the control system via numerical simulation and hardware experiments on a hexrotor UAV.
+A novel feature of this control is that it is computed autonomously on-board the UAV.
 This is in constrast to many state constrained attitude control systems which require an a priori attitude trajectory to be calculated. 
-\section{Conclusions}
-
-Discuss how this method allows for on board implementation of attitude avoidance during reorientations
-
-Improves upon previous work by extending to the full nonlinear manifold representation and avoids quaternion ambiguities/singularities
-
-Proven stable and validated via hardware experiments
+The presented method is simple, efficient and ideal for hardware implementation on embedded systems.
 
 
 
