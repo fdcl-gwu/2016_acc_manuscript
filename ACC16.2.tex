@@ -58,8 +58,8 @@ Awesome abstract
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}\label{sec:intro}
 Many researchers have focused on the study of the attitude dynamics of a rigid body~\cite{hughes2004,wertz1978}.
-Rigid body attitude control arises for aerospace vehicles, ground and underwater vehicles, and robotic systems.
-One distinctive feature of the attitude dynamics is that it evolves on a nonlinear manifold.
+Rigid body attitude control is an important problem for aerospace vehicles, ground and underwater vehicles, as well as robotic systems.
+One distinctive feature of the attitude dynamics of rigid bodies is that it evolves on a nonlinear manifold.
 The three-dimensional special orthogonal group is the set of \( 3 \times 3 \) orthogonal matrices whose determinant is one.
 This configuration space is not Euclidean and yields unique stability properties which are not observable on a linear space.
 For example, it is impossible to achieve global attitude stabilization using continuous time-invariant feedback~\cite{bhat2000}.
@@ -71,12 +71,12 @@ Attitude control is typically studied using a variety of attitude parameterizati
 All attitude parameterizations fail to represent the nonlinear configuration space both globally and uniquely~\cite{chaturvedi2011a}.
 For example, minimal attitude representations, such as Euler angle sequences or modified Rodriguez parameters, suffer from singularities.
 These attitude representations are not suitable for large angular slews.
-In order to avoid singularities the designer must carefully switch the chosen Euler angle sequence based on the operating region.
+In order to avoid singularities, the designer must carefully switch the chosen Euler angle sequence based on the operating region.
 Another option is to artificially limit the operating region of the rigid body.
 This ensures the system operates in a region free from singularities but limits the performance capabilities and ability to perform arbitrarily large angular maneuvers.
 Quaternions do not have singularities but they double cover the special orthogonal group.
 As a result, any physical attitude is represented by a pair of antipodal quaternions on the three-sphere.
-An immediate implication of this ambiguity is that closed-loop stability properties derived using quaternion may not hold for the physical rigid body evolving on the special orthogonal group.
+An immediate implication of this ambiguity is that closed-loop stability properties derived using quaternions may not hold for the physical rigid body evolving on the special orthogonal group.
 During implementation, the design must carefully resolve this non-unique representation in quaternion based attitude control system to avoid undesirable unwinding behavior~\cite{bhat2000}.
 For certain initial conditions, where the rigid body starts closed to the desired attitude, the system unnecessarily rotates through a large angle even while the initial error is small.
 
