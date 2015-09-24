@@ -628,7 +628,7 @@ Constraint Vector & Angle \\ \hline \hline
 The initial and desired states are defined using Euler angles as~\cite{shuster1993},
 \begin{gather*}
 	R(0) = I \, , \quad \Omega(0) = 0 \, ,\\
-	R_d = ROT3(\ang{225}) \, , \quad \Omega_d = 0 \, .
+	R_d = \text{ROT3}(\ang{225}) \, , \quad \Omega_d = 0 \, .
 \end{gather*}
 
 We show simulation results for the system stabilizing about the desired attitude with and without the adaptive update law from~\Cref{prop:adaptive_control}
@@ -716,24 +716,39 @@ Typical quadrotor UAVs are composed of four or more co-planar propellers.
 As a result, these systems are underactuated and unable to impart a force along every degree of freedom.
 For example, quadrotor UAVs are unable to translate laterally without first conducting a rotation.
 Conversely, the propeller pairs of the hexrotor are angled relative to one another to allow for a fully actuated rigid body.
-This allows the hexrotor to impart a force in any direction and a moment about any axis. (cite hexrotor paper)
+This allows the hexrotor to impart a force in any direction and a moment about any axis. 
 
-The hexrotor UAV is composed of the following parts:
+The hexrotor UAV is composed of the following hardware:
 \begin{itemize}
 	\item ODROID processor 
-	\item Wifi connectivity
-	\item VectorNav IMU
+	\item Wifi connectivity blurb
+	\item VectorNav IMU 
+	\item Brushless DC Motors 
 	\item Vicon motion capture sent from command computer
 \end{itemize}
+In order to constrain the motion and test only the attitude dynamics we attach the hexrotor to a spherical joint.
+The center of rotation is below the center of gravity of the hexrotor.
+As a result, there is a destabilizing gravitational moment and the resulting attitude dynamics is similar to an inverted pendulum model.
+We augment the control input in~\cref{eqn:adaptive_control} with an additional term to negate the effect of the gravitational moment.
 
+A sensor is defined in the body frame of the hexrotor as \( r = \begin{bmatrix} 1 & 0 & 0 \end{bmatrix}^T \).
+We define an obstacle in the inertial frame as \( v = \begin{bmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0\end{bmatrix}^T \) with \( \theta = \ang{10} \).
+An inertial and desired attitude are defined in terms of Euler angles as
+\begin{gather}
+	R(0) = \text{ROT3}(\ang{90}) \, , \quad R_d = \text{ROT3}(\ang{0}) \, ,
+\end{gather}                                
+this results in the sensor performing a \ang{90} yaw rotation about the vertical axis of the spherical joint.
 
-Describe aim of experiment. 
-Demonstrate that hexrotor fixed sensor can stabilize to desired attitude while avoiding an obstacle.s
-Mount a sphere at an appropriate distance such that the subtended angle is equal to the cone constraint
+Picture of test set up
+Plots of response and trajectory
+Link to video
 
-Show plots of response with and without avoidance term
-Response should be similar to numerical simulation
-
+The experimental results are shown in FIGURE.
+It shows acceptable attitude stabilization performance.
+The attitude errors asymptotically converge to zero. 
+In addition, as the constraint is neared an out-of-plane moment is used to avoid the constrained region.
+The control system is computed autonomously on-board the UAV.
+This is in constrast to many state constrained attitude control systems which require an a priori attitude trajectory to be calculated. 
 \section{Conclusions}
 
 Discuss how this method allows for on board implementation of attitude avoidance during reorientations
