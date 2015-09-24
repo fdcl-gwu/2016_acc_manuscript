@@ -638,22 +638,97 @@ We assume a fixed disturbance of
 \end{gather*}
 with the function \( W(R,\Omega) = I \).
 This form is equivalent to an integral control term which penalizes deviations from the desired configuration.
-Present three cases
+\begin{figure}
+	\includegraphics[width=\columnwidth]{cad}
+	\caption{Trajectory in inertial frame\label{fig:cad}}
+\end{figure}
+\begin{figure} 
+	\centering 
+	\begin{subfigure}[htbp]{0.5\columnwidth} 
+		\includegraphics[width=\columnwidth]{eR_con} 
+		\caption{Attitude error vector \(e_R\) } \label{fig:eR_con} 
+	\end{subfigure}~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. %(or a blank line to force the subfigure onto a new line) 
+	\begin{subfigure}[htbp]{0.5\columnwidth} 
+		\includegraphics[width=\columnwidth]{eW_con} 
+		\caption{Angular velocity error} \label{fig:eW_con} 
+	\end{subfigure} 
+	
+	\begin{subfigure}[htbp]{0.5\columnwidth} 
+		\includegraphics[width=\columnwidth]{Psi_con} 
+		\caption{Configuration error \( \Psi \)} \label{fig:Psi_con} 
+	\end{subfigure}~
+	\begin{subfigure}[htbp]{0.5\columnwidth} 
+		\includegraphics[width=\columnwidth]{u_con} 
+		\caption{Control input \( u\)} \label{fig:u_con} 
+	\end{subfigure} 
+	\caption{Attitude stabilization without adaptive update law}
+	\label{fig:con} 
+\end{figure}
 
-Show stabilization without repulsive term (passes through constraint)
-Show stabilization with avoidance term without disturbance
-Show stabilization with disturbance and adaptive update law
+\begin{figure} 
+	\centering 
+	\begin{subfigure}[htbp]{0.5\columnwidth} 
+		\includegraphics[width=\columnwidth]{eR_adapt} 
+		\caption{Attitude error vector \(e_R\) } \label{fig:eR_adapt} 
+	\end{subfigure}~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. %(or a blank line to force the subfigure onto a new line) 
+	\begin{subfigure}[htbp]{0.5\columnwidth} 
+		\includegraphics[width=\columnwidth]{eW_adapt} 
+		\caption{Angular velocity error} \label{fig:eW_adapt} 
+	\end{subfigure} 
+	
+	\begin{subfigure}[htbp]{0.5\columnwidth} 
+		\includegraphics[width=\columnwidth]{Psi_adapt} 
+		\caption{Configuration error \( \Psi \)} \label{fig:Psi_adapt} 
+	\end{subfigure}~
+	\begin{subfigure}[htbp]{0.5\columnwidth} 
+		\includegraphics[width=\columnwidth]{u_adapt} 
+		\caption{Control input \( u\)} \label{fig:u_adapt} 
+	\end{subfigure} 
+	
+	\begin{subfigure}[htbp]{0.5\columnwidth} 
+		\includegraphics[width=\columnwidth]{Delta_adapt} 
+		\caption{Disturbance estimate \( \bar{\Delta}\)} \label{fig:Delta_adapt} 
+	\end{subfigure}
+	\caption{Attitude stabilization with adaptive update law}
+	\label{fig:adapt} 
+\end{figure}
 
-Plot of responses
+Simulation results without the adaptive update law are shown in~\cref{fig:con}.
+Without the update law, the system does not achieve zero steady state error. 
+\Cref{fig:Psi_con} shows that the configuration error function does not converge to zero.
+\Cref{fig:adapt} shows the results with the addition of the adaptive update law.
 
-Show rotation animation of spacecraft avoiding constrained regions
+The path of the body fixed sensor in the inertial frame is illustrated in~\cref{fig:cad}.
+The initial attitude is represented with the green circle while the final attitude is marked with a green \(\times\).
+The control system is able to asymptotically converge to zero attitude error.
+In addition, the estimate of the disturbance converges to the the true value.
+Both control system are able to automatically avoid the constrained regions. 
+In addition, these results show that it is straightforward to incorporate an arbitrary amount of large constraints.
+In spite of this challenging configuration space the proposed control system offers a simple method of avoiding constrained regions.
+These closed-loop feedback results are computed in real time and offer a significant advantage over typical open-loop planning methods.
+These results show that the proposed geometric adaptive approach is critical to attitude stabilization in the presence of state constraints and disturbances.
 
-\section{Experiments}
+\section{Experiment on Hexrotor UAV}
 
-Discuss experimental setup of the hexrotor on spherical joint
+A hexrotor unmanned aerial vehicle (UAV) has been developed at the Flight Dynamics and Controls Laboratory(FDCL) at the George Washington University.
+The UAV is composed of three pairs of counter-rotating propellers. 
+Typical quadrotor UAVs are composed of four or more co-planar propellers.
+As a result, these systems are underactuated and unable to impart a force along every degree of freedom.
+For example, quadrotor UAVs are unable to translate laterally without first conducting a rotation.
+Conversely, the propeller pairs of the hexrotor are angled relative to one another to allow for a fully actuated rigid body.
+This allows the hexrotor to impart a force in any direction and a moment about any axis. (cite hexrotor paper)
+
+The hexrotor UAV is composed of the following parts:
+\begin{itemize}
+	\item ODROID processor 
+	\item Wifi connectivity
+	\item VectorNav IMU
+	\item Vicon motion capture sent from command computer
+\end{itemize}
+
 
 Describe aim of experiment. 
-Demonstrate that hexrotor fixed sensor can stabilize to desired attitude while avoiding an obstacle.
+Demonstrate that hexrotor fixed sensor can stabilize to desired attitude while avoiding an obstacle.s
 Mount a sphere at an appropriate distance such that the subtended angle is equal to the cone constraint
 
 Show plots of response with and without avoidance term
@@ -671,16 +746,6 @@ Proven stable and validated via hardware experiments
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
-
-
-\subsection{Proof of }
-Stability proofs for case with and without disturbance
-
-
-
-Detail on finding bounds of \( \norm{\dot{e}_R} \)
-
-Lots of intermediate terms
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
