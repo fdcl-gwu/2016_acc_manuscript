@@ -80,7 +80,7 @@ For example, autonomous spacecraft or aerial systems are typically equipped with
 These systems require retargeting while avoiding direct exposure to sunlight or other bright objects.
 Determining a satisfactory attitude control maneuver in the presence of state constraints is a challenging task.
 The removal of constrained regions from the rotational configuration space results in a \textit{nonconvex} region.
-The attitude control problem in the absence of constraints has been extensively studied~\cite{sanyal2008,lee2010,lee2011a}.
+The attitude control problem in the absence of constraints has been extensively studied~\cite{bullo2004,MayTeePaCC11,LEEITAC15}.
 However, the attitude control problem in the presence of constraints has received much less attention.
 
 % discuss how previous papers (mcinnes and lee/meshabi) have short comings
@@ -310,7 +310,7 @@ A smooth control system is introduced to asymptotically stabilize the system to 
 \begin{prop}[Bound on \( \dot{e}_R \)]\label{prop:eR_dot_bound}
 Consider a domain \( D \) about the desired attitude defined as
 \begin{align}
-	D = \braces{R \in \SO \vert \Psi < \psi < h1, r^T R^T v < \beta < \cos \theta} \, . \label{eqn:domain}
+	D = \braces{R \in \SO \vert \Psi < \psi < h_1, r^T R^T v < \beta < \cos \theta}. \label{eqn:domain}
 \end{align}
 Then the following statements hold:
 \begin{enumerate}[(i)]
