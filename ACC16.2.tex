@@ -700,7 +700,9 @@ Consider the following Lyapunov function:
 	\end{align}
 	Since \( \mathcal{V} \) is positive definite and \( \dot{\mathcal{V}} \) is negative semi-definite, the zero equilibrium point \( e_R, e_\Omega \) is stable in the sense of Lyapunov. This also implies \( \lim_{t\to\infty} \norm{e_\Omega} = 0 \) and \( \norm{e_R} \) is uniformly bounded, as the Lyapunov function is non-increasing. From \refeqn{eRA_dot} and \refeqn{eRB_dot}, $\lim_{t\to\infty} \dot e_R =0$. 
 	One can show that \( \norm{\ddot{e}_R} \) is bounded.
-	From Barbalat's Lemma, it follows \( \lim_{t\to\infty}\norm{\dot{e}_R} = 0 \)~\cite[Lemma 8.2]{khalil1996}. Therefore, the equilibrium is asymptotically stable. As the Lyapunov function is uniformly bounded, the inequality constraint is satisfied always.
+	From Barbalat's Lemma, it follows \( \lim_{t\to\infty}\norm{\dot{e}_R} = 0 \)~\cite[Lemma 8.2]{khalil1996}. 
+	Therefore, the equilibrium is asymptotically stable. 
+	As the Lyapunov function is uniformly bounded, the inequality constraint is always satisfied.
 	
 \subsection{Proof of~\Cref{prop:eR_dot_bound}}\label{proof:eR_dot_bound}
 %	We first show~\cref{eqn:A_bound,eqn:B_bound} through a proof by contradiction by noting that given the selected domain \( D \) we know the configuration error function is bounded by \( \Psi = A(R) B(R) < \psi\).
@@ -766,6 +768,11 @@ Consider the following Lyapunov function:
 	\end{gather*}
 	Using the the given domain \( r^T R^T v \leq \beta \) gives the upper bound~\cref{eqn:F_bound}.
 	The bound on \( e_{R_A} \) is given in~\cref{eqn:psi_lower_bound} while \( e_{R_B} \) arises from the definition of the cross product \( \norm{a \times b} = \norm{a} \norm{b} \sin \theta \).
+	Finally, we can find the upper bound~\cref{eqn:eR_dot} as
+	\begin{gather*}
+		\norm{\dot{e}_R} \leq \parenth{\norm{B} \norm{E} + 2 \norm{e_{R_A}} \norm{e_{R_B}} + \norm{A}\norm{F}} \norm{e_\Omega} \, .
+	\end{gather*}
+	Using~\crefrange{eqn:AB_bound}{eqn:eRB_bound} one can define \( H \) in terms of known values.
 \subsection{Proof of~\Cref{prop:adaptive_control}}\label{proof:adaptive_control}
 	Consider the Lyapunov function \( \mathcal{V} \) given by
 	\begin{gather}
@@ -806,7 +813,8 @@ Consider the following Lyapunov function:
 		\end{bmatrix} .
 	\end{gather}
 	If \( c \) is chosen such that~\cref{eqn:c_bound} is satisfied the matrix \( M \) is positive definite.
-	This implies that $\dot{\mathcal{V}}$ is negative semidefinite and $\lim_{t\to\infty} \zeta=0$. As the Lyapunov function is non-increasing $z$ is uniformly bounded. 
+	This implies that $\dot{\mathcal{V}}$ is negative semidefinite and $\lim_{t\to\infty} \zeta=0$. 
+	As the Lyapunov function is non-increasing $z$ is uniformly bounded. 
 %	
 %	
 %	This implies that the Lyapunov function \( V \) is non-increasing and bounded from below.
