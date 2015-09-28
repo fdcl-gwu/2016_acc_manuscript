@@ -97,7 +97,7 @@ The approach in~\cite{frazzoli2001} involves the use of randomized motion planni
 A graph is generated consisting of vertices from an initial attitude to a desired attitude. 
 A random iterative search is conducted to determine a path through the graph such that a given cost functional is minimized.
 Once an appropriate path is determined an appropriate control is implemented to perform the attitude maneuver.
-The random search approach can only stochastically guarantee attitude convergence as it can be shown that as the number of vertices in the graph grow, the probability of non convergence goes to zero.
+The random search approach can only stochastically guarantee attitude convergence as it can be shown that as the number of vertices in the graph grow, the probability of nonconvergence goes to zero.
 However, the computational demand grows as the size of the graph is increased. 
 As a result, random search approaches are ill-suited to on-board implementation or in scenarios that require agile maneuvers.
 
@@ -123,7 +123,7 @@ These approaches were developed using attitude parameterizations, namely Euler a
 %By characterizing the attitude both globally and uniquely \(\SO\), we completely avoid issues associated with local parameterizations of the configuration manifold.
 
 
-This paper is focused on developing an adaptive attitude control scheme in the presence of attitude inequality constraint on \(\SO\).
+This paper is focused on developing an adaptive attitude control scheme in the presence of attitude inequality constraints on \(\SO\).
 We apply a potential function based approach developed directly on the nonlinear manifold \(\SO\). 
 By characterizing the attitude both globally and uniquely on \(\SO\), our approach avoids the issues of attitude parameterizations, such as kinematic singularities and ambiguities, and is geometrically exact. 
 A new configuration error function on \(\SO\) with a logarithmic barrier function is proposed to avoid constrained regions. 
@@ -269,7 +269,7 @@ Then, the following properties hold
 	\item \label{item:prop_crit}The critical points of \( \Psi \) are $R_d$, and $R_d \exp(\pi \hat{s})$ for $s \in \braces{e_1, e_2, e_3}$ satisfying $R^T v = \pm r$.
 	\item \label{item:prop_era_upbound}An upper bound of \( \norm{e_{R_A}} \) is given as:
 	\begin{align}
-		\norm{e_{R_A}}^2 \leq \frac{\Psi}{b_1} , \label{eqn:psi_lower_bound}
+		\norm{e_{R_A}}^2 \leq \frac{A(R)}{b_1} , \label{eqn:psi_lower_bound}
 	\end{align}
 	where the constant \( b_1 \) is given by \( b_1 = \frac{h_1}{h_2 + h_3} \) for 
 	\begin{align*}
@@ -283,7 +283,7 @@ Then, the following properties hold
 See~\Cref{proof:config_error}.
 \end{proof}
 
-\Cref{eqn:psi} is composed of an attractive term, \( A (R) \) toward the desired attitude, and a repulsive term, \( B(R) \) from the undesired direction \( R^T v \).
+\Cref{eqn:psi} is composed of an attractive term, \( A (R) \) toward the desired attitude, and a repulsive term, \( B(R) \) away from the undesired direction \( R^T v \).
 The attractive error function has been used for attitude control on \(\SO\).
 The potential well of \( A(R)\) is illustrated in~\cref{fig:attract_error}, where the desired attitude lies at the minimum of \( A(R) \).
 
@@ -666,7 +666,7 @@ The repulsive error vector \( e_{R_{B}} \) is zero only when the numerator \( \p
 This condition only occurs if the desired attitude results in the body fixed vector \( r \) becoming aligned with \(R^T v \) while simultaneously satisfying \(\braces{R_d} \cup \braces{R_d \exp(\pi \hat{s}} \) for \( s \in \braces{e_1, e_2, e_3} \).
 Since we assume the system will not operate in violation of the constraints, the addition of the barrier function does not add additional critical points to the control system.
 The desired equilibrium is \( e_R = 0 \) and \( A = 0\).
-The proof \( A(R) \) of~\cref{item:prop_era_upbound} in~\Cref{prop:config_error} is available in~\cite{LeeITCST13}.
+The proof of \( A(R) \) given by~\cref{item:prop_era_upbound} in~\Cref{prop:config_error} is available in~\cite{LeeITCST13}.
 \subsection{Proof of~\Cref{prop:error_dyn}}\label{proof:error_dyn}
 From the kinematics~\cref{eqn:Rdot} and noting that \( \dot{R}_d = 0 \) the time derivative of \( R_d^T R \) is given as
 \begin{gather*}
