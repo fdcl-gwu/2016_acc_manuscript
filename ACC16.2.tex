@@ -41,7 +41,11 @@ Geometric Adaptive Control of Attitude Dynamics on $\SO$\\ with State Inequality
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-This paper presents a new geometric adaptive control system with state inequality constraints for the attitude dynamics of a rigid body. The control system is designed such that the desired attitude is asymptotically stabilized, while the controlled attitude trajectory avoids undesired regions defined by an inequality constraint. In addition, we develop an adaptive update law that enables attitude stabilization in the presence of unknown disturbances. The attitude dynamics and the proposed control systems developed on the special orthogonal group such that singularities and ambiguities of other attitude parameterizations, such as Euler angles and quaternions are completely avoided. The effectiveness of the proposed control system are demonstrated through numerical simulations and experimental results.
+This paper presents a new geometric adaptive control system with state inequality constraints for the attitude dynamics of a rigid body. 
+The control system is designed such that the desired attitude is asymptotically stabilized, while the controlled attitude trajectory avoids undesired regions defined by an inequality constraint. 
+In addition, we develop an adaptive update law that enables attitude stabilization in the presence of unknown disturbances. 
+The attitude dynamics and the proposed control systems are developed on the special orthogonal group such that singularities and ambiguities of other attitude parameterizations, such as Euler angles and quaternions are completely avoided. 
+The effectiveness of the proposed control system is demonstrated through numerical simulations and experimental results.
 \end{abstract}
 
 
@@ -119,9 +123,18 @@ These approaches were developed using attitude parameterizations, namely Euler a
 %By characterizing the attitude both globally and uniquely \(\SO\), we completely avoid issues associated with local parameterizations of the configuration manifold.
 
 
-This paper is focused on developing an adaptive attitude control scheme in the presence of attitude inequality constraint on \(\SO\). We apply a potential function based approach developed directly on the nonlinear manifold \(\SO\). By characterizing the attitude both globally and uniquely \(\SO\), our approach avoids the issues of attitude parameterizations, such as kinematic singularities and ambiguities, and is geometrically exact. A new configuration error function on \(\SO\) with a logarithmic barrier function is proposed to avoid constrained regions. Instead of calculating a priori trajectories, as in the geometric and randomized approaches, our approach results in a closed-loop attitude control system. This makes it ideal for on-board implementation on UAV or spacecraft systems. In addition, unlike previous approaches our control system can handle an arbitrary number of constrained regions without modification.
+This paper is focused on developing an adaptive attitude control scheme in the presence of attitude inequality constraint on \(\SO\).
+We apply a potential function based approach developed directly on the nonlinear manifold \(\SO\). 
+By characterizing the attitude both globally and uniquely on \(\SO\), our approach avoids the issues of attitude parameterizations, such as kinematic singularities and ambiguities, and is geometrically exact. 
+A new configuration error function on \(\SO\) with a logarithmic barrier function is proposed to avoid constrained regions. 
+Instead of calculating a priori trajectories, as in the geometric and randomized approaches, our approach results in a closed-loop attitude control system. 
+This makes it ideal for on-board implementation on UAV or spacecraft systems. 
+In addition, unlike previous approaches our control system can handle an arbitrary number of constrained regions without modification.
 
-Furthermore, we formulate an adaptive update law to enable attitude convergence in the presence of uncertain disturbances. The stability of the proposed control systems are verified via mathematically rigorous Lyapunov analysis on $\SO$.  In short, the proposed attitude control system in the presence of inequality constraints is computationally efficient and able to handle uncertain disturbances. The effectiveness of this new approach is illustrated via numerical simulation and experimental results.% on a hexrotor aerial vehicle.
+Furthermore, we formulate an adaptive update law to enable attitude convergence in the presence of uncertain disturbances. 
+The stability of the proposed control systems is verified via mathematically rigorous Lyapunov analysis on $\SO$.  
+In short, the proposed attitude control system in the presence of inequality constraints is computationally efficient and able to handle uncertain disturbances. 
+The effectiveness of this new approach is illustrated via numerical simulation and experimental results.% on a hexrotor aerial vehicle.
 
 
 
@@ -214,13 +227,21 @@ The objective is to a determine a control input \( u \) that stabilizes the syst
 
 \section{Attitude Control on $\SO$ with Inequality Constraints}
 
-The first step in designing a control system on a nonlinear manifold \( \Q \) is the selection of a proper configuration error function. This configuration error function, \( \Psi : \Q \times \Q \to \R \), is a smooth and proper positive definite function that measures the error between the current configuration and a desired configuration. Once an appropriate configuration error function is chosen, one can then define a configuration error vector and a velocity error vector in the tangent space \( \mathsf{T}_q \Q \) through the derivatives of \( \Psi \)~\cite{bullo2004}. With the configuration error function and vectors the remaining procedure is analogous to nonlinear control design on Euclidean vector spaces. One chooses control inputs as functions of the state through a Lyapunov analysis on \Q.
+The first step in designing a control system on a nonlinear manifold \( \Q \) is the selection of a proper configuration error function. 
+This configuration error function, \( \Psi : \Q \times \Q \to \R \), is a smooth and proper positive definite function that measures the error between the current configuration and a desired configuration. 
+Once an appropriate configuration error function is chosen, one can then define a configuration error vector and a velocity error vector in the tangent space \( \mathsf{T}_q \Q \) through the derivatives of \( \Psi \)~\cite{bullo2004}. 
+With the configuration error function and vectors the remaining procedure is analogous to nonlinear control design on Euclidean vector spaces. 
+One chooses control inputs as functions of the state through a Lyapunov analysis on \Q.
 
-To handle the attitude inequality constraint, we propose a new attitude configuration error function. More explicitly, we extend the trace form used in~\cite{bullo2004,LeeITCST13} for attitude control on \(\SO\) with the addition of a logarithmic barrier function. Based on the proposed configuration error function,  nonlinear geometric attitude controllers are constructed. A smooth control system is first developed assuming that there is  no disturbance,and then it is extended to include an adaptive update law for stabilization in the presence of unknown disturbances. The proposed attitude configuration error function and several properties are summarized as follows.
+To handle the attitude inequality constraint, we propose a new attitude configuration error function. 
+More explicitly, we extend the trace form used in~\cite{bullo2004,LeeITCST13} for attitude control on \(\SO\) with the addition of a logarithmic barrier function. 
+Based on the proposed configuration error function,  nonlinear geometric attitude controllers are constructed. 
+A smooth control system is first developed assuming that there is  no disturbance, and then it is extended to include an adaptive update law for stabilization in the presence of unknown disturbances. 
+The proposed attitude configuration error function and several properties are summarized as follows.
 
 \begin{prop}[Attitude Error Function] \label{prop:config_error}
 %We assume a desired attitude command \( ( R_d, \Omega_d = 0 ) \), the current attitude and angular velocity \( ( R, \Omega) \), and a state constraint~\cref{eqn:constraint} are given.
-Define an attitude error function \( \Psi : \SO \times \SO \to \R \), and attitude error vector \( e_R \in \R^3 \), and an angular velocity error vector \( e_\Omega \in \R^3 \) as follows:
+Define an attitude error function \( \Psi : \SO \times \SO \to \R \), an attitude error vector \( e_R \in \R^3 \), and an angular velocity error vector \( e_\Omega \in \R^3 \) as follows:
 \begin{gather}
 	\Psi(R) = A(R) B(R) , \label{eqn:psi} \\
 	e_R = e_{R_A} B + A e_{R_B} , \label{eqn:eR} \\
@@ -268,7 +289,7 @@ The potential well of \( A(R)\) is illustrated in~\cref{fig:attract_error}, wher
 
 To incorporate the state inequality constraints we apply a logarithmic barrier term.
 Barrier functions are typically used in optimal control and motion planning applications.
-A visualization of the configuration error function is presented in~\cref{fig:config_error} which shows that as the boundary of the constraint is neared, or \( r^T R^T v \to \cos \theta \), the barrier term increases, \( B \to \infty\).
+A visualization of the configuration error function is presented in~\cref{fig:avoid_error} which shows that as the boundary of the constraint is neared, or \( r^T R^T v \to \cos \theta \), the barrier term increases, \( B \to \infty\).
 We use the scale factor~\(\frac{1}{1+\cos \theta} \) to ensure that \( \Psi \) remains positive definite.
 The logarithmic function is popular as it quickly decays away from the constraint boundary.
 The positive constant \( \alpha \) serves to shape the barrier function.
@@ -296,7 +317,7 @@ The control system is defined such that the attitude trajectory follows the nega
 
 While~\cref{eqn:B} represents a single inequality constraint given as~\cref{eqn:constraint}, it is readily generalized to multiple constraints of an arbitrary form. 
 For example, the configuration error function can be formulated as $\Psi=A[1+\sum_i C_i]$, where $C_i$ has the form of $C_i=B-1$ for the $i$-th constraint. 
-In this manner, one may enforce multiple state inequality constraints, and these are illustrated later at numerical examples. 
+In this manner, one may enforce multiple state inequality constraints, and we later demonstrate this through numerical simulation. 
 
 \begin{prop}[Error Dynamics]\label{prop:error_dyn}
 	The attitude error dynamics for \( \Psi, e_R, e_\Omega \) satisfy 
@@ -328,7 +349,7 @@ We first assume that there is no disturbance, i.e., \( \Delta = 0 \).
 	\begin{gather}
 		u = -k_R e_R - k_\Omega e_\Omega + \Omega \times J \Omega . \label{eqn:nodist_control}
 	\end{gather}
-	Then the zero equilibrium of the attitude errors is asymptotically stable, and the inequality constraint is satisfied.
+	Then the zero equilibrium of the attitude error is asymptotically stable, and the inequality constraint is satisfied.
 \end{prop}
 
 \begin{proof}
@@ -354,7 +375,7 @@ As a result, we can claim that the desired equilibrium \( R = R_d \text{ and } e
 \subsection{Adaptive Control}
 We extend the results of the previous section with the addition of a fixed but unknown disturbance \( \Delta \).
 This scenario is typical of many mechanical systems and represents unmodelled dynamics or external moments acting on the system.
-For example, Earth orbiting spacecraft typically experience both a torque due to a gravitational gradient.
+For example, Earth orbiting spacecraft typically experience a torque due to a gravitational gradient.
 % as well as external torques to due solar radiation pressure.
 Aerial vehicles will similarly experience external torques due to air currents or turbulence.
 An adaptive control system is introduced to asymptotically stabilize the system to a desired attitude while ensuring that state constraints are satisfied. %We first show several properties of the controlled system. 
@@ -499,7 +520,7 @@ The addition of the adaptive update law allows the system to converge to the des
 The path of the body fixed sensor in the inertial frame, namely \( R r \), is illustrated in~\cref{fig:cad_adapt}.
 The initial attitude is represented with the green circle while the final attitude is marked with a green \(\times\).
 The inequality constraints from~\Cref{tab:constraints} are depicted as red cones, where the cone half angle is \( \theta \).
-The control system is able to asymptotically converge to zero attitude error 
+The control system is able to asymptotically converge to zero attitude error.
 In addition, the estimate of the disturbance converges to the the true value.
 
 Both control system are able to automatically avoid the constrained regions. 
@@ -573,7 +594,7 @@ A video clip showing the attitude manuever is available \url{https://youtu.be/ds
 We have developed a geometric adaptive control system which incorporates state inequality constraints on \(\SO\).
 The presented control system is developed directly on \(\SO\) and it avoids singularities and ambiguities that are inherent to attitude parameterizations.
 The attitude configuration error is augmented with a barrier function to avoid the constrained region, and an adaptive control law is proposed to cancel the effects of uncertainties. 
-We show the stability of the  proposed control system through a rigorous mathematically analysis.
+We show the stability of the  proposed control system through a rigorous mathematical analysis.
 In addition, we have demonstrated the control system via numerical simulation and hardware experiments on a hexrotor UAV.
 A novel feature of this control is that it is computed autonomously on-board the UAV.
 This is in contrast to many state constrained attitude control systems which require an a priori attitude trajectory to be calculated. 
@@ -645,7 +666,7 @@ The repulsive error vector \( e_{R_{B}} \) is zero only when the numerator \( \p
 This condition only occurs if the desired attitude results in the body fixed vector \( r \) becoming aligned with \(R^T v \) while simultaneously satisfying \(\braces{R_d} \cup \braces{R_d \exp(\pi \hat{s}} \) for \( s \in \braces{e_1, e_2, e_3} \).
 Since we assume the system will not operate in violation of the constraints, the addition of the barrier function does not add additional critical points to the control system.
 The desired equilibrium is \( e_R = 0 \) and \( A = 0\).
-The proof \( A(R) \) in of~\cref{item:prop_era_upbound} is available in~\cite{LeeITCST13}.
+The proof \( A(R) \) of~\cref{item:prop_era_upbound} in~\Cref{prop:config_error} is available in~\cite{LeeITCST13}.
 \subsection{Proof of~\Cref{prop:error_dyn}}\label{proof:error_dyn}
 From the kinematics~\cref{eqn:Rdot} and noting that \( \dot{R}_d = 0 \) the time derivative of \( R_d^T R \) is given as
 \begin{gather*}
@@ -801,9 +822,9 @@ Consider the following Lyapunov function:
 	\begin{align*}
 		 e_\Delta^T \parenth{W^T \parenth{e_\Omega + c e_R} - \frac{1}{k_\Delta} \dot{\bar{\Delta}}} = 0 . 
 	\end{align*}
-	Using~\Cref{prop:eR_dot_bound} an upper bound on \( \dot{V} \) is written as
+	Using~\Cref{prop:eR_dot_bound} an upper bound on \( \dot{\mathcal{V}} \) is written as
 	\begin{gather*}
-		\dot{V} \leq -\zeta^T M \zeta ,
+		\dot{\mathcal{V}} \leq -\zeta^T M \zeta ,
 	\end{gather*}
 	where $\zeta=[\|e_R\|,\|e_\Omega\|]\in\R^2$, and the matrix \( M \in \R^{2 \times 2} \) is 
 	\begin{gather}
