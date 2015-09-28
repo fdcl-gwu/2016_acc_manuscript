@@ -666,7 +666,7 @@ The repulsive error vector \( e_{R_{B}} \) is zero only when the numerator \( \p
 This condition only occurs if the desired attitude results in the body fixed vector \( r \) becoming aligned with \(R^T v \) while simultaneously satisfying \(\braces{R_d} \cup \braces{R_d \exp(\pi \hat{s}} \) for \( s \in \braces{e_1, e_2, e_3} \).
 Since we assume the system will not operate in violation of the constraints, the addition of the barrier function does not add additional critical points to the control system.
 The desired equilibrium is \( e_R = 0 \) and \( A = 0\).
-The proof of \( A(R) \) given by~\cref{item:prop_era_upbound} in~\Cref{prop:config_error} is available in~\cite{LeeITCST13}.
+The proof of \( \norm{e_{R_A}} \) given by~\cref{item:prop_era_upbound} is available in~\cite{LeeITCST13}.
 \subsection{Proof of~\Cref{prop:error_dyn}}\label{proof:error_dyn}
 From the kinematics~\cref{eqn:Rdot} and noting that \( \dot{R}_d = 0 \) the time derivative of \( R_d^T R \) is given as
 \begin{gather*}
