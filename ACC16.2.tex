@@ -249,7 +249,7 @@ The proposed attitude configuration error function and several properties are su
 Define an attitude error function \( \Psi : \SO \times \SO \to \R \), an attitude error vector \( e_R \in \R^3 \), and an angular velocity error vector \( e_\Omega \in \R^3 \) as follows:
 \begin{gather}
 	\Psi(R) = A(R) B(R) , \label{eqn:psi} \\
-	e_R = e_{R_A} B + A e_{R_B} , \label{eqn:eR} \\
+	e_R = e_{R_A} B(R) + A(R) e_{R_B} , \label{eqn:eR} \\
 	e_\Omega = \Omega , \label{eqn:eW}
 \end{gather}
 with
@@ -328,11 +328,11 @@ In this manner, one may enforce multiple state inequality constraints, and we la
 	The attitude error dynamics for \( \Psi, e_R, e_\Omega \) satisfy 
 	\begin{gather}
 		\diff{}{t} \parenth{\Psi} = e_R \cdot e_\Omega , \label{eqn:psi_dot}\\
-		\diff{}{t} \parenth{e_R} = \dot{e}_{R_A} B + e_{R_A} \dot{B} + \dot{A}e_{R_B} + A \dot{e}_{R_B} , \label{eqn:eR_dot}\\
+		\diff{}{t} \parenth{e_R} = \dot{e}_{R_A} B(R) + e_{R_A} \dot{B(R)} + \dot{A(R)}e_{R_B} + A \dot{e}_{R_B} , \label{eqn:eR_dot}\\
 		\diff{}{t} \parenth{e_{R_A}} = E(R, R_d) e_\Omega , \label{eqn:eRA_dot} \\
 		\diff{}{t} \parenth{e_{R_B}} = F(R) e_\Omega , \label{eqn:eRB_dot} \\
-		\diff{}{t} \parenth{A} = e_{R_A} \cdot e_\Omega , \label{eqn:A_dot} \\
-		\diff{}{t} \parenth{B} = e_{R_B} \cdot e_\Omega , \label{eqn:B_dot} \\
+		\diff{}{t} \parenth{A(R)} = e_{R_A} \cdot e_\Omega , \label{eqn:A_dot} \\
+		\diff{}{t} \parenth{B(R)} = e_{R_B} \cdot e_\Omega , \label{eqn:B_dot} \\
 		\diff{}{t} \parenth{e_\Omega} = J^{-1} \parenth{-\Omega \times J \Omega + u + W(R, \Omega) \Delta} , \label{eqn:eW_dot}
 	\end{gather}
 	where the matrices \(E(R,R_d), F(R) \in \R^{3\times3} \) are given by
