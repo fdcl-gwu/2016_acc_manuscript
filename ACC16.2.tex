@@ -181,6 +181,9 @@ In addition, we assume that a bound on \( W(R, \Omega) \text{ and } \Delta \) is
 \end{equation}
 This form of uncertainty enters the system dynamics through the input channel and as a result is referred to as a matched uncertainty. 
 While this form of uncertainty is easier than the unmatched variety many physically realizable disturbances may be modeled in this manner.
+For example, orbital spacecraft are subject to gravity gradient torques caused by the non-spherical distribution of mass of both the spacecraft and central gravitational body.
+This form of disturbance may be represented as a body fixed torque on the vehicle.
+In addition, for typical scenarios, where the spacecraft is significantly smaller than the orbital radius, the disturbance torque may be assumed constant over short time intervals.
 
 In~\refeqn{Rdot}, the \textit{hat} map $\wedge :\R^{3}\rightarrow\so$ represents the transformation of a vector in $\R^{3}$ to a $3\times 3$ skew-symmetric matrix such that $\hat x y = x\times y$ for any $x,y\in\R^{3}$~\cite{bullo2004}. 
 More explicitly, 
