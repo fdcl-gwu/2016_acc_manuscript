@@ -111,13 +111,13 @@ As a result, random search approaches are ill-suited to on-board implementation 
 % Random/Graph approach -computationally expensive. requires a priori calculation of trajectory
 
 % Previous potential function approach - developed using att parameterizations - singularities/ambiguities
-Artificial potential functions are commonly used to handle kinematic constraints for a wide range of problems in robotics.
+Artificial potential functions are commonly used to handle kinematic constraints for a wide range of problems in robotics~\cite{rimon1992}.
 The goal is the design of attractive and repulsive terms which drive the system toward or away from a certain state, respectively.
 %The goal is the design of an attractive function which drives the system towards the desired state.
 %Similarly, a repulsive function is constructed such that the system is directed away from the constraints. 
 The superposition of the these functions allows one to apply standard feedback control schemes for stabilization and tracking.
-Artificial potential functions have previously been applied to the attitude control problem in~\cite{lee2011b,mcinnes1994}.
-These approaches were developed using attitude parameterizations, namely Euler angles and quaternions, and as such, they are limited by the singularities of minimal representations or the ambiguity of quaternions.
+More specifically, artificial potential functions have previously been applied to the spacecraft attitude control problem in~\cite{lee2011b,mcinnes1994}.
+However, both of these approaches were developed using attitude parameterizations, namely Euler angles and quaternions, and as such, they are limited by the singularities of minimal representations or the ambiguity of quaternions.
 
 
 
