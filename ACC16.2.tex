@@ -247,7 +247,7 @@ The proposed attitude configuration error function and several properties are su
 
 \begin{prop}[Attitude Error Function] \label{prop:config_error}
 %We assume a desired attitude command \( ( R_d, \Omega_d = 0 ) \), the current attitude and angular velocity \( ( R, \Omega) \), and a state constraint~\cref{eqn:constraint} are given.
-Define an attitude error function \( \Psi : \SO \times \SO \to \R \), an attitude error vector \( e_R \in \R^3 \), and an angular velocity error vector \( e_\Omega \in \R^3 \) as follows:
+Define an attitude error function \( \Psi : \SO \to \R \), an attitude error vector \( e_R \in \R^3 \), and an angular velocity error vector \( e_\Omega \in \R^3 \) as follows:
 \begin{gather}
 	\Psi(R) = A(R) B(R) , \label{eqn:psi} \\
 	e_R = e_{R_A} B(R) + A(R) e_{R_B} , \label{eqn:eR} \\
