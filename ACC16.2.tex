@@ -87,11 +87,12 @@ However, the attitude control problem in the presence of constraints has receive
 
 % discuss how previous papers (mcinnes and lee/meshabi) have short comings
 Several approaches have been developed to treat the attitude control problem in the presence of constraints.
-A geometric approach is used in~\cite{hablani1999} to determine feasible attitude trajectories prior to implementation.
-Typically, an optimal or easily implementable on-board control scheme for attitude maneuvers is considered without state constraints.
-The algorithm then seeks an intermediate point such that the control scheme can be applied for each segment without violation of the constraints.
-While the geometric method is conceptually simple, it is difficult to generalize for an arbitrary number of constraints.
-In addition, this geometric type of approach is only applicable to problems where the selection of intermediate points are computationally feasible.
+A conceptually straightforward approach is used in~\cite{hablani1999} to determine feasible attitude trajectories prior to implementation.
+The algorithm determines an intermediate point such that an unconstrained maneuver can be calculated for each subsegment.
+Typically, an optimal or easily implementable on-board control scheme for attitude maneuvers is applied to maneuver the vehicle along these segments.
+In this manner it is possible to accomplish constraint avoidance by linking several intermediary unconstrained maneuvers.
+While this method is conceptually simple, it is difficult to generalize for an arbitrary number of constraints.
+In addition, this approach is only applicable to problems where the selection of intermediate points are computationally feasible.
 
 The approach in~\cite{frazzoli2001} involves the use of randomized motion planning algorithms to solve the constrained attitude control problem.
 A graph is generated consisting of vertices from an initial attitude to a desired attitude. 
