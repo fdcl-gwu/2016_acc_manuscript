@@ -96,12 +96,16 @@ In addition, this approach is only applicable to problems where the selection of
 
 The approach in~\cite{frazzoli2001} involves the use of randomized motion planning algorithms to solve the constrained attitude control problem.
 A graph is generated consisting of vertices from an initial attitude to a desired attitude. 
-A random iterative search is conducted to determine a path through the graph such that a given cost functional is minimized.
-Once an appropriate path is determined an appropriate control is implemented to perform the attitude maneuver.
+A random iterative search is conducted to determine a path through a directed graph such that a given cost functional is minimized.
 The random search approach can only stochastically guarantee attitude convergence as it can be shown that as the number of vertices in the graph grow, the probability of nonconvergence goes to zero.
 However, the computational demand grows as the size of the graph is increased. 
 As a result, random search approaches are ill-suited to on-board implementation or in scenarios that require agile maneuvers.
 
+Model predictive control for spacecraft attitude dynamics is studied in~\cite{guiggiani2014,kalabic2014,gupta2015}.
+These methods rely on linear or non-linear state dynamics to repeatedly solve a finite-time optimal control problem.
+As a result, model predictive control methods are also computational expensive and apply direct optimization methods to solve the necessary conditions for optimality.
+Therefore these methods are complicated to implement and not applicable for real-time control applications.
+  
 % MORE DETAIL ON CONTRIBUTIONS 
 % EXPLICITLY STATE - first time for constraints to be incorportated on SO(3) with barrier function
 % Consider adaptive control which allows for stabilization in the presence of uncertain terms
