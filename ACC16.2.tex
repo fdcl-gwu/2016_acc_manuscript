@@ -58,23 +58,6 @@ The three-dimensional special orthogonal group, or \( \SO \), is the set of \( 3
 This configuration space is non-Euclidean and yields unique stability properties which are not observable on a linear space.
 For example, it is impossible to achieve global attitude stabilization using continuous time-invariant feedback~\cite{bhat2000}.
 
-% topological obstruction - smooth control system can only achieve almost global asymptotic stability
-
-% discuss issues with parameterizations
-
-Attitude control is typically studied using a variety of attitude parameterizations, such as Euler angles or quaternions~\cite{shuster1993}.
-All attitude parameterizations fail to represent the nonlinear configuration space both globally and uniquely~\cite{chaturvedi2011a}.
-For example, minimal attitude representations, such as Euler angle sequences or modified Rodriguez parameters, suffer from singularities.
-These attitude representations are not suitable for large angular slews.
-%In order to avoid singularities, the designer must carefully switch the chosen Euler angle sequence based on the operating region.
-%Another option is to artificially limit the operating region of the rigid body.
-%This ensures the system operates in a region free from singularities but limits the performance capabilities and ability to perform arbitrarily large angular maneuvers.
-Quaternions do not have singularities but they double cover the special orthogonal group.
-As a result, any physical attitude is represented by a pair of antipodal quaternions on the three-sphere.
-%An immediate implication of this ambiguity is that closed-loop stability properties derived using quaternions may not hold for the physical rigid body evolving on the special orthogonal group.
-During implementation, the designer must carefully resolve this non-unique representation in quaternion based attitude control systems to avoid undesirable unwinding behavior~\cite{bhat2000}.
-%, where the rigid body starts close to the desired attitude, yet the system unnecessarily rotates through a large angle even while the initial error is small.
-
 % introduce concept of state inequality constraints and how it creates a nonconvex region 
 % mention applicability of this for spacecraft maneuvers, spherical air bearing testing, hardware limitations
 Many physical rigid body systems must perform large angular slews in the presence of state constraints.
@@ -88,23 +71,19 @@ However, the attitude control problem in the presence of constraints has receive
 % discuss how previous papers (mcinnes and lee/meshabi) have short comings
 Several approaches have been developed to treat the attitude control problem in the presence of constraints.
 A conceptually straightforward approach is used in~\cite{hablani1999} to determine feasible attitude trajectories prior to implementation.
-The algorithm determines an intermediate point such that an unconstrained maneuver can be calculated for each subsegment.
-Typically, an optimal or easily implementable on-board control scheme for attitude maneuvers is applied to maneuver the vehicle along these segments.
+The algorithm determines an intermediate point such that an unconstrained maneuver can be calculated for each sub-interval.
 In this manner it is possible to accomplish constraint avoidance by linking several intermediary unconstrained maneuvers.
 While this method is conceptually simple, it is difficult to generalize for an arbitrary number of constraints.
-In addition, this approach is only applicable to problems where the selection of intermediate points are computationally feasible.
 
 The approach in~\cite{frazzoli2001} involves the use of randomized motion planning algorithms to solve the constrained attitude control problem.
-A graph is generated consisting of vertices from an initial attitude to a desired attitude. 
 A random iterative search is conducted to determine a path through a directed graph such that a given cost functional is minimized.
-The random search approach can only stochastically guarantee attitude convergence as it can be shown that as the number of vertices in the graph grow, the probability of nonconvergence goes to zero.
-However, the computational demand grows as the size of the graph is increased. 
-As a result, random search approaches are ill-suited to on-board implementation or in scenarios that require agile maneuvers.
+However, the random search approach can only stochastically guarantee attitude convergence.
+Typically, very large graphs are required which are ill-suited to on-board implementation or in scenarios that require agile maneuvers.
 
 Model predictive control for spacecraft attitude dynamics is studied in~\cite{guiggiani2014,kalabic2014,gupta2015}.
-These methods rely on linear or non-linear state dynamics to repeatedly solve a finite-time optimal control problem.
-As a result, model predictive control methods are also computational expensive and apply direct optimization methods to solve the necessary conditions for optimality.
-Therefore these methods are complicated to implement and not applicable for real-time control applications.
+This approach relies on linear or non-linear state prediction to repeatedly solve a finite time constrained optimal control problem.
+The necessary conditions for optimality are computed over a receding finite horizon using a direct method. 
+As a result,these methods are also computationally expensive and difficult to implement on-board.
   
 % MORE DETAIL ON CONTRIBUTIONS 
 % EXPLICITLY STATE - first time for constraints to be incorportated on SO(3) with barrier function
@@ -117,49 +96,15 @@ Therefore these methods are complicated to implement and not applicable for real
 % Previous potential function approach - developed using att parameterizations - singularities/ambiguities
 Artificial potential functions are commonly used to handle kinematic constraints for a wide range of problems in robotics~\cite{rimon1992}.
 The goal is the design of attractive and repulsive terms which drive the system toward or away from a certain state, respectively.
-%The goal is the design of an attractive function which drives the system towards the desired state.
-%Similarly, a repulsive function is constructed such that the system is directed away from the constraints. 
-The superposition of the these functions allows one to apply standard feedback control schemes for stabilization and tracking.
 More specifically, artificial potential functions have previously been applied to the spacecraft attitude control problem in~\cite{lee2011b,mcinnes1994}.
-However, both of these approaches were developed using attitude parameterizations, namely Euler angles and quaternions, and as such, they are limited by the singularities of minimal representations or the ambiguity of quaternions.
-
-
-
-%By characterizing the attitude both globally and uniquely \(\SO\), we completely avoid issues associated with local parameterizations of the configuration manifold.
-
+However, both of these approaches were developed using attitude parameterizations, namely Euler angles and quaternions, and as such, they are limited by the singularities or ambiguities.
 
 This paper is focused on developing an adaptive attitude control scheme in the presence of attitude inequality constraints on \(\SO\).
 We apply a potential function based approach developed directly on the nonlinear manifold \(\SO\). 
-By characterizing the attitude both globally and uniquely on \(\SO\), our approach avoids the issues of attitude parameterizations, such as kinematic singularities and ambiguities, and is geometrically exact. 
-A new configuration error function on \(\SO\) with a logarithmic barrier function is proposed to avoid constrained regions. 
-Instead of calculating a priori trajectories, as in the geometric and randomized approaches, our approach results in a closed-loop attitude control system. 
-This makes it ideal for on-board implementation on UAV or spacecraft systems. 
-In addition, unlike previous approaches our control system can handle an arbitrary number of constrained regions without modification.
-
-Furthermore, we formulate an adaptive update law to enable attitude convergence in the presence of uncertain disturbances. 
-The stability of the proposed control systems is verified via mathematically rigorous Lyapunov analysis on $\SO$.  
+We also formulate an adaptive update law to enable attitude convergence in the presence of uncertain disturbances.
+The stability of the proposed control systems is verified via mathematically rigorous Lyapunov analysis on $\SO$. 
 In short, the proposed attitude control system in the presence of inequality constraints is computationally efficient and able to handle uncertain disturbances. 
 The effectiveness of this new approach is illustrated via numerical simulation and experimental results.% on a hexrotor aerial vehicle.
-
-
-
-
-
-
-
-%Our approach 
-%Finally, a rigorous Lyapunov analysis guarantees the stability of the proposed control system.
-%rather than probablistic convergence properties of the randomized approach. 
-
-
- 
-%We present a 
-
-
-
-%In this work, we develop a geometric adaptive controller on \(\SO\) to reorient a rigid body in the presence of state inequality constraints.
- 
-%Geometric control is concerned with the development of control systems for dynamic systems that evolve on nonlinear manifolds.
 
 
 \section{Problem Formulation}\label{sec:prob_form}
@@ -184,11 +129,8 @@ In addition, we assume that a bound on \( W(R, \Omega) \text{ and } \Delta \) is
 \begin{equation}
 	\norm{W} \leq B_W , \quad \norm{\Delta} \leq B_\Delta \,. \label{eqn:W_bound}
 \end{equation}
-This form of uncertainty enters the system dynamics through the input channel and as a result is referred to as a matched uncertainty. 
-While this form of uncertainty is easier than the unmatched variety many physically realizable disturbances may be modeled in this manner.
-For example, orbital spacecraft are subject to gravity gradient torques caused by the non-spherical distribution of mass of both the spacecraft and central gravitational body.
-This form of disturbance may be represented as a body fixed torque on the vehicle.
-In addition, for typical scenarios, where the spacecraft is significantly smaller than the orbital radius, the disturbance torque may be assumed constant over short time intervals.
+This form of uncertainty enters the system dynamics through the input channel and is referred to as a matched uncertainty. 
+Many physically realizable disturbances may be modeled in this manner such as gravity gradient torques on orbital spacecraft.
 
 \subsection{State Inequality Constraint}
 
@@ -266,14 +208,10 @@ For brevity the proof is available in~\cite{kulumani2016b}.
 
 \Cref{eqn:psi} is composed of an attractive term, \( A (R) \) toward the desired attitude, and a repulsive term, \( B(R) \) away from the undesired direction \( R^T v \).
 In order to visualize the attitude error function on \( \SO \) we utilize a spherical coordinate representation.
-Recall that the spherical coordinate system represents the position of a point relative to an origin in terms of a radial distance, azimuth,and elevation.
-This coordinate system commonly used to define locations on the Earth in terms of a latitude and longitude.
-Similarly, the positions of celestial objects are defined on the celestial sphere in terms of right ascension and declination. 
 We apply this concept and parametrize the rotation matrix \( R \in \SO \) in terms of the spherical angles \( \SI{-180}{\degree} \leq \lambda \leq \SI{180}{\degree}  \) and \( \SI{-90}{\degree} \leq \beta \leq \SI{90}{\degree} \). 
 Using the elementary Euler rotations the rotation matrix is now defined as \( R = \exp( \lambda \hat{e}_2) \exp( \beta \hat{e}_3) \).
 We iterate over the domains of \( \lambda\) and \(\beta\) in order to rotate the body-fixed vector \( r \) throughout the two-sphere \( \S^2 \).
-Applying this method,~\cref{fig:config_error} allows us to visualize the error function on \( \SO \).
-The attractive error function, given by~\cref{eqn:A}, has been previously used for attitude control on \(\SO\).
+\cref{fig:config_error} allows us to visualize the error function on \( \SO \).
 The potential well of \( A(R)\) is illustrated in~\cref{fig:attract_error}, where the desired attitude lies at the minimum of \( A(R) \).
 
 To incorporate the state inequality constraints we apply a logarithmic barrier term.
@@ -545,6 +483,7 @@ We augment the control input in~\cref{eqn:adaptive_control} with an additional t
 	\includegraphics[width = 0.7\columnwidth]{hexrotor}
 	\caption{Attitude control testbed~\label{fig:hexrotor}}
 \end{figure}
+
 A sensor pointing direction is defined in the body frame of the hexrotor as \( r = [1,0,0]^T \).
 We define an obstacle in the inertial frame as \( v = [\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}, 0]^T \) with \( \theta = \ang{12} \).
 An initial state is defined as \(R(0) = \exp( \frac{\pi}{2} \hat{e}_3) \), while the desired state is \(R_d =I \).
@@ -573,7 +512,6 @@ The attitude control system is identical to the one presented in~\Cref{prop:adap
 	\label{fig:exp} 
 \end{figure}
 
-
 The experimental results are shown in~\Cref{fig:exp}.
 In order to maneuver the system "close" to the constrained zone we utilize several intermediary set points on either side of the obstacle.
 From the initial attitude the hexrotor rotates to the first set point, pauses, and then continues around the obstacle to the second set point before continuing toward the desired attitude.
@@ -581,9 +519,9 @@ As a result this creates the stepped behavior of the configuration error history
 
 The brushless motors of the hexrotor allow for large control inputs which are critical to enable aggressive maneuvers. 
 When constrained to the spherical joint the hexrotor is capable of performing responsive attitude changes with high angular velocities.
-In addition, The on-board control and motion capture system operate at a discrete interval of approximately \SI{100}{\hertz}.
-It is possible for the system to violate the constraint between these discrete steps and cause numerical exceptions within the embedded software. 
-As a result, conservative control gains are chosen to ensure the hexrotor operates in a sedate manner and to allow sufficient time for the measurement and control software to operate.
+In addition, the on-board control and motion capture system operate at a discrete interval of approximately \SI{100}{\hertz}.
+It is possible for the system to violate the constraint between these discrete steps and cause numerical instability.
+We chose conservative control gains to  allow sufficient time for the measurement and control software to function correctly.
 
 There exist several sources of error in the experimental setup.
 The motion capture system uses a series of optical sensor to determine the relative position of several tracking markers. 
