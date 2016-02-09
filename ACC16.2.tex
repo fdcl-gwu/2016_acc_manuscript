@@ -52,7 +52,7 @@ The effectiveness of the proposed control system is demonstrated through numeric
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}\label{sec:intro}
 
-Rigid body attitude control is an important problem for aerospace vehicles, ground and underwater vehicles, as well as robotic systems~\cite{hughes2004,wertz1978}.
+Rigid body attitude control is an important problem for aerospace vehicles, ground and underwater vehicles, as well as robotic systems~\cite{hughes2004}.
 One distinctive feature of the attitude dynamics of rigid bodies is that it evolves on a nonlinear manifold.
 The three-dimensional special orthogonal group, or \( \SO \), is the set of \( 3 \times 3 \) orthogonal matrices whose determinant is one.
 This configuration space is non-Euclidean and yields unique stability properties which are not observable on a linear space.
@@ -82,8 +82,8 @@ Typically, very large graphs are required which are ill-suited to on-board imple
 
 Model predictive control for spacecraft attitude dynamics is studied in~\cite{guiggiani2014,kalabic2014,gupta2015}.
 This approach relies on linear or non-linear state prediction to repeatedly solve a finite time constrained optimal control problem.
-The necessary conditions for optimality are computed over a receding finite horizon using a direct method. 
-As a result,these methods are also computationally expensive and difficult to implement on-board.
+The necessary conditions for optimality are continually computed over a receding finite horizon using a direct method. 
+As a result, these methods are also computationally expensive.
   
 % MORE DETAIL ON CONTRIBUTIONS 
 % EXPLICITLY STATE - first time for constraints to be incorportated on SO(3) with barrier function
@@ -97,10 +97,10 @@ As a result,these methods are also computationally expensive and difficult to im
 Artificial potential functions are commonly used to handle kinematic constraints for a wide range of problems in robotics~\cite{rimon1992}.
 The goal is the design of attractive and repulsive terms which drive the system toward or away from a certain state, respectively.
 More specifically, artificial potential functions have previously been applied to the spacecraft attitude control problem in~\cite{lee2011b,mcinnes1994}.
-However, both of these approaches were developed using attitude parameterizations, namely Euler angles and quaternions, and as such, they are limited by the singularities or ambiguities.
+However, both of these approaches were developed using attitude parameterizations, namely Euler angles and quaternions, and as such, they are limited by singularities or ambiguities.
 
 This paper is focused on developing an adaptive attitude control scheme in the presence of attitude inequality constraints on \(\SO\).
-We apply a potential function based approach developed directly on the nonlinear manifold \(\SO\). 
+We apply a potential function based approach directly on the nonlinear manifold \(\SO\). 
 We also formulate an adaptive update law to enable attitude convergence in the presence of uncertain disturbances.
 The stability of the proposed control systems is verified via mathematically rigorous Lyapunov analysis on $\SO$. 
 In short, the proposed attitude control system in the presence of inequality constraints is computationally efficient and able to handle uncertain disturbances. 
@@ -111,11 +111,8 @@ The effectiveness of this new approach is illustrated via numerical simulation a
 \subsection{Attitude Dynamics}\label{sec:att_dyn}
 Consider the attitude dynamics of a rigid body. 
 We define an inertial reference frame and a body frame whose origin is at the center of mass and aligned with the principle directions of the body. 
-The configuration manifold of the attitude dynamics is the special orthogonal group:
-\begin{align*}
-	\SO = \{R\in\R^{3\times 3}\,|\, R^TR=I,\;\mathrm{det}[R]=1\} ,
-\end{align*}
-where a rotation matrix $R\in\SO$ represents the transformation of the representation of a vector from the body-fixed frame to the inertial reference frame. 
+The configuration manifold of the attitude dynamics is the special orthogonal group: \(\SO = \{R\in\R^{3\times 3}\,|\, R^TR=I,\;\mathrm{det}[R]=1\} \).
+The rotation matrix $R\in\SO$ represents the transformation of the representation of a vector from the body-fixed frame to the inertial reference frame. 
 The equations of motion are given by
 \begin{gather}
 	J\dot\Omega + \Omega\times J\Omega = u+W(R,\Omega)\Delta ,\label{eqn:Wdot}\\
@@ -130,10 +127,9 @@ In addition, we assume that a bound on \( W(R, \Omega) \text{ and } \Delta \) is
 	\norm{W} \leq B_W , \quad \norm{\Delta} \leq B_\Delta \,. \label{eqn:W_bound}
 \end{equation}
 This form of uncertainty enters the system dynamics through the input channel and is referred to as a matched uncertainty. 
-Many physically realizable disturbances may be modeled in this manner such as gravity gradient torques on orbital spacecraft.
+Many physically realizable disturbances may be modeled in this manner such as a gravity gradient torque.
 
 \subsection{State Inequality Constraint}
-
 The two-sphere is the manifold of unit-vectors in \( \R^3 \) such that \( \Sph^2 = \{ q \in \R^3 \,  \vert \, \norm{q} = 1 \}\).
 We define \( r \in \Sph^2 \) to be a unit vector from the mass center of the rigid body along a certain direction and it is represented with respect to the body-fixed frame.
 For example, \( r \) may represent the pointing direction of an on-board optical sensor.
@@ -160,7 +156,6 @@ To handle the attitude inequality constraint, we propose a new attitude configur
 More explicitly, we extend the trace form used in~\cite{bullo2004,LeeITCST13} for attitude control on \(\SO\) with the addition of a logarithmic barrier function. 
 Based on the proposed configuration error function,  nonlinear geometric attitude controllers are constructed. 
 A smooth control system is first developed assuming that there is  no disturbance, and then it is extended to include an adaptive update law for stabilization in the presence of unknown disturbances. 
-The proposed attitude configuration error function and several properties are summarized as follows.
 
 \begin{prop}[Attitude Error Function] \label{prop:config_error}
 %We assume a desired attitude command \( ( R_d, \Omega_d = 0 ) \), the current attitude and angular velocity \( ( R, \Omega) \), and a state constraint~\cref{eqn:constraint} are given.
@@ -203,26 +198,24 @@ Then, the following properties hold
 \end{enumerate}
 \end{prop}
 \begin{proof}
-For brevity the proof is available in~\cite{kulumani2016b}.
+For brevity, the proof is available in~\cite{kulumani2016b}.
 \end{proof}
 
 \Cref{eqn:psi} is composed of an attractive term, \( A (R) \) toward the desired attitude, and a repulsive term, \( B(R) \) away from the undesired direction \( R^T v \).
 In order to visualize the attitude error function on \( \SO \) we utilize a spherical coordinate representation.
-We apply this concept and parametrize the rotation matrix \( R \in \SO \) in terms of the spherical angles \( \SI{-180}{\degree} \leq \lambda \leq \SI{180}{\degree}  \) and \( \SI{-90}{\degree} \leq \beta \leq \SI{90}{\degree} \). 
-Using the elementary Euler rotations the rotation matrix is now defined as \( R = \exp( \lambda \hat{e}_2) \exp( \beta \hat{e}_3) \).
-We iterate over the domains of \( \lambda\) and \(\beta\) in order to rotate the body-fixed vector \( r \) throughout the two-sphere \( \S^2 \).
-\cref{fig:config_error} allows us to visualize the error function on \( \SO \).
-The potential well of \( A(R)\) is illustrated in~\cref{fig:attract_error}, where the desired attitude lies at the minimum of \( A(R) \).
+We parametrize the rotation matrix \( R \in \SO \) in terms of the spherical angles \( \SI{-180}{\degree} \leq \lambda \leq \SI{180}{\degree}  \) and \( \SI{-90}{\degree} \leq \beta \leq \SI{90}{\degree} \). 
+Using the elementary Euler rotations the rotation matrix is defined as \( R = \exp( \lambda \hat{e}_2) \exp( \beta \hat{e}_3) \).
+We iterate over the domains of \( \lambda\) and \(\beta\) in order to rotate the body-fixed vector \( r \) throughout the two-sphere \( \S^2 \) as shown in~\cref{fig:config_error}.
+\( A(R)\) is illustrated in~\cref{fig:attract_error}, where the desired attitude lies at the minimum \(\lambda=\beta=\SI{0}{\degree}\).
 
 To incorporate the state inequality constraints we apply a logarithmic barrier term.
-Barrier functions are typically used in optimal control and motion planning applications.
-A visualization of the configuration error function is presented in~\cref{fig:avoid_error} which shows that as the boundary of the constraint is neared, or \( r^T R^T v \to \cos \theta \), the barrier term increases, \( B \to \infty\).
+A visualization of the barrier function is presented in~\cref{fig:avoid_error} which shows that as the boundary of the constraint is neared, or \( r^T R^T v \to \cos \theta \), the barrier term increases, \( B \to \infty\).
 We use the scale factor~\(\frac{1}{1+\cos \theta} \) to ensure that \( \Psi \) remains positive definite.
 The logarithmic function is popular as it quickly decays away from the constraint boundary.
 The positive constant \( \alpha \) serves to shape the barrier function.
 As \( \alpha \) is increased the impact of \( B(R) \) is reduced away from the constraint boundary. 
-The super position of the attractive and repulsive functions is shown in~\cref{fig:combined_error}.
-The control system is defined such that the attitude trajectory follows the negative gradient of \( \Psi \) towards the minimum at \( R = R_d \), while avoiding the constrained region.
+The superposition of the attractive and repulsive functions is shown in~\cref{fig:combined_error}.
+The control system allows the attitude trajectory follows the negative gradient of \( \Psi \) towards the minimum at \( R = R_d \), while avoiding the constraints.
 \begin{figure} 
 	\centering 
 	\begin{subfigure}[htbp]{0.45\columnwidth} 
@@ -250,7 +243,7 @@ In this manner, one may enforce multiple state inequality constraints, and we la
 	The attitude error dynamics for \( \Psi, e_R, e_\Omega \) satisfy 
 	\begin{gather}
 		\diff{}{t} \parenth{\Psi} = e_R \cdot e_\Omega , \label{eqn:psi_dot}\\
-		\diff{}{t} \parenth{e_R} = \dot{e}_{R_A} B(R) + e_{R_A} \dot{B(R)} + \dot{A(R)}e_{R_B} + A \dot{e}_{R_B} , \label{eqn:eR_dot}\\
+		%\diff{}{t} \parenth{e_R} = \dot{e}_{R_A} B + e_{R_A} \dot{B} + \dot{A}e_{R_B} + A \dot{e}_{R_B} , \label{eqn:eR_dot}\\
 		\diff{}{t} \parenth{e_{R_A}} = E(R, R_d) e_\Omega , \label{eqn:eRA_dot} \\
 		\diff{}{t} \parenth{e_{R_B}} = F(R) e_\Omega , \label{eqn:eRB_dot} \\
 		\diff{}{t} \parenth{A(R)} = e_{R_A} \cdot e_\Omega , \label{eqn:A_dot} \\
@@ -272,15 +265,14 @@ For brevity the proof is found in~\cite{kulumani2016b}.
 We introduce a nonlinear geometric controller for the attitude stabilization of a rigid body.
 We first assume that there is no disturbance, i.e., \( \Delta = 0 \).
 \begin{prop}[Attitude Control]\label{prop:att_control}
-	Given a desired attitude command \( \parenth{R_d, \Omega_d = 0} \), which satisfies the constraint~\cref{eq:constraint}, and positive constants \( k_R, k_\Omega \in \R \) we define a control input \( u \in \R^3 \) as follows
+	Given a desired attitude command \( \parenth{R_d, \Omega_d = 0} \), which satisfies the constraint~\cref{eqn:constraint}, and positive constants \( k_R, k_\Omega \in \R \) we define a control input \( u \in \R^3 \) as follows
 	\begin{gather}
 		u = -k_R e_R - k_\Omega e_\Omega + \Omega \times J \Omega . \label{eqn:nodist_control}
 	\end{gather}
 	Then the zero equilibrium of the attitude error is asymptotically stable, and the inequality constraint is satisfied.
 \end{prop}
-
 \begin{proof}
-For brevity the proof is found in~\cite{kulumani2016b}.
+For brevity, the proof is found in~\cite{kulumani2016b}.
 \end{proof}
 
 This proposition only guarantees that the attitude error vector \( e_R \) asymptotically converges to zero.
@@ -322,7 +314,7 @@ Then the following statements hold:
 	\item \label{item:prop_eR_dot_bound_EF} Upper bounds of \( E(R,R_d) \) and \( F(R) \) are given by
 	\begin{gather}
 		\norm{E} \leq \frac{1}{\sqrt{2}} \tr{G}  , \label{eqn:E_bound} \\
-		\norm{F} \leq \frac{\parenth{\beta^2 + 1}\parenth{\beta - \cos \theta}^2 + 1 + \beta^2 \parenth{\beta^2-2}}{\alpha^2 \parenth{\beta-\cos \theta}^4} . \label{eqn:F_bound}
+		\norm{F} \leq \frac{\parenth{\beta^2 + 1}\parenth{\beta - \cos \theta}^2 + 1 + \beta^4-2 \beta^2}{\alpha^2 \parenth{\beta-\cos \theta}^4} . \label{eqn:F_bound}
 	\end{gather}
 	\item Upper bounds of the attitude error vectors \( e_{R_A} \) and \( e_{R_B} \) are given by
 	\begin{gather}
@@ -341,7 +333,7 @@ where  \( H \in \R \) is defined as
 \end{prop}
 
 \begin{proof}
-For brevity the proof is found in~\cite{kulumani2016b}.
+For brevity, the proof is found in~\cite{kulumani2016b}.
 \end{proof}
 \begin{prop}[Adaptive Attitude Control]\label{prop:adaptive_control}
 Given  a desired attitude command \( (R_d, \Omega_d = 0 )\) and positive constants \( k_R, k_\Omega, k_\Delta, c \in \R \), we define a control input \( u \in \R^3\) and an adaptive update law for the estimated uncertainty \( \bar{\Delta} \) as follows:
@@ -356,16 +348,15 @@ If \( c \) is chosen such that
   the zero equilibrium of the error vectors is stable in the sense of Lyapunov. Furthermore, $e_R,e_\Omega\rightarrow 0$ as $t\rightarrow\infty$, and $\bar\Delta$ is uniformly bounded.
 \end{prop}
 \begin{proof}
-For brevity the proof is found in~\cite{kulumani2016b}.
+For brevity, the proof is found in~\cite{kulumani2016b}.
 \end{proof}
 
 Nonlinear adaptive controllers have been developed for attitude stabilization in terms of modified Rodriguez parameters and quaternions, as well as attitude tracking in terms of Euler angles. 
-The proposed control system is developed on \(\SO\) and avoids the singularities of Euler angles and Rodriguez parameters while incorporating state inequality constraints. 
-In addition, the unwinding and double coverage ambiguity of quaternions are also completely avoided. 
-The control system handles uncertain disturbances while avoiding constrained regions.
+The proposed control system is developed on \(\SO\) and avoids the issues inherent in attitude representations, while incorporating state inequality constraints. 
+In addition, the control system handles uncertain disturbances.
 
 Compared to the previous work on constrained attitude control, we present a geometrically exact control system without parameterizations.
-In addition, we incorporate state inequality constraints for the first time on \( \SO \).
+In addition, we incorporate state inequality constraints on \( \SO \).
 The presented control system is computed in real-time and offers significant computational advantages over previous iterative methods. 
 In addition, the riguous mathematical proof guarantees stability.
 \section{Numerical Examples}
@@ -388,7 +379,7 @@ The simulation parameters are chosen to be similar to those found in~\cite{lee20
 
 The initial state is defined as \(R_0 =  \exp(\ang{225} \times \frac{\pi}{180} \hat{e}_3), \Omega_0 = 0\). 
 The desired state is \( R_d = I,\Omega_d = 0\).
-\begin{table}%[htbp]
+\begin{table}[htbp]
 \caption{Constraint Parameters~\label{tab:constraints}}
 \begin{center}\begin{tabular}{lc}
 Constraint Vector (\( v \)) & Angle (\( \theta \)) \\ \hline \hline 
@@ -440,10 +431,8 @@ The first term of~\cref{eqn:delta_dot} has the effect of increasing the proporti
 \end{figure}
 
 Simulation results without the adaptive update law are shown in~\cref{fig:con}.
-Without the update law, the system does not achieve zero steady state error. 
-\Cref{fig:Psi_con} shows that the configuration error function does not converge to zero and there exist steady state errors.
-\Cref{fig:adapt} shows the results with the addition of the adaptive update law.
-The addition of the adaptive update law allows the system to converge to the desired attitude in the presence of constraints.
+Without the update law,~\cref{fig:Psi_con} shows that the configuration error function does not converge to zero and there exist steady state errors.
+\Cref{fig:adapt} shows that the addition of the adaptive update law the system converges to the desired attitude.
 The path of the body fixed sensor in the inertial frame, namely \( R r \), is illustrated in~\cref{fig:cad_adapt}.
 The initial attitude is represented with the green circle while the final attitude is marked with a green \(\times\).
 The inequality constraints from~\Cref{tab:constraints} are depicted as red cones, where the cone half angle is \( \theta \).
@@ -470,8 +459,7 @@ The hexrotor UAV, shown in~\cref{fig:hexrotor}, is composed of the following har
 	\item Onboard ODROID XU3 computer module.
 	\item VectorNav VN100 IMU operating via TTL serial %at over \SI{100}{\hertz} 
 	\item BLDC motors with BL-Ctrl-2.0 ESC via I2C.
-	\item Position and attitude over WiFi (TCP) communication from Vicon motion capture system.
-	\item Commands sent over WiFi to  onboard controller. 
+	\item Vicon motion capture system.
 \end{itemize}
 In order to constrain the motion and test only the attitude dynamics we attach the hexrotor to a spherical joint.
 The center of rotation is below the center of gravity of the hexrotor.
@@ -521,18 +509,18 @@ The brushless motors of the hexrotor allow for large control inputs which are cr
 When constrained to the spherical joint the hexrotor is capable of performing responsive attitude changes with high angular velocities.
 In addition, the on-board control and motion capture system operate at a discrete interval of approximately \SI{100}{\hertz}.
 It is possible for the system to violate the constraint between these discrete steps and cause numerical instability.
-We chose conservative control gains to  allow sufficient time for the measurement and control software to function correctly.
+We choose conservative control gains to  allow sufficient time for the measurement and control software to function correctly.
 
 There exist several sources of error in the experimental setup.
-The motion capture system uses a series of optical sensor to determine the relative position of several tracking markers. 
+The motion capture system uses a series of optical sensors to determine the relative position of several tracking markers. 
 These markers as well as the cameras must remain fixed to ensure accurate attitude measurement.
 In addition, the spherical joint is not fixed at the center of mass but is instead offset due to the physical structure of the hexrotor.
-As a result a disturbance moment is induced on the resultant motion.
+As a result a disturbance moment is induced on the system.
 
 This results in a small steady state error in the vicinity of the desired attitude. 
 Over time~\cref{eqn:delta_dot} will remain non-zero while \( e_R \neq 0 \).
 This will cause an increase in control input until the steady-state error is reduced. 
-Further tuning of the control gains would enable a faster response and a reduced settling time.
+Further tuning of the control gains would enable a reduced settling time.
 
 The hexrotor avoids the constrained region illustrated by the circular cone in~\cref{fig:traj_exp}, by rotating around the boundary of the constraint. 
 This verifies that the proposed control system exhibits the desired performance in the experimental setting as well. 
@@ -552,12 +540,7 @@ The presented method is simple, efficient and ideal for hardware implementation 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-%\addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
-                                  % on the last page of the document manually. It shortens
-                                  % the textheight of the last page by a suitable amount.
-                                  % This command does not take effect until the next page
-                                  % so it should come on the page before the last. Make
-                                  % sure that you do not shorten the textheight too much.
+\addtolength{\textheight}{-12cm}   
                                   
 \bibliography{BibMaster,library}
 \bibliographystyle{IEEEtran}
