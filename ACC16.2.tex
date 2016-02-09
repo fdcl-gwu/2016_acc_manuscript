@@ -87,20 +87,25 @@ However, the attitude control problem in the presence of constraints has receive
 
 % discuss how previous papers (mcinnes and lee/meshabi) have short comings
 Several approaches have been developed to treat the attitude control problem in the presence of constraints.
-A geometric approach is used in~\cite{hablani1999} to determine feasible attitude trajectories prior to implementation.
-Typically, an optimal or easily implementable on-board control scheme for attitude maneuvers is considered without state constraints.
-The algorithm then seeks an intermediate point such that the control scheme can be applied for each segment without violation of the constraints.
-While the geometric method is conceptually simple, it is difficult to generalize for an arbitrary number of constraints.
-In addition, this geometric type of approach is only applicable to problems where the selection of intermediate points are computationally feasible.
+A conceptually straightforward approach is used in~\cite{hablani1999} to determine feasible attitude trajectories prior to implementation.
+The algorithm determines an intermediate point such that an unconstrained maneuver can be calculated for each subsegment.
+Typically, an optimal or easily implementable on-board control scheme for attitude maneuvers is applied to maneuver the vehicle along these segments.
+In this manner it is possible to accomplish constraint avoidance by linking several intermediary unconstrained maneuvers.
+While this method is conceptually simple, it is difficult to generalize for an arbitrary number of constraints.
+In addition, this approach is only applicable to problems where the selection of intermediate points are computationally feasible.
 
 The approach in~\cite{frazzoli2001} involves the use of randomized motion planning algorithms to solve the constrained attitude control problem.
 A graph is generated consisting of vertices from an initial attitude to a desired attitude. 
-A random iterative search is conducted to determine a path through the graph such that a given cost functional is minimized.
-Once an appropriate path is determined an appropriate control is implemented to perform the attitude maneuver.
+A random iterative search is conducted to determine a path through a directed graph such that a given cost functional is minimized.
 The random search approach can only stochastically guarantee attitude convergence as it can be shown that as the number of vertices in the graph grow, the probability of nonconvergence goes to zero.
 However, the computational demand grows as the size of the graph is increased. 
 As a result, random search approaches are ill-suited to on-board implementation or in scenarios that require agile maneuvers.
 
+Model predictive control for spacecraft attitude dynamics is studied in~\cite{guiggiani2014,kalabic2014,gupta2015}.
+These methods rely on linear or non-linear state dynamics to repeatedly solve a finite-time optimal control problem.
+As a result, model predictive control methods are also computational expensive and apply direct optimization methods to solve the necessary conditions for optimality.
+Therefore these methods are complicated to implement and not applicable for real-time control applications.
+  
 % MORE DETAIL ON CONTRIBUTIONS 
 % EXPLICITLY STATE - first time for constraints to be incorportated on SO(3) with barrier function
 % Consider adaptive control which allows for stabilization in the presence of uncertain terms
@@ -110,13 +115,13 @@ As a result, random search approaches are ill-suited to on-board implementation 
 % Random/Graph approach -computationally expensive. requires a priori calculation of trajectory
 
 % Previous potential function approach - developed using att parameterizations - singularities/ambiguities
-Artificial potential functions are commonly used to handle kinematic constraints for a wide range of problems in robotics.
+Artificial potential functions are commonly used to handle kinematic constraints for a wide range of problems in robotics~\cite{rimon1992}.
 The goal is the design of attractive and repulsive terms which drive the system toward or away from a certain state, respectively.
 %The goal is the design of an attractive function which drives the system towards the desired state.
 %Similarly, a repulsive function is constructed such that the system is directed away from the constraints. 
 The superposition of the these functions allows one to apply standard feedback control schemes for stabilization and tracking.
-Artificial potential functions have previously been applied to the attitude control problem in~\cite{lee2011b,mcinnes1994}.
-These approaches were developed using attitude parameterizations, namely Euler angles and quaternions, and as such, they are limited by the singularities of minimal representations or the ambiguity of quaternions.
+More specifically, artificial potential functions have previously been applied to the spacecraft attitude control problem in~\cite{lee2011b,mcinnes1994}.
+However, both of these approaches were developed using attitude parameterizations, namely Euler angles and quaternions, and as such, they are limited by the singularities of minimal representations or the ambiguity of quaternions.
 
 
 
@@ -179,6 +184,11 @@ In addition, we assume that a bound on \( W(R, \Omega) \text{ and } \Delta \) is
 \begin{equation}
 	\norm{W} \leq B_W , \quad \norm{\Delta} \leq B_\Delta \,. \label{eqn:W_bound}
 \end{equation}
+This form of uncertainty enters the system dynamics through the input channel and as a result is referred to as a matched uncertainty. 
+While this form of uncertainty is easier than the unmatched variety many physically realizable disturbances may be modeled in this manner.
+For example, orbital spacecraft are subject to gravity gradient torques caused by the non-spherical distribution of mass of both the spacecraft and central gravitational body.
+This form of disturbance may be represented as a body fixed torque on the vehicle.
+In addition, for typical scenarios, where the spacecraft is significantly smaller than the orbital radius, the disturbance torque may be assumed constant over short time intervals.
 
 In~\refeqn{Rdot}, the \textit{hat} map $\wedge :\R^{3}\rightarrow\so$ represents the transformation of a vector in $\R^{3}$ to a $3\times 3$ skew-symmetric matrix such that $\hat x y = x\times y$ for any $x,y\in\R^{3}$~\cite{bullo2004}. 
 More explicitly, 
@@ -207,7 +217,7 @@ R(x\times y) = Rx\times Ry\label{eqn:RxR}
 \end{gather}
 for any $x,y,z\in\R^{3}$, $A\in\R^{3\times 3}$ and $R\in\SO$. 
 Throughout this paper, the dot product of two vectors is denoted by $x\cdot y = x^T y$ for any $x,y\in\R^n$ and the maximum eigenvalue and the minimum eigenvalue of $J$ are denoted by $\lambda_M$ and $\lambda_m$, respectively. 
-The 2-norm of a matrix \( A \) is denoted by \( \norm{A} \), and its Frobenius norm is denoted by \( \norm{A} \leq \norm{A}_F = \sqrt{\tr{A^T A}} \leq \sqrt{r} \norm{A} \).
+The 2-norm of a matrix \( A \) is denoted by \( \norm{A} \), and its Frobenius norm is denoted by \( \norm{A} \leq \norm{A}_F = \sqrt{\tr{A^T A}} \leq \sqrt{\text{rank}(A)} \norm{A} \).
 
 \subsection{State Inequality Constraint}
 
@@ -241,10 +251,10 @@ The proposed attitude configuration error function and several properties are su
 
 \begin{prop}[Attitude Error Function] \label{prop:config_error}
 %We assume a desired attitude command \( ( R_d, \Omega_d = 0 ) \), the current attitude and angular velocity \( ( R, \Omega) \), and a state constraint~\cref{eqn:constraint} are given.
-Define an attitude error function \( \Psi : \SO \times \SO \to \R \), an attitude error vector \( e_R \in \R^3 \), and an angular velocity error vector \( e_\Omega \in \R^3 \) as follows:
+Define an attitude error function \( \Psi : \SO \to \R \), an attitude error vector \( e_R \in \R^3 \), and an angular velocity error vector \( e_\Omega \in \R^3 \) as follows:
 \begin{gather}
 	\Psi(R) = A(R) B(R) , \label{eqn:psi} \\
-	e_R = e_{R_A} B + A e_{R_B} , \label{eqn:eR} \\
+	e_R = e_{R_A} B(R) + A(R) e_{R_B} , \label{eqn:eR} \\
 	e_\Omega = \Omega , \label{eqn:eW}
 \end{gather}
 with
@@ -284,7 +294,15 @@ See~\Cref{proof:config_error}.
 \end{proof}
 
 \Cref{eqn:psi} is composed of an attractive term, \( A (R) \) toward the desired attitude, and a repulsive term, \( B(R) \) away from the undesired direction \( R^T v \).
-The attractive error function has been used for attitude control on \(\SO\).
+In order to visualize the attitude error function on \( \SO \) we utilize a spherical coordinate representation.
+Recall that the spherical coordinate system represents the position of a point relative to an origin in terms of a radial distance, azimuth,and elevation.
+This coordinate system commonly used to define locations on the Earth in terms of a latitude and longitude.
+Similarly, the positions of celestial objects are defined on the celestial sphere in terms of right ascension and declination. 
+We apply this concept and parametrize the rotation matrix \( R \in \SO \) in terms of the spherical angles \( \SI{-180}{\degree} \leq \lambda \leq \SI{180}{\degree}  \) and \( \SI{-90}{\degree} \leq \beta \leq \SI{90}{\degree} \). 
+Using the elementary Euler rotations the rotation matrix is now defined as \( R = \exp( \lambda \hat{e}_2) \exp( \beta \hat{e}_3) \).
+We iterate over the domains of \( \lambda\) and \(\beta\) in order to rotate the body-fixed vector \( r \) throughout the two-sphere \( \S^2 \).
+Applying this method,~\cref{fig:config_error} allows us to visualize the error function on \( \SO \).
+The attractive error function, given by~\cref{eqn:A}, has been previously used for attitude control on \(\SO\).
 The potential well of \( A(R)\) is illustrated in~\cref{fig:attract_error}, where the desired attitude lies at the minimum of \( A(R) \).
 
 To incorporate the state inequality constraints we apply a logarithmic barrier term.
@@ -323,11 +341,11 @@ In this manner, one may enforce multiple state inequality constraints, and we la
 	The attitude error dynamics for \( \Psi, e_R, e_\Omega \) satisfy 
 	\begin{gather}
 		\diff{}{t} \parenth{\Psi} = e_R \cdot e_\Omega , \label{eqn:psi_dot}\\
-		\diff{}{t} \parenth{e_R} = \dot{e}_{R_A} B + e_{R_A} \dot{B} + \dot{A}e_{R_B} + A \dot{e}_{R_B} , \label{eqn:eR_dot}\\
+		\diff{}{t} \parenth{e_R} = \dot{e}_{R_A} B(R) + e_{R_A} \dot{B(R)} + \dot{A(R)}e_{R_B} + A \dot{e}_{R_B} , \label{eqn:eR_dot}\\
 		\diff{}{t} \parenth{e_{R_A}} = E(R, R_d) e_\Omega , \label{eqn:eRA_dot} \\
 		\diff{}{t} \parenth{e_{R_B}} = F(R) e_\Omega , \label{eqn:eRB_dot} \\
-		\diff{}{t} \parenth{A} = e_{R_A} \cdot e_\Omega , \label{eqn:A_dot} \\
-		\diff{}{t} \parenth{B} = e_{R_B} \cdot e_\Omega , \label{eqn:B_dot} \\
+		\diff{}{t} \parenth{A(R)} = e_{R_A} \cdot e_\Omega , \label{eqn:A_dot} \\
+		\diff{}{t} \parenth{B(R)} = e_{R_B} \cdot e_\Omega , \label{eqn:B_dot} \\
 		\diff{}{t} \parenth{e_\Omega} = J^{-1} \parenth{-\Omega \times J \Omega + u + W(R, \Omega) \Delta} , \label{eqn:eW_dot}
 	\end{gather}
 	where the matrices \(E(R,R_d), F(R) \in \R^{3\times3} \) are given by
@@ -345,7 +363,7 @@ See~\Cref{proof:error_dyn}.
 We introduce a nonlinear geometric controller for the attitude stabilization of a rigid body.
 We first assume that there is no disturbance, i.e., \( \Delta = 0 \).
 \begin{prop}[Attitude Control]\label{prop:att_control}
-	Given a desired attitude command \( \parenth{R_d, \Omega_d = 0} \) and positive constants \( k_R, k_\Omega \in \R \) we define a control input \( u \in \R^3 \) as follows
+	Given a desired attitude command \( \parenth{R_d, \Omega_d = 0} \), which satisfies the constraint~\cref{eq:constraint}, and positive constants \( k_R, k_\Omega \in \R \) we define a control input \( u \in \R^3 \) as follows
 	\begin{gather}
 		u = -k_R e_R - k_\Omega e_\Omega + \Omega \times J \Omega . \label{eqn:nodist_control}
 	\end{gather}
@@ -586,7 +604,27 @@ The attitude control system is identical to the one presented in~\Cref{prop:adap
 
 
 The experimental results are shown in~\Cref{fig:exp}.
-The attitude error asymptotically converges to zero. 
+In order to maneuver the system "close" to the constrained zone we utilize several intermediary set points on either side of the obstacle.
+From the initial attitude the hexrotor rotates to the first set point, pauses, and then continues around the obstacle to the second set point before continuing toward the desired attitude.
+As a result this creates the stepped behavior of the configuration error history as shown in~\cref{fig:Psi_exp}.
+
+The brushless motors of the hexrotor allow for large control inputs which are critical to enable aggressive maneuvers. 
+When constrained to the spherical joint the hexrotor is capable of performing responsive attitude changes with high angular velocities.
+In addition, The on-board control and motion capture system operate at a discrete interval of approximately \SI{100}{\hertz}.
+It is possible for the system to violate the constraint between these discrete steps and cause numerical exceptions within the embedded software. 
+As a result, conservative control gains are chosen to ensure the hexrotor operates in a sedate manner and to allow sufficient time for the measurement and control software to operate.
+
+There exist several sources of error in the experimental setup.
+The motion capture system uses a series of optical sensor to determine the relative position of several tracking markers. 
+These markers as well as the cameras must remain fixed to ensure accurate attitude measurement.
+In addition, the spherical joint is not fixed at the center of mass but is instead offset due to the physical structure of the hexrotor.
+As a result a disturbance moment is induced on the resultant motion.
+
+This results in a small steady state error in the vicinity of the desired attitude. 
+Over time~\cref{eqn:delta_dot} will remain non-zero while \( e_R \neq 0 \).
+This will cause an increase in control input until the steady-state error is reduced. 
+Further tuning of the control gains would enable a faster response and a reduced settling time.
+
 The hexrotor avoids the constrained region illustrated by the circular cone in~\cref{fig:traj_exp}, by rotating around the boundary of the constraint. 
 This verifies that the proposed control system exhibits the desired performance in the experimental setting as well. 
 A video clip showing the attitude manuever is available \url{https://youtu.be/dsmAbwQram4}.
@@ -708,22 +746,30 @@ We show~\cref{eqn:eW_dot} by rearranging~\cref{eqn:Wdot} as
 \begin{align*}
 	\diff{}{t} e_\Omega = \dot{\Omega} = J^{-1} \parenth{u - \Omega \times J \Omega + W(R,\Omega) \Delta } .
 \end{align*}
+
 \subsection{Proof of~\Cref{prop:att_control}}\label{proof:att_control}
 Consider the following Lyapunov function:
-	\begin{gather}
-		\mathcal{V} = \frac{1}{2} e_\Omega \cdot J e_\Omega + k_R \Psi(R,R_d) . \label{eqn:v_nodist}
-	\end{gather}
-	From~\cref{item:prop_psi_psd} of~\Cref{prop:config_error}, \(\mathcal{V} \geq 0 \).
-	Using~\cref{eqn:eW_dot,eqn:psi_dot} with \( \Delta = 0 \), the time derivative of \( \mathcal{V} \) is given by
-	\begin{align}
-		\dot{\mathcal{V}} &= -k_\Omega \norm{e_\Omega}^2 . \label{eqn:vdot_nodist}
-%		e_\Omega^T \parenth{ u - \Omega \times J \Omega } + k_R e_R \cdot e_\Omega \nonumber \\
-	\end{align}
-	Since \( \mathcal{V} \) is positive definite and \( \dot{\mathcal{V}} \) is negative semi-definite, the zero equilibrium point \( e_R, e_\Omega \) is stable in the sense of Lyapunov. This also implies \( \lim_{t\to\infty} \norm{e_\Omega} = 0 \) and \( \norm{e_R} \) is uniformly bounded, as the Lyapunov function is non-increasing. From \refeqn{eRA_dot} and \refeqn{eRB_dot}, $\lim_{t\to\infty} \dot e_R =0$. 
-	One can show that \( \norm{\ddot{e}_R} \) is bounded.
-	From Barbalat's Lemma, it follows \( \lim_{t\to\infty}\norm{\dot{e}_R} = 0 \)~\cite[Lemma 8.2]{khalil1996}. 
-	Therefore, the equilibrium is asymptotically stable. 
-	As the Lyapunov function is uniformly bounded, the inequality constraint is always satisfied.
+\begin{gather}
+	\mathcal{V} = \frac{1}{2} e_\Omega \cdot J e_\Omega + k_R \Psi(R,R_d) . \label{eqn:v_nodist}
+\end{gather}
+From~\cref{item:prop_psi_psd} of~\Cref{prop:config_error}, \(\mathcal{V} \geq 0 \).
+Using~\cref{eqn:eW_dot,eqn:psi_dot} with \( \Delta = 0 \), the time derivative of \( \mathcal{V} \) is given by
+\begin{align}
+	\dot{\mathcal{V}} &= -k_\Omega \norm{e_\Omega}^2 . \label{eqn:vdot_nodist}
+%	e_\Omega^T \parenth{ u - \Omega \times J \Omega } + k_R e_R \cdot e_\Omega \nonumber \\
+\end{align}
+Since \( \mathcal{V} \) is positive definite and \( \dot{\mathcal{V}} \) is negative semi-definite, the zero equilibrium point \( e_R, e_\Omega \) is stable in the sense of Lyapunov. 
+This also implies \( \lim_{t\to\infty} \norm{e_\Omega} = 0 \) and \( \norm{e_R} \) is uniformly bounded, as the Lyapunov function is non-increasing. From \refeqn{eRA_dot} and \refeqn{eRB_dot}, $\lim_{t\to\infty} \dot e_R =0$. 
+One can show that \( \norm{\ddot{e}_R} \) is bounded.
+From Barbalat's Lemma, it follows \( \lim_{t\to\infty}\norm{\dot{e}_R} = 0 \)~\cite[Lemma 8.2]{khalil1996}. 
+Therefore, the equilibrium is asymptotically stable. 
+	
+Furthermore, since \( \dot{\mathcal{V}} \leq 0 \) the Lyapunov function is uniformly bounded which implies 
+\begin{align*}
+	\Psi(R(t)) \leq \mathcal{V}(t) \leq \mathcal{V}(0) .
+\end{align*}
+In addition, the logarithmic term in~\cref{eqn:B} ensures \( \Psi(R) \to \infty \) as \( r^T R^T v \to \cos \theta \).
+Therefore, the inequality constraint is always satisfied given that the desired equilibrium lies in the feasible set.
 	
 \subsection{Proof of~\Cref{prop:eR_dot_bound}}\label{proof:eR_dot_bound}
 %	We first show~\cref{eqn:A_bound,eqn:B_bound} through a proof by contradiction by noting that given the selected domain \( D \) we know the configuration error function is bounded by \( \Psi = A(R) B(R) < \psi\).
@@ -735,7 +781,8 @@ Consider the following Lyapunov function:
 %	As \( \psi \) is increased this implies that the system is approaching the constraint and that \( A \to 0 \) in order to remain in the domain \( D \).
 %	However, since the chosen domain is assumed to exclude the constraint this situation is not possible and \( B < \psi \).
 	The selected domain ensures that the configuration error function is bounded \( \Psi < \psi \).
-	This implies that that both \( A(R) \) and \( B(R) \) are also bounded which shows~\cref{eqn:AB_bound}.
+	This implies that that both \( A(R) \) and \( B(R) \) are bounded by constants \( c_A c_B < \psi < h_1\).
+	Furthermore, since \( \norm{B} > 1 \) this ensures that \( c_A, c_B < \psi\) and shows~\cref{eqn:AB_bound}.
 	
 	Next, we show~~\cref{eqn:E_bound,eqn:F_bound} using the Frobenius norm.
 	The Frobenius norm \( \norm{E}_F \) is given in~\cite{LeeITCST13} as
