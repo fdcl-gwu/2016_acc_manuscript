@@ -224,7 +224,7 @@ The 2-norm of a matrix \( A \) is denoted by \( \norm{A} \), and its Frobenius n
 The two-sphere is the manifold of unit-vectors in \( \R^3 \) such that \( \Sph^2 = \{ q \in \R^3 \,  \vert \, \norm{q} = 1 \}\).
 We define \( r \in \Sph^2 \) to be a unit vector from the mass center of the rigid body along a certain direction and it is represented with respect to the body-fixed frame.
 For example, \( r \) may represent the pointing direction of an on-board optical sensor.
-We define \( v \in \Sph^2 \) to be a unit vector from the mass center of the rigid body towards an undesired pointing direction and represented in the inertial reference frame.
+We define \( v \in \Sph^2 \) to be a unit vector from the mass center of the rigid body toward an undesired pointing direction and represented in the inertial reference frame.
 For example, \( v \) may represent the inertial direction of a bright celestial object or the incoming direction of particles or other debris.
 It is further assumed that optical sensor has a strict non-exposure constraint with respect to the celestial object.
 We formulate this hard constraint as
@@ -313,7 +313,7 @@ The logarithmic function is popular as it quickly decays away from the constrain
 The positive constant \( \alpha \) serves to shape the barrier function.
 As \( \alpha \) is increased the impact of \( B(R) \) is reduced away from the constraint boundary. 
 The super position of the attractive and repulsive functions is shown in~\cref{fig:combined_error}.
-The control system is defined such that the attitude trajectory follows the negative gradient of \( \Psi \) towards the minimum at \( R = R_d \), while avoiding the constrained region.
+The control system is defined such that the attitude trajectory follows the negative gradient of \( \Psi \) toward the minimum at \( R = R_d \), while avoiding the constrained region.
 \begin{figure} 
 	\centering 
 	\begin{subfigure}[htbp]{0.45\columnwidth} 
@@ -375,7 +375,7 @@ See~\Cref{proof:att_control}.
 \end{proof}
 
 This proposition only guarantees that the attitude error vector \( e_R \) asymptotically converges to zero.
-However, this does not necessarily imply that \( R \to R_d \) as \( t \to \infty \), since there are three additional critical points of \( \Psi \) where \( e_R = 0 \).
+However, this does not necessarily imply that \( R \to R_d \) as \( t \to \infty \), since there are at most three additional critical points of \( \Psi \) where \( e_R = 0 \) and \( R^T v = \pm r\).
 At an undesired equilibrium \( R = \exp{ \parenth{\pi \hat{e}_i}} R_d \) and \( e_\Omega =0 \).
 However, we can show that these undesired equilibrium points are unstable in the sense of Lyapunov~\cite{LeeITCST13}.
 As a result, we can claim that the desired equilibrium \( R = R_d \text{ and } e_\Omega = 0 \) is almost globally asymptotically stable, which means that the set of initial conditions that do not converge to the desired attitude has zero Lebesgue measure.
@@ -509,12 +509,12 @@ The first term of~\cref{eqn:delta_dot} has the effect of increasing the proporti
 \begin{figure} 
 	\centering 
 	\begin{subfigure}[htbp]{0.5\columnwidth} 
-		\includegraphics[width=\columnwidth]{eR_adapt} 
-		\caption{Attitude error vector \(e_R\) } \label{fig:eR_adapt} 
-	\end{subfigure}~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. %(or a blank line to force the subfigure onto a new line) 
-	\begin{subfigure}[htbp]{0.5\columnwidth} 
 		\includegraphics[width=\columnwidth]{Psi_adapt} 
 		\caption{Configuration error \( \Psi \)} \label{fig:Psi_adapt} 
+	\end{subfigure}~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. %(or a blank line to force the subfigure onto a new line) 
+	\begin{subfigure}[htbp]{0.5\columnwidth} 
+		\includegraphics[width=\columnwidth]{constraint_angles} 
+		\caption{Angle to constraints} \label{fig:con_angles} 
 	\end{subfigure}
 	
 	\centering
@@ -539,6 +539,7 @@ The path of the body fixed sensor in the inertial frame, namely \( R r \), is il
 The initial attitude is represented with the green circle while the final attitude is marked with a green \(\times\).
 The inequality constraints from~\Cref{tab:constraints} are depicted as red cones, where the cone half angle is \( \theta \).
 The control system is able to asymptotically converge to zero attitude error.
+\Cref{fig:con_angles} shows that the angle \( \arccos(r^T R^T v_i) \) to each constraint is satisfied for the entire maneuver.
 In addition, the estimate of the disturbance converges to the the true value.
 
 Both control system are able to automatically avoid the constrained regions. 
