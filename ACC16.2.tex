@@ -133,7 +133,7 @@ Many physically realizable disturbances may be modeled in this manner such as a 
 The two-sphere is the manifold of unit-vectors in \( \R^3 \) such that \( \Sph^2 = \{ q \in \R^3 \,  \vert \, \norm{q} = 1 \}\).
 We define \( r \in \Sph^2 \) to be a unit vector from the mass center of the rigid body along a certain direction and it is represented with respect to the body-fixed frame.
 For example, \( r \) may represent the pointing direction of an on-board optical sensor.
-We define \( v \in \Sph^2 \) to be a unit vector from the mass center of the rigid body towards an undesired pointing direction and represented in the inertial reference frame.
+We define \( v \in \Sph^2 \) to be a unit vector from the mass center of the rigid body toward an undesired pointing direction and represented in the inertial reference frame.
 For example, \( v \) may represent the inertial direction of a bright celestial object or the incoming direction of particles or other debris.
 It is further assumed that optical sensor has a strict non-exposure constraint with respect to the celestial object.
 We formulate this hard constraint as
@@ -198,7 +198,7 @@ Then, the following properties hold
 \end{enumerate}
 \end{prop}
 \begin{proof}
-For brevity, the proof is available in~\cite{kulumani2016b}.
+For brevity, the proof is relegated to~\cite{kulumani2016b}.
 \end{proof}
 
 \Cref{eqn:psi} is composed of an attractive term, \( A (R) \) toward the desired attitude, and a repulsive term, \( B(R) \) away from the undesired direction \( R^T v \).
@@ -258,10 +258,10 @@ In this manner, one may enforce multiple state inequality constraints, and we la
 	\end{gather}
 \end{prop}
 \begin{proof}
-For brevity the proof is found in~\cite{kulumani2016b}.
+For brevity, the proof is relegated to~\cite{kulumani2016b}.
 \end{proof}
 
-\subsection{Attitude Control without disturbance}
+\subsection{Attitude Control without Disturbance}
 We introduce a nonlinear geometric controller for the attitude stabilization of a rigid body.
 We first assume that there is no disturbance, i.e., \( \Delta = 0 \).
 \begin{prop}[Attitude Control]\label{prop:att_control}
@@ -272,11 +272,11 @@ We first assume that there is no disturbance, i.e., \( \Delta = 0 \).
 	Then the zero equilibrium of the attitude error is asymptotically stable, and the inequality constraint is satisfied.
 \end{prop}
 \begin{proof}
-For brevity, the proof is found in~\cite{kulumani2016b}.
+For brevity, the proof is relegated to~\cite{kulumani2016b}.
 \end{proof}
 
 This proposition only guarantees that the attitude error vector \( e_R \) asymptotically converges to zero.
-However, this does not necessarily imply that \( R \to R_d \) as \( t \to \infty \), since there are three additional critical points of \( \Psi \) where \( e_R = 0 \).
+However, this does not necessarily imply that \( R \to R_d \) as \( t \to \infty \), since there are at most three additional critical points of \( \Psi \) where \( e_R = 0 \) and \( R^T v = \pm r \).
 At an undesired equilibrium \( R = \exp{ \parenth{\pi \hat{e}_i}} R_d \) and \( e_\Omega =0 \).
 However, we can show that these undesired equilibrium points are unstable in the sense of Lyapunov~\cite{LeeITCST13}.
 As a result, we can claim that the desired equilibrium \( R = R_d \text{ and } e_\Omega = 0 \) is almost globally asymptotically stable, which means that the set of initial conditions that do not converge to the desired attitude has zero Lebesgue measure.
@@ -293,7 +293,7 @@ As a result, we can claim that the desired equilibrium \( R = R_d \text{ and } e
 %According to Chateav's theorem, the undesired equilibria are unstable~\cite{khalil1996}.
 \subsection{Adaptive Control}
 We extend the results of the previous section with the addition of a fixed but unknown disturbance \( \Delta \).
-This scenario is typical of many mechanical systems and represents unmodelled dynamics or external moments acting on the system.
+This scenario is typical of many mechanical systems and represents unmodeled dynamics or external moments acting on the system.
 For example, Earth orbiting spacecraft typically experience a torque due to a gravitational gradient.
 % as well as external torques to due solar radiation pressure.
 Aerial vehicles will similarly experience external torques due to air currents or turbulence.
@@ -333,7 +333,7 @@ where  \( H \in \R \) is defined as
 \end{prop}
 
 \begin{proof}
-For brevity, the proof is found in~\cite{kulumani2016b}.
+For brevity, the proof is relegated to~\cite{kulumani2016b}.
 \end{proof}
 \begin{prop}[Adaptive Attitude Control]\label{prop:adaptive_control}
 Given  a desired attitude command \( (R_d, \Omega_d = 0 )\) and positive constants \( k_R, k_\Omega, k_\Delta, c \in \R \), we define a control input \( u \in \R^3\) and an adaptive update law for the estimated uncertainty \( \bar{\Delta} \) as follows:
@@ -348,7 +348,7 @@ If \( c \) is chosen such that
   the zero equilibrium of the error vectors is stable in the sense of Lyapunov. Furthermore, $e_R,e_\Omega\rightarrow 0$ as $t\rightarrow\infty$, and $\bar\Delta$ is uniformly bounded.
 \end{prop}
 \begin{proof}
-For brevity, the proof is found in~\cite{kulumani2016b}.
+For brevity, the proof is relegated to~\cite{kulumani2016b}.
 \end{proof}
 
 Nonlinear adaptive controllers have been developed for attitude stabilization in terms of modified Rodriguez parameters and quaternions, as well as attitude tracking in terms of Euler angles. 
@@ -409,12 +409,12 @@ The first term of~\cref{eqn:delta_dot} has the effect of increasing the proporti
 \begin{figure} 
 	\centering 
 	\begin{subfigure}[htbp]{0.5\columnwidth} 
-		\includegraphics[width=\columnwidth]{eR_adapt} 
-		\caption{Attitude error vector \(e_R\) } \label{fig:eR_adapt} 
-	\end{subfigure}~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. %(or a blank line to force the subfigure onto a new line) 
-	\begin{subfigure}[htbp]{0.5\columnwidth} 
 		\includegraphics[width=\columnwidth]{Psi_adapt} 
 		\caption{Configuration error \( \Psi \)} \label{fig:Psi_adapt} 
+	\end{subfigure}~
+	\begin{subfigure}[htbp]{0.5\columnwidth} 
+		\includegraphics[width=\columnwidth]{constraint_angles} 
+		\caption{Angle to constraints} \label{fig:con_angles} 
 	\end{subfigure}
 	
 	\centering
@@ -436,7 +436,8 @@ Without the update law,~\cref{fig:Psi_con} shows that the configuration error fu
 The path of the body fixed sensor in the inertial frame, namely \( R r \), is illustrated in~\cref{fig:cad_adapt}.
 The initial attitude is represented with the green circle while the final attitude is marked with a green \(\times\).
 The inequality constraints from~\Cref{tab:constraints} are depicted as red cones, where the cone half angle is \( \theta \).
-The control system is able to asymptotically converge to zero attitude error.
+The control system is able to asymptotically converge to zero attitude error while avoiding the constrained regions.
+\Cref{fig:con_angle} shows that the angle \( \arccos(r^T R^T v_i) \) to each constraint in~\cref{tab:constraints} is satisfied for the entire maneuver.
 In addition, the estimate of the disturbance converges to the the true value.
 
 Both control system are able to automatically avoid the constrained regions. 
@@ -445,7 +446,7 @@ In spite of this challenging configuration space the proposed control system off
 These closed-loop feedback results are computed in real time and offer a significant advantage over typical open-loop planning methods.
 These results show that the proposed geometric adaptive approach is critical to attitude stabilization in the presence of state constraints and disturbances.
 \section{Experiment on Hexrotor UAV}
-A hexrotor unmanned aerial vehicle (UAV) has been developed at the Flight Dynamics and Controls Laboratory(FDCL) at the George Washington University~\cite{kaufman2014}.
+A hexrotor unmanned aerial vehicle (UAV) has been developed at the Flight Dynamics and Controls Laboratory (FDCL) at the George Washington University~\cite{kaufman2014}.
 The UAV is composed of three pairs of counter-rotating propellers. 
 %Typical quadrotor UAVs are composed of four or more co-planar propellers.
 %As a result, these systems are underactuated and unable to impart a force along every degree of freedom.
@@ -501,7 +502,7 @@ The attitude control system is identical to the one presented in~\Cref{prop:adap
 \end{figure}
 
 The experimental results are shown in~\Cref{fig:exp}.
-In order to maneuver the system "close" to the constrained zone we utilize several intermediary set points on either side of the obstacle.
+In order to maneuver the system ``close" to the constrained zone we utilize several intermediary set points on either side of the obstacle.
 From the initial attitude the hexrotor rotates to the first set point, pauses, and then continues around the obstacle to the second set point before continuing toward the desired attitude.
 As a result this creates the stepped behavior of the configuration error history as shown in~\cref{fig:Psi_exp}.
 
