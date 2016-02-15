@@ -215,7 +215,7 @@ The logarithmic function is popular as it quickly decays away from the constrain
 The positive constant \( \alpha \) serves to shape the barrier function.
 As \( \alpha \) is increased the impact of \( B(R) \) is reduced away from the constraint boundary. 
 The superposition of the attractive and repulsive functions is shown in~\cref{fig:combined_error}.
-The control system allows the attitude trajectory follows the negative gradient of \( \Psi \) towards the minimum at \( R = R_d \), while avoiding the constraints.
+The control system allows the attitude trajectory follows the negative gradient of \( \Psi \) toward the minimum at \( R = R_d \), while avoiding the constraints.
 \begin{figure} 
 	\centering 
 	\begin{subfigure}[htbp]{0.45\columnwidth} 
@@ -437,7 +437,7 @@ The path of the body fixed sensor in the inertial frame, namely \( R r \), is il
 The initial attitude is represented with the green circle while the final attitude is marked with a green \(\times\).
 The inequality constraints from~\Cref{tab:constraints} are depicted as red cones, where the cone half angle is \( \theta \).
 The control system is able to asymptotically converge to zero attitude error while avoiding the constrained regions.
-\Cref{fig:con_angle} shows that the angle \( \arccos(r^T R^T v_i) \) to each constraint in~\cref{tab:constraints} is satisfied for the entire maneuver.
+\Cref{fig:con_angles} shows that the angle \( \arccos(r^T R^T v_i) \) to each constraint in~\Cref{tab:constraints} is satisfied for the entire maneuver.
 In addition, the estimate of the disturbance converges to the the true value.
 
 Both control system are able to automatically avoid the constrained regions. 
