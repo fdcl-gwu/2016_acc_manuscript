@@ -109,8 +109,7 @@ The effectiveness of this approach is illustrated via numerical simulation and e
 
 \section{Problem Formulation}\label{sec:prob_form}
 \subsection{Attitude Dynamics}\label{sec:att_dyn}
-Consider the attitude dynamics of a rigid body. 
-We define an inertial reference frame and a body frame whose origin is at the center of mass and aligned with the principle directions of the body. 
+Consider the attitude dynamics of a rigid body--we define an inertial reference frame and a body frame whose origin is at the center of mass and aligned with the principle directions of the body. 
 The configuration manifold of the attitude dynamics is the special orthogonal group: \(\SO = \{R\in\R^{3\times 3}\,|\, R^TR=I,\;\mathrm{det}[R]=1\} \).
 The rotation matrix $R\in\SO$ represents the transformation of the representation of a vector from the body-fixed frame to the inertial reference frame. 
 The equations of motion are given by
@@ -300,7 +299,7 @@ Aerial vehicles will similarly experience external torques due to air currents o
 An adaptive control system is introduced to asymptotically stabilize the system to a desired attitude while ensuring that state constraints are satisfied. %We first show several properties of the controlled system. 
 
 
-\begin{prop}[Bound on \( \dot{e}_R \)]\label{prop:eR_dot_bound}
+\begin{prop}[Bound on \( \bm{\dot{e}_R} \)]\label{prop:eR_dot_bound}
 Consider a domain \( D \) about the desired attitude defined as
 \begin{align}
 	D = \braces{R \in \SO \vert \Psi < \psi < h_1, r^T R^T v < \beta < \cos \theta}. \label{eqn:domain}
@@ -442,7 +441,7 @@ In addition, the estimate of the disturbance converges to the the true value.
 
 Both control system are able to automatically avoid the constrained regions. 
 In addition, these results show that it is straightforward to incorporate an arbitrary amount of large constraints.
-In spite of this challenging configuration space the proposed control system offers a simple method of avoiding constrained regions.
+In spite of this challenging configuration space, the proposed control system offers a simple method of avoiding constrained regions.
 These closed-loop feedback results are computed in real time and offer a significant advantage over typical open-loop planning methods.
 These results show that the proposed geometric adaptive approach is critical to attitude stabilization in the presence of state constraints and disturbances.
 \section{Experiment on Hexrotor UAV}
@@ -506,8 +505,8 @@ In order to maneuver the system ``close" to the constrained zone we utilize seve
 From the initial attitude the hexrotor rotates to the first set point, pauses, and then continues around the obstacle to the second set point before continuing toward the desired attitude.
 As a result this creates the stepped behavior of the configuration error history as shown in~\cref{fig:Psi_exp}.
 
-The brushless motors of the hexrotor allow for large control inputs which are critical to enable aggressive maneuvers. 
-When constrained to the spherical joint the hexrotor is capable of performing responsive attitude changes with high angular velocities.
+The brushless motors of the hexrotor allow for large control inputs, which are critical to enable aggressive maneuvers. 
+When constrained to the spherical joint, the hexrotor is capable of performing responsive attitude changes with high angular velocities.
 In addition, the on-board control and motion capture system operate at a discrete interval of approximately \SI{100}{\hertz}.
 It is possible for the system to violate the constraint between these discrete steps and cause numerical instability.
 We choose conservative control gains to  allow sufficient time for the measurement and control software to function correctly.
